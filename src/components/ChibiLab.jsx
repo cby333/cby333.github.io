@@ -97,6 +97,11 @@ export default function ChibiLab() {
                       muted
                       loop
                       playsInline
+                      /* 微信 X5 内核私有属性：强制页面内嵌播放，不被自带全屏播放器接管 */
+                      webkit-playsinline="true"
+                      x5-video-player-type="h5-page"
+                      x5-video-player-fullscreen="false"
+                      x5-video-orientation="portrait"
                       preload="none"
                       width={s.w}
                       height={s.h}

@@ -376,6 +376,12 @@ export default function CaseHoma() {
                   autoPlay
                   loop
                   playsInline
+                  /* 微信 X5 内核私有属性：这个视频本来带 controls（人要主动看），
+                     同样补上，避免在微信里被弹成全屏播放器；controls 保留不动。 */
+                  webkit-playsinline="true"
+                  x5-video-player-type="h5-page"
+                  x5-video-player-fullscreen="false"
+                  x5-video-orientation="portrait"
                   controls
                   preload="none"
                 />

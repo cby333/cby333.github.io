@@ -8,6 +8,9 @@ const SCENES = [
     key: 'golden',
     cn: '金色时刻',
     src: '/media/hero/hero-scene1-golden-hour.mp4',
+    /* 首帧静态图：iOS 低电量模式会禁掉自动播放，此时页面不能是一片空白，
+       poster 保证"不播也成立"。用 ffmpeg 抽首帧、压到 640 宽、≤60KB。 */
+    poster: '/media/hero/poster-scene1.jpg',
     /* scene1/2 是明亮的自然光 → 用站点墨色；scene3/4 是冷调电影画面 → 文字转纸白 */
     tone: 'ink',
   },
@@ -15,18 +18,21 @@ const SCENES = [
     key: 'water',
     cn: '静水',
     src: '/media/hero/hero-scene2-still-water.mp4',
+    poster: '/media/hero/poster-scene2.jpg',
     tone: 'ink',
   },
   {
     key: 'snow',
     cn: '雪山剑客',
     src: '/media/hero/hero-scene3-snow-swordsman.mp4',
+    poster: '/media/hero/poster-scene3.jpg',
     tone: 'paper',
   },
   {
     key: 'bamboo',
     cn: '竹林剑客',
     src: '/media/hero/hero-scene4-bamboo-swordsman.mp4',
+    poster: '/media/hero/poster-scene4.jpg',
     tone: 'paper',
   },
 ];
@@ -229,11 +235,23 @@ export default function Hero() {
               }}
               className={`hero__video${i === active ? ' is-on' : ''}`}
               src={srcs[i] || undefined}
+              poster={s.poster}
               autoPlay
               muted
               loop
               playsInline
-              preload={srcs[i] ? 'auto' : 'none'}
+              /* 微信 X5 内核（安卓）会劫持 <video> 用自带全屏播放器接管，
+                 playsInline 只管 iOS Safari 管不了 X5。下面三个是 X5 私有属性：
+                 h5-page = 强制页面内嵌播放；fullscreen=false = 不自动全屏；
+                 orientation=portrait = 竖屏。改完视频才回到页面里当背景动效。 */
+              webkit-playsinline="true"
+              x5-video-player-type="h5-page"
+              x5-video-player-fullscreen="false"
+              x5-video-orientation="portrait"
+              /* 弱网优化：'metadata' 只取元信息，不急着把整段视频拉完，
+                 避免跟页面其他资源抢带宽；autoPlay + play() 仍会正常起播。
+                 preload 只是提示值，不影响"能播"。 */
+              preload={srcs[i] ? 'metadata' : 'none'}
               onLoadedData={(e) => tryPlay(e.currentTarget)}
             />
           ))}
