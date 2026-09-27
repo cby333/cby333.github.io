@@ -1,0 +1,46 @@
+/* ---------- 贯穿全站的超大描边字 ---------- */
+.ghost-text {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  display: flex;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ghost-text--left {
+  justify-content: flex-start;
+}
+
+.ghost-text--right {
+  justify-content: flex-end;
+}
+
+.ghost-text--top {
+  top: clamp(28px, 3.4vw, 56px);
+}
+
+.ghost-text--bottom {
+  bottom: 6px;
+}
+
+.ghost-text span {
+  font-family: var(--font-sans);
+  font-size: clamp(76px, 12vw, 210px);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 0.84;
+  color: transparent;
+  /* 淡但看得见：是"纹理"不是"装饰"，压到内容上也不抢读 */
+  -webkit-text-stroke: 1.1px rgba(12, 12, 14, 0.085);
+  white-space: nowrap;
+}
+
+/* 窄屏收一收，避免横向溢出干扰阅读 */
+@media (max-width: 860px) {
+  .ghost-text span {
+    font-size: clamp(64px, 20vw, 120px);
+  }
+}

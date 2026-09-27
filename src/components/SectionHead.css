@@ -1,0 +1,99 @@
+/* ---------- 区块统一表头 ---------- */
+.sec-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 460px);
+  align-items: end;
+  gap: 40px 72px;
+  padding-bottom: 44px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sec-head--center {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  text-align: center;
+}
+
+.sec-head__index {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.sec-head__index em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.sec-head__index::after {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--line);
+  transition: width 0.8s var(--ease) 0.32s;
+}
+
+/* 进入视口时序号尾部横线延长，暗示"展开" */
+.reveal.is-in .sec-head__index::after {
+  width: 64px;
+}
+
+.sec-head__serif {
+  margin-top: 20px;
+  font-family: Georgia, 'Times New Roman', 'Songti SC', 'STSong', serif;
+  font-size: clamp(17px, 1.35vw, 24px);
+  letter-spacing: -0.01em;
+  line-height: 1.5;
+  color: var(--ink-3);
+}
+
+.sec-head__serif em {
+  font-style: italic;
+  color: var(--ink);
+}
+
+.sec-head__desc {
+  font-size: 14.5px;
+  line-height: 1.95;
+  color: var(--ink-3);
+  padding-bottom: 8px;
+}
+
+/* 标题擦除揭示：进入视口时自左向右裁切展开（去素 · 统一的标题入场） */
+.section-title {
+  clip-path: inset(0 100% 0 0);
+}
+
+.reveal.is-in .section-title {
+  animation: titleWipe 0.95s var(--ease) 0.18s forwards;
+}
+
+@keyframes titleWipe {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-title {
+    clip-path: none;
+    animation: none;
+  }
+}
+
+@media (max-width: 1080px) {
+  .sec-head {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 24px;
+  }
+  .sec-head__desc {
+    padding-bottom: 0;
+  }
+}

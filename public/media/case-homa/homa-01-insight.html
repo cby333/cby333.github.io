@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="a7sayoIYa1FKrKUAEiKCXi">
+<head data-page-node-id="yEd4ujfS72B50ID0YGDKME">
+<meta charset="UTF-8" data-page-node-id="qoeIiFAtJfV9Ex5hEZk4Hl">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="UEhzZOA1B1qLwtLad1Q06R">
+<title>AI营销素材工厂 · 需求洞察报告</title>
+<style>
+  :root{
+    --bg:#0b0f1a; --panel:#121828; --panel2:#1a2136; --line:#232c45;
+    --txt:#e8ecf6; --sub:#8b94ad; --faint:#5a6379;
+    --purple:#a78bfa; --cyan:#5eead4; --amber:#fbbf24; --rose:#fb7185; --blue:#60a5fa;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--txt);font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;line-height:1.6;padding:32px 20px}
+  .wrap{max-width:1080px;margin:0 auto}
+  h1{font-size:26px;font-weight:600;letter-spacing:.5px}
+  .meta{color:var(--sub);font-size:13px;margin-top:8px}
+  .tags{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .tag{font-size:12px;padding:4px 12px;border-radius:999px;border:1px solid var(--line);background:var(--panel2);color:var(--sub)}
+  .tag.hot{color:var(--amber);border-color:rgba(251,191,36,.4)}
+  .tag.pur{color:var(--purple);border-color:rgba(167,139,250,.4)}
+  section{margin-top:36px}
+  h2{font-size:17px;font-weight:600;display:flex;align-items:center;gap:10px}
+  h2::before{content:"";width:4px;height:18px;border-radius:2px;background:var(--purple)}
+  .note{font-size:12.5px;color:var(--sub);margin-top:8px}
+  .honest{margin-top:16px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.25);border-radius:12px;padding:14px 16px;font-size:12.5px;color:#d8c894}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+  .card .k{font-size:12px;color:var(--sub)}
+  .card .v{font-size:24px;font-weight:600;margin:6px 0 2px}
+  .card .s{font-size:12px;color:var(--faint)}
+  .card.c1 .v{color:var(--cyan)} .card.c2 .v{color:var(--rose)} .card.c3 .v{color:var(--purple)} .card.c4 .v{color:var(--amber)}
+  table{width:100%;border-collapse:collapse;margin-top:16px;font-size:13px;background:var(--panel);border-radius:12px;overflow:hidden}
+  th,td{padding:12px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{background:var(--panel2);color:var(--sub);font-weight:500;font-size:12px;white-space:nowrap}
+  td:first-child{white-space:nowrap;font-weight:500}
+  tr:last-child td{border-bottom:none}
+  .brand-oma td{background:rgba(167,139,250,.05)}
+  .pill{display:inline-block;font-size:11px;padding:2px 8px;border-radius:999px;margin:1px 2px 1px 0;background:var(--panel2);color:var(--sub);border:1px solid var(--line)}
+  .pill.g{color:var(--cyan);border-color:rgba(94,234,212,.3)} .pill.r{color:var(--rose);border-color:rgba(251,113,133,.3)} .pill.a{color:var(--amber);border-color:rgba(251,191,36,.3)}
+  .pain{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:12px}
+  .pain .top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px}
+  .pain .t{font-weight:600;font-size:14.5px}
+  .pain .sev{font-size:12px;color:var(--rose)}
+  .bar{height:6px;border-radius:3px;background:var(--panel2);margin:10px 0 8px;overflow:hidden}
+  .bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#7c3aed,#a78bfa)}
+  .pain .d{font-size:12.5px;color:var(--sub)}
+  .pain .ev{font-size:12px;color:var(--faint);margin-top:6px}
+  .cloud{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .cloud span{border-radius:8px;padding:4px 12px}
+  .opp{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:12px;display:flex;gap:14px}
+  .opp .n{flex:none;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px}
+  .opp .t{font-weight:600;font-size:14.5px}
+  .opp .d{font-size:12.5px;color:var(--sub);margin-top:4px}
+  .opp .story{font-size:12px;color:var(--faint);margin-top:6px;border-left:2px solid var(--line);padding-left:10px}
+  .plan{margin-top:16px;background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.35);border-radius:16px;padding:22px}
+  .plan h3{font-size:16px;color:var(--purple)}
+  .plan p{font-size:13px;color:var(--sub);margin-top:8px}
+  .flow{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;align-items:center}
+  .flow .st{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 14px;font-size:12.5px}
+  .flow .ar{color:var(--faint)}
+  .todo{margin-top:16px}
+  .todo li{font-size:13px;color:var(--sub);margin:8px 0 0 18px}
+  footer{margin-top:40px;font-size:11.5px;color:var(--faint);border-top:1px solid var(--line);padding-top:14px}
+</style>
+</head>
+<body data-page-node-id="bu7ac9G2RXr0qe6R732srr">
+<div class="wrap" data-page-node-id="yYxixM9K5FOgzguCkjNkJV">
+
+  <h1 data-page-node-id="RtG9hrs2TtBCumYOAhzoAx">AI营销素材工厂 · 需求洞察报告</h1>
+  <div class="meta" data-page-node-id="Yy2w2Xp58EoMRuCDkylubF">目标公司：奥马冰箱 Homa（广东中山）｜ 对口岗位：国内营销类 · 市场经理（校招，2026-09-21 发布）｜ 报告日期：2026-09-23 ｜ v1.0</div>
+  <div class="tags" data-page-node-id="9H8w5IqyffbZtHTr69gASX">
+    <span class="tag pur" data-page-node-id="FtU9ziMeXacEMW7OyhhICf">作品定位：投递作品 / 面试可讲项目</span>
+    <span class="tag hot" data-page-node-id="7dKtDpd9lDfSCajxKTwOGT">演示场景：526 法式平嵌母婴冰箱新品上市</span>
+    <span class="tag" data-page-node-id="Grp5h3SxCvrxr5t7X0BcTc">产出链路：需求洞察 → PRD + 原型 → 流程图</span>
+  </div>
+
+  <section data-page-node-id="BTOzavkdwnQKyHniIFzWgO">
+    <h2 data-page-node-id="W6A9Fx2Ok3LDnbmbM2mFH1">0. 数据口径说明（先讲诚实的话）</h2>
+    <div class="honest" data-page-node-id="S4NJfi1dwb8jQGlfvlnMdl">
+      本报告事实类信息（出口冠军年数、产品线、竞品爆款表现）来自公开报道与电商平台公开内容，来源已在对应位置标注；痛点严重度评分与机会点优先级为<b data-page-node-id="R2E5w94iLQyEchoVxgKFDg">基于 JD 文本与公开信息的分析判断</b>，未经奥马内部访谈校准，面试引用时应表述为"基于公开信息的推断"。所有"效率提升 N%"类数字在 PRD 阶段一律写「待基线确认」，不编造。
+    </div>
+  </section>
+
+  <section data-page-node-id="yLI3sjy0D1dP4JdvJwiEE7">
+    <h2 data-page-node-id="H5qTTodJHgw5gfoJbMvtn0">1. 市场大盘：这家公司在哪、卡在哪</h2>
+    <div class="cards" data-page-node-id="bMr6IrRjrUasc9cFKIu2qV">
+      <div class="card c1" data-page-node-id="2kUzZEpIOEsUPcWGtkFnQY"><div class="k" data-page-node-id="CUu1TRaN7vTgeT5tjg5orl">出口地位</div><div class="v" data-page-node-id="UljoYTARd7temaQ2Snk8Co">17 年</div><div class="s" data-page-node-id="c8OzBmuCFqHnoOapSXO0aE">连续 17 年中国冰箱出口冠军，覆盖 150+ 国，累计 1.5 亿台（公开报道）</div></div>
+      <div class="card c2" data-page-node-id="vQx6C0QQRVR1sfc01CwowH"><div class="k" data-page-node-id="zL81JxWChkGYStjgFoRWwb">国内内容声量</div><div class="v" data-page-node-id="0p16KJKSlCabIH7llB1VmJ">最薄弱</div><div class="s" data-page-node-id="hHbjA1ddQy9hSnvaoTdX9O">媒体评价其国内"没有铺天盖地的营销宣传"——出口霸主、内销新人</div></div>
+      <div class="card c3" data-page-node-id="ic4QESnTEsMVfxE2Gz4c4w"><div class="k" data-page-node-id="fk1W2JB0QVpzc9bTTLLuH5">国内三大赛道</div><div class="v" data-page-node-id="HJdN8RmV6Z537vLGv6ikfE">3 条</div><div class="s" data-page-node-id="HPar9CzCmZCxjcpsxNW2hb">鸿蒙智联智能冰箱 · 母婴健康储鲜（526 法式平嵌）· 嵌入式美学厨居</div></div>
+      <div class="card c4" data-page-node-id="BvksPJmJuQGP1it3C0VZNY"><div class="k" data-page-node-id="d2KEx5ROSqCUIUgtMNcAZH">岗位负载信号</div><div class="v" data-page-node-id="6ZaHpTwK01ythKK5o0kQvq">1 人全套</div><div class="s" data-page-node-id="x7ow01OX0ufN5ARTEKFG7a">JD 要求"独立制作"主图/详情页/海报/短视频全流程——人少活多，产能是真瓶颈</div></div>
+    </div>
+    <p class="note" data-page-node-id="GCCGs609L2ZbMOvx9T46EW">解读：奥马国内战略 = 用欧盟级品质打认知差，但<b data-page-node-id="GD0nN6Bzri8FFsyHYHCymF">认知差要靠内容去填</b>。这正是"市场经理（视觉向）"校招岗出现的结构性原因。</p>
+  </section>
+
+  <section data-page-node-id="ayP3DpiRoTSQDamBcBMmRJ">
+    <h2 data-page-node-id="Hwb0VLtaPYH6SeCalXqXFx">2. 竞品内容打法对比（公开内容整理）</h2>
+    <table data-page-node-id="gEKjytubjLbsmq1jem0yD1">
+      <tr data-page-node-id="5DXTFus7zHicT2NySdgUkC"><th data-page-node-id="OzteohWQugjbv4MjuDturu">品牌</th><th data-page-node-id="IyBFHzBfwbfOKMwFb8s2Xz">内容主线</th><th data-page-node-id="kAdcis2a2C80VaCeKDCeLF">代表动作与成绩</th><th data-page-node-id="ADPK75E0MXbigzEufhrP0Z">内容生态</th></tr>
+      <tr data-page-node-id="a8bMr3gUhR29BtelDPbDfN">
+        <td data-page-node-id="w6uv0lR34dT89aQLJn7Cx6">容声</td>
+        <td data-page-node-id="5y0rPbA6am1wde9quA7IEZ">"装得下"+"摆得美"双叙事；年轻化/精致懒</td>
+        <td data-page-node-id="SOtFITnGg1mLdc2kXyLtQ1">方糖515 登顶抖音大家电商品榜，方糖2.0 上市首周 510 销售额单品第一；IFA 2026 两项创新大奖</td>
+        <td data-page-node-id="kVf00b13sY87gRFfJJqB84"><span class="pill g" data-page-node-id="xCxJukmFdws29jWhiZEuCa">内容种草+直播下单闭环</span><span class="pill g" data-page-node-id="UxoIBi8ixdrDBYZMLGIvRn">榜单型内容</span></td>
+      </tr>
+      <tr data-page-node-id="TtnVnAF7o51XNrPzsfHvL9">
+        <td data-page-node-id="wZOeO5Y2k0ImafAAxvXEHR">海尔</td>
+        <td data-page-node-id="HCDmVgXezQ5MWUkxGsqpp4">技术共识型种草：双系统 + 594mm 真零嵌</td>
+        <td data-page-node-id="siYqTV8F80NYxWr5xZv3ul">山茶花/小红花 502 系列；SMZDM 15+ 篇深度横评、小红书数百篇素人笔记形成"双系统共识"</td>
+        <td data-page-node-id="kqyqsclrg0Jl4d74sHbATJ"><span class="pill g" data-page-node-id="CI3LIYXVC7epQOm5clZOlK">UGC 测评生态强</span><span class="pill g" data-page-node-id="iKwfXc5IV0Y4Oe50AmMwpp">参数共识被反复验证</span></td>
+      </tr>
+      <tr data-page-node-id="GvtvQoLOq1F0CzSrcxOlm3">
+        <td data-page-node-id="sEiPVMHRpoXSEiaTY0BlaK">美的 / 卡萨帝</td>
+        <td data-page-node-id="ef5x5NIGcg9LFVz0THJLDY">美的主打零嵌性价比；卡萨帝走高端原石美学</td>
+        <td data-page-node-id="YrdqwAUS3F8kmmRGJpZqjS">美的 502/550 零嵌 3500-6500 价位段走量；卡萨帝 551 原石占 1 万+ 高端心智</td>
+        <td data-page-node-id="UAnOUVsvSKR9GX9vMFKlJA"><span class="pill g" data-page-node-id="EnwHGAaxUndGKHNWSuDQjT">电商详情页工业化</span><span class="pill" data-page-node-id="ulHLGqY7MST5L4DRZfEie4">高端视觉精致</span></td>
+      </tr>
+      <tr class="brand-oma" data-page-node-id="XCGCHSrsdXbJllW4ujS6CK">
+        <td data-page-node-id="eqkZ6nZtBMCsvgxDKopVC0">奥马（现状）</td>
+        <td data-page-node-id="YGkMm3rD3Y1ksuIrBmqx2d">品质叙事为主：欧盟标准 / 三同 / 出口冠军背书</td>
+        <td data-page-node-id="0pC1Fjh3Kf59DqUcBy3HeS">526 母婴冰箱过中家院认证、AWE 2026 亮相、IFA 设计奖；鸿蒙智联生态卡位</td>
+        <td data-page-node-id="LOBSCyTadmlzg2GXJ2bdnH"><span class="pill r" data-page-node-id="e3RW0yFkABpn917abC3F0P">国内内容池薄</span><span class="pill r" data-page-node-id="Wb7HrwYIAC2TBbZvuRFR5S">缺素人/达人声量</span><span class="pill a" data-page-node-id="p22fDlxZEA4mXHniaHfaKR">产品力强、翻译不足</span></td>
+      </tr>
+    </table>
+    <p class="note" data-page-node-id="WTE8Z2fYAMUXCuXk4MCn02">洞察：竞品的种草内容已经完成"参数 → 生活语言"的翻译（594mm=严丝合缝、4℃=母乳 DHA 不被破坏、34dB=不吵醒宝宝）。奥马的技术卖点不弱，<b data-page-node-id="0E6YR0RWkKKdyJxhPTsdLE">缺的是把卖点批量翻译成平台语言的视觉产能</b>。</p>
+  </section>
+
+  <section data-page-node-id="XWQJmbCBaPwHRveAirnlIP">
+    <h2 data-page-node-id="4RyNExxVgR7dcgBdXodydi">3. 痛点聚类（Top 6，严重度为分析判断）</h2>
+    <div class="pain" data-page-node-id="ScnFe1ngRngs5BhHHUB14r">
+      <div class="top" data-page-node-id="wgvhT4Ot0vOBpwMaTGDIx9"><span class="t" data-page-node-id="EzauiQA534fTDt66kybNay">P1 · 素材产能瓶颈：一人扛全套，节点赶不上</span><span class="sev" data-page-node-id="jRF4fxN7ENwKMJFYVhlZfQ">严重度 高</span></div>
+      <div class="bar" data-page-node-id="j8uEWXShbbVLBgDNWpQhwN"><i style="width:90%" data-page-node-id="reayLJOxu934i6r0flohjh"></i></div>
+      <div class="d" data-page-node-id="LAaht7t1Twndrk2afd6KGP">JD 明确"独立制作全套视觉物料 + 短视频全流程"。新品上市、大促、平台热点都是硬节点，人工产能线性增长，追不上内容消耗速度。</div>
+      <div class="ev" data-page-node-id="f0yBr51AKKcTh5NJOkRcyS">证据：JD 职责 1/2 原文"独立制作""全流程"；情绪标签：紧迫</div>
+    </div>
+    <div class="pain" data-page-node-id="6vfMS9ac6DTEj2tCo9NNgu">
+      <div class="top" data-page-node-id="zZHOgDEeyWfSa83s26FDag"><span class="t" data-page-node-id="u5HRXNKnpLMHrjqDoPurSZ">P2 · 多平台适配成本高：一稿改三遍</span><span class="sev" data-page-node-id="Y6o222exjmNiCkTpiUFbdF">严重度 高</span></div>
+      <div class="bar" data-page-node-id="SvOzaoA4D6AUqRmBZGsy5w"><i style="width:80%" data-page-node-id="7MWgFPd6RspGbCGfiH2OqB"></i></div>
+      <div class="d" data-page-node-id="BmBr87Ay1i0ij2Oe85xEN2">抖音竖版封面、小红书首图文案风、视频号横版、电商主图白底规范——同一卖点要做多套尺寸与风格变体，重复劳动占比大。</div>
+      <div class="ev" data-page-node-id="aBacRwBavNfiHGdXjUHDc5">证据：JD 职责 2"适配抖音、小红书、视频号"；情绪标签：消耗</div>
+    </div>
+    <div class="pain" data-page-node-id="oD2MDABcSwnUWkAeIHCiRi">
+      <div class="top" data-page-node-id="FExhndPNtZxzXBwQpUmuGl"><span class="t" data-page-node-id="1MGLprDL8wcKgsh5TLWqM6">P3 · 卖点翻译难：参数强，场景弱</span><span class="sev" data-page-node-id="Qfv4yh62K3uvlEtqvKm1MW">严重度 高</span></div>
+      <div class="bar" data-page-node-id="mOWpYDTkFnKgwslugAiuDX"><i style="width:78%" data-page-node-id="GAsALGUdkOFDtxuYKzRMDr"></i></div>
+      <div class="d" data-page-node-id="iuFC0T0GK8HELVfrzfgeOC">"双系统四变频 / AI 全域超净 / 超薄平嵌"是工程语言；消费者语言是"榴莲草莓不串味 / 母乳 4℃ 专舱 / 塞进 600mm 橱柜严丝合缝"。翻译需要场景图与真实生活视觉，恰恰最耗产能。</div>
+      <div class="ev" data-page-node-id="Ehqlz6QusVAMWoGS93KBOn">证据：竞品笔记高频词对比（594mm 零嵌、4℃ 母乳舱、34dB 静音）；情绪标签：焦虑</div>
+    </div>
+    <div class="pain" data-page-node-id="enxPCeMkpd2DkJFb57VHx3">
+      <div class="top" data-page-node-id="EtsDHGU1RI0PgpapwzQeSC"><span class="t" data-page-node-id="i3Z4TJoQNlek8aQGLqZmPF">P4 · AI 使用停留在单点：无工作流、无沉淀</span><span class="sev" data-page-node-id="oXXV1yqYA9SYg8b1Q1TAvH">严重度 中高</span></div>
+      <div class="bar" data-page-node-id="5AsGb4tNGMFy0uiv7VLS2i"><i style="width:65%" data-page-node-id="gneGCUgwjxPQ5LDLYpgs2b"></i></div>
+      <div class="d" data-page-node-id="H0HyzJF2bPWph2Qr5ChNvT">各 AI 工具零散用（生图一张是一张），提示词、风格参数、成片散落在个人电脑里；人走了产能就归零，风格也无法统一。</div>
+      <div class="ev" data-page-node-id="TCeVh40mtsG0j3KslFSQOQ">证据：JD 职责 3 要求"探索 AI 新玩法、快速扩充素材库"——反推现状是无素材库体系；情绪标签：期待</div>
+    </div>
+    <div class="pain" data-page-node-id="EB0BQbgNzMg8ZKFGSrV35f">
+      <div class="top" data-page-node-id="ndTkSgh9P10IdTODCFtt1O"><span class="t" data-page-node-id="tkEEwt6w7EkZpLMCBqBlH8">P5 · 数据反馈断链：发完就完，迭代靠感觉</span><span class="sev" data-page-node-id="G4AulS5qOEqNulnCSrnu4t">严重度 中</span></div>
+      <div class="bar" data-page-node-id="AzGFXgEnVoDGNSgwGr9HMa"><i style="width:55%" data-page-node-id="8FQwzXgLz0dZqE4tP3XHng"></i></div>
+      <div class="d" data-page-node-id="Ziu0FbJoj7TSPCzBFo2Zt8">JD 要求"根据数据反馈迭代设计与剪辑思路"，但视觉岗通常拿不到系统化的内容表现数据（点击率、完播、爆文率），反馈环没闭合。</div>
+      <div class="ev" data-page-node-id="C1ldhJO1hCBoYJ2UecrdJ3">证据：JD 职责 4 与现实工具链的落差；情绪标签：盲目</div>
+    </div>
+    <div class="pain" data-page-node-id="EaBDIcDsqZYscfJvHI2SIh">
+      <div class="top" data-page-node-id="Z8PlM7QDNxcvqPq1xrlmVS"><span class="t" data-page-node-id="BQ8vePzpyJbbq8phfZFsE2">P6 · 素材复用率低：同一卖点重复造轮子</span><span class="sev" data-page-node-id="z67Qi1v9ij3N0CnBxRi54K">严重度 中</span></div>
+      <div class="bar" data-page-node-id="crxcf8xgiaNo3Ay1SHFZkS"><i style="width:50%" data-page-node-id="R0QxUezbqtuSsnsJDWvKwh"></i></div>
+      <div class="d" data-page-node-id="ZDF98vQ0eiotIPNIHi5J52">历次活动素材无统一归档与检索，下次活动换个尺寸从头再做；品牌视觉 DNA（配色/构图/字体）无规范承载，多人协作风格漂移。</div>
+      <div class="ev" data-page-node-id="hHwUM4HmkbBXeVRiOJa5BC">证据：JD"持续优化视觉""品牌宣传落地配套输出"暗示长期复用诉求；情绪标签：浪费</div>
+    </div>
+  </section>
+
+  <section data-page-node-id="LRASviGhQeiyHduUz4XiSG">
+    <h2 data-page-node-id="mRcHkiUruw0yznk3zA7JAC">4. 平台内容关键词云（冰箱种草公开内容高频词）</h2>
+    <div class="cloud" data-page-node-id="pvPVLOs8c4dbMGS755p7Fr">
+      <span style="font-size:22px;color:var(--purple)" data-page-node-id="5ArZhSwbPCpGBKf1VaUUbY">零嵌 594mm</span>
+      <span style="font-size:20px;color:var(--cyan)" data-page-node-id="TMYGBGmEi2i7GF6ssodrPc">母乳 4℃ 独立舱</span>
+      <span style="font-size:19px;color:var(--amber)" data-page-node-id="XlP4uOH1lH4MeDcBFFFMHb">不串味 双系统</span>
+      <span style="font-size:17px;color:var(--blue)" data-page-node-id="SEswyT9aupRQbT3CreOvLN">34 分贝静音</span>
+      <span style="font-size:16px;color:var(--rose)" data-page-node-id="2x48G0JEh2EKNZXsKP32Yz">除菌净味</span>
+      <span style="font-size:15px;color:var(--sub)" data-page-node-id="l4vBdUfRCeYqvgFmCeQpts">奶油风厨房</span>
+      <span style="font-size:15px;color:var(--sub)" data-page-node-id="eJFVASlz8NKO3uiLoVnknh">橱柜一体</span>
+      <span style="font-size:14px;color:var(--sub)" data-page-node-id="iQSlQN2VavcuDxrOTBcVpm">辅食备菜</span>
+      <span style="font-size:14px;color:var(--sub)" data-page-node-id="eQ7lykHxPtrsArjugsJ5nB">囤货自由</span>
+      <span style="font-size:13px;color:var(--faint)" data-page-node-id="ODSPZiTnzUAPSVKZNyonD6">一级能效</span>
+      <span style="font-size:13px;color:var(--faint)" data-page-node-id="3uFTYLlAgSEypeV6ER7DBH">底部散热</span>
+      <span style="font-size:13px;color:var(--faint)" data-page-node-id="ZGKXexF1Xdzwx4FkCw0VWg">磨砂玻璃面板</span>
+      <span style="font-size:12px;color:var(--faint)" data-page-node-id="AAtdAMDE4DLLAnbBfBESTw">妈咪包收纳</span>
+      <span style="font-size:12px;color:var(--faint)" data-page-node-id="Ymt8MCX4QvUdNPzsIL6fPA">月子餐</span>
+    </div>
+    <p class="note" data-page-node-id="V00w1BwToHBYayjN1nxTof">口径：整理自公开种草内容与测评文章高频概念，非平台后台数据。对应奥马 526：母婴舱→"母乳 4℃"、平嵌→"零嵌 594mm"、AI 全域超净→"除菌净味"，三条都有现成的消费者语言可套用。</p>
+  </section>
+
+  <section data-page-node-id="KVaoCMvJ4GmGzHKEkxU95R">
+    <h2 data-page-node-id="44iTM6M8IKceZ2ra78kaZa">5. 战略机会点</h2>
+    <div class="opp" data-page-node-id="D9fHRwDtCu81N4TPegE1wU"><div class="n" style="background:rgba(167,139,250,.15);color:var(--purple)" data-page-node-id="kgfAa009A2wJWWAeKga1bh">O1</div>
+      <div data-page-node-id="YMDXO7ahIfFIDS1cHJoXn3"><div class="t" data-page-node-id="kqLA2fNTVL2DqOebWnoGq1">AI 素材工厂：把"会用 AI"升级为"团队的内容产线"</div>
+      <div class="d" data-page-node-id="JlLHrMPDzZ05to2F0Dxg8r">卖点/场景 → 提示词模板 → 批量生成多平台变体（主图 / 小红书首图 / 抖音封面）→ 精修。直接吃下 JD 职责 3 全文。</div>
+      <div class="story" data-page-node-id="Emc0IVYoZBjlMm9Wo1d07p">面试故事：别人交海报合集，我交的是一条能翻倍产出内容的产线方案。</div></div>
+    </div>
+    <div class="opp" data-page-node-id="UWFIxu2RNsFECahkBwzl5B"><div class="n" style="background:rgba(94,234,212,.12);color:var(--cyan)" data-page-node-id="9glrJzFvkn3pr7fFMMd83I">O2</div>
+      <div data-page-node-id="shFgDYX2XPiTe0sUcsUtyt"><div class="t" data-page-node-id="yzd3xzaUN1VNMHYZfX7rje">素材库 + 品牌 DNA 规范：让产能可沉淀、可复用</div>
+      <div class="d" data-page-node-id="I1N33glRh6pxuUGGxRB0Y3">统一归档、按卖点/平台/场景检索，配色构图字体写成规范进模板——解决 P4/P6，也是"快速扩充素材库"的实体承载。</div>
+      <div class="story" data-page-node-id="5bNEAUQzrXlfWtoTcxqF9P">面试故事：素材库不是网盘，是带标签体系和风格约束的资产系统。</div></div>
+    </div>
+    <div class="opp" data-page-node-id="mia5FdmE7FOBwBfFN1c6vs"><div class="n" style="background:rgba(251,191,36,.12);color:var(--amber)" data-page-node-id="qtEyoTvoiDzkMxvyj04tQN">O3</div>
+      <div data-page-node-id="euf9qRN1FJQBtFBFWzGPR8"><div class="t" data-page-node-id="HN1FhypiCI4n1hWsHqwLxl">卖点→场景翻译模板库：把工程语言变成生活语言</div>
+      <div class="d" data-page-node-id="BeJiIXl4UDJA97KDJggbT5">526 的三大卖点预置成场景模板（母婴 4℃ 舱 / 零嵌 594mm 厨房 / 静音育儿房），新品上市即套即出图——直接服务 B 选题的演示场景。</div>
+      <div class="story" data-page-node-id="b3AgOJ7PMkVnb1HzY7Gtl2">面试故事：我能用竞品已验证的消费者语言，把奥马的产品力讲进用户耳朵里。</div></div>
+    </div>
+    <div class="opp" data-page-node-id="jz9mLN2sIbqwv9cHyWcizr"><div class="n" style="background:rgba(251,113,133,.12);color:var(--rose)" data-page-node-id="CbQjeuHJDsA8fQqWKGG8WJ">O4</div>
+      <div data-page-node-id="nS6B1h8GwE9mYuwEFcO3j8"><div class="t" data-page-node-id="igqQ4A6PABCYnDyiQuFKXX">数据反馈闭环：让"按数据迭代"从口号变机制</div>
+      <div class="d" data-page-node-id="6pq8nRAyFEaQvEvwMa5kDi">素材出厂即带追踪口径（平台/卖点/模板版本），发布后回收表现数据反哺模板迭代——回应 JD 职责 4 的数据要求。</div>
+      <div class="story" data-page-node-id="vWMipWS1PKGA6hHUj4EflW">面试故事：内容不是玄学，是带版本号的实验。</div></div>
+    </div>
+  </section>
+
+  <section data-page-node-id="MuTGqoo6iOuWff9NZIzcQi">
+    <h2 data-page-node-id="67FXvGHn8Sxw9HDljlA4D2">6. 方案定位（下一步 PRD 的边界）</h2>
+    <div class="plan" data-page-node-id="jiMFgd1IqkounEAWSa4NAr">
+      <h3 data-page-node-id="gH8f5J2isdWDionWiGUpcv">AI 营销素材工厂 —— 面向奥马国内营销团队的内容生产工具</h3>
+      <p data-page-node-id="Y7auSX0anGNzqpzRI6Pjkk">产品形态：Web 端内部工具（PRD + 可交互 HTML 原型）。演示场景锚定 <b data-page-node-id="YySmeilERH55TOQvA5uPAr">526 法式平嵌母婴冰箱新品上市</b>：以"上市内容包"为端到端用例，走通 O1 生成、O2 沉淀、O3 模板、O4 回流四个环节。</p>
+      <div class="flow" data-page-node-id="eu8WknQddrhxhRjnD6lKPR">
+        <span class="st" data-page-node-id="oJ0BiHF5DtiHy6fdYgsHLl">选卖点 / 场景模板</span><span class="ar" data-page-node-id="DL666dM0WpVHrS2Zr6ONLM">→</span>
+        <span class="st" data-page-node-id="79GcvuP8kQ2LdoUsKa4lIV">AI 批量生成多平台变体</span><span class="ar" data-page-node-id="DKGdDWEGQppPlbQRSC5DBp">→</span>
+        <span class="st" data-page-node-id="bGBiPBIP4bNY7Urj3gGoDw">人工精修入素材库</span><span class="ar" data-page-node-id="SRfuhtCPl7dhZ7n2ut3W82">→</span>
+        <span class="st" data-page-node-id="216af6Jd2AYJRMsz8Qb7ZM">发布数据回流</span><span class="ar" data-page-node-id="n3HDe3MLMMlTToIDZeAAxd">→</span>
+        <span class="st" data-page-node-id="KQxnDPimMQONdxx2IGcRVD">模板迭代</span>
+      </div>
+      <p data-page-node-id="ZSCGVb9pT0yaVODexLNuvT">本期不做的（预立边界）：不替换专业设计软件（PS/PR 仍是精修终审）；不做自动发布与账号矩阵管理；不做公网版本，仅面向内部团队。</p>
+    </div>
+    <ul class="todo" data-page-node-id="RhaD9Y8hHeOHK9LfQ8jlOF">
+      <li data-page-node-id="bd30Q6rNkPP8Jmk8tP5HtU"><b data-page-node-id="2uUFwfmkn4g9DOZ5nARW9n">待确认 1</b>：工具的主用户只写"视觉设计者（即市场经理本人）"，还是包含营销主管（需审批/看板视角）？影响 PRD 的角色权限章节。</li>
+      <li data-page-node-id="kdLvMJuUfTCH5aUnVFLDYc"><b data-page-node-id="z6VFk2J4jaP0hnXYQLpD2D">待确认 2</b>：AI 生成部分在原型中做"模拟演示"（点按钮出预置结果）还是接真实生图 API 口径？建议前者，面试零依赖。</li>
+      <li data-page-node-id="QD77EdEPN7LzGOoj1c0vg7"><b data-page-node-id="eaRQWqAJXvQMfnpZl9FJMl">待确认 3</b>：数据回流环节做到"录入 + 看板"即可，还是要求对接抖音/小红书开放平台的真实口径？建议前者并标注待集成。</li>
+    </ul>
+  </section>
+
+  <footer data-page-node-id="mSA4G2vlJjlDG6udz2q3n1">
+    报告产出：WorkBuddy × edu-pm-workflow 需求挖掘工作流 ｜ 事实来源：homa.cn 官网、新浪财经/艾肯家电网（2026 广东优品展报道）、中国供销合作网（容声 IFA 2026）、SMZDM/小红书公开测评内容综述 ｜ 本报告为求职作品的分析基础，非奥马官方文件
+  </footer>
+</div>
+</body>
+</html>

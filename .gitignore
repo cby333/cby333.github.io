@@ -1,0 +1,33 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# 构建时绕 safe-delete 产生的废弃目录（不含任何需要保留的东西，绝不许进仓库）
+dist_trash_*
+dist_old_locked
+
+# 环境变量 / 令牌（防止误提交凭据）
+.env
+.env.*
+*.token
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

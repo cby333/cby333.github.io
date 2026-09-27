@@ -1,0 +1,90 @@
+/* ---------- 回到顶部：滚过一屏后浮出 ---------- */
+.totop {
+  position: fixed;
+  right: clamp(16px, 2.2vw, 34px);
+  bottom: clamp(16px, 2.2vw, 34px);
+  z-index: 150;
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1px solid var(--line);
+  box-shadow: 0 18px 40px -26px rgba(12, 12, 14, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px) scale(0.92);
+  transition:
+    opacity 0.45s var(--ease),
+    transform 0.45s var(--ease),
+    visibility 0.45s var(--ease),
+    background 0.4s var(--ease),
+    border-color 0.4s var(--ease),
+    box-shadow 0.4s var(--ease);
+}
+
+.totop.is-show {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.totop:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 22px 46px -24px rgba(217, 119, 43, 0.7);
+}
+
+.totop svg {
+  position: absolute;
+  inset: -1px;
+  width: 46px;
+  height: 46px;
+  transform: rotate(-90deg);
+}
+
+.totop__track,
+.totop__ring {
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.totop__track {
+  stroke: var(--line);
+}
+
+.totop__ring {
+  stroke: var(--accent);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.2s linear, stroke 0.4s var(--ease);
+}
+
+.totop:hover .totop__ring {
+  stroke: rgba(255, 255, 255, 0.85);
+}
+
+.totop__arrow {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  color: var(--ink);
+  transition: color 0.4s var(--ease), transform 0.45s var(--ease);
+}
+
+.totop:hover .totop__arrow {
+  color: var(--white);
+  transform: translateY(-3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .totop {
+    transition: opacity 0.2s linear, visibility 0.2s linear;
+    transform: none;
+  }
+  .totop:hover .totop__arrow {
+    transform: none;
+  }
+}

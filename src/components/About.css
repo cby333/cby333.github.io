@@ -1,0 +1,832 @@
+/* ---------- 关于我 ---------- */
+.about {
+  position: relative;
+  padding: clamp(96px, 9vw, 170px) 0 clamp(104px, 9.5vw, 184px);
+  background: var(--paper);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.about .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* 角色序列舞台 */
+.about__stageBlock {
+  padding: clamp(44px, 4vw, 72px) 0 0;
+}
+
+/* 自我介绍 + 联系方式 */
+.about__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  gap: clamp(40px, 5vw, 96px);
+  padding: clamp(58px, 5vw, 96px) 0 0;
+}
+
+/* 右侧联系方式 */
+.about__side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 6px;
+}
+
+.about__contacts--stack {
+  /* 三列：邮箱 / 微信各占整行，第三行是 电话｜QQ｜所在地 三小格，网格无空洞 */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* 右栏收窄到 340px 时三小格会挤爆，退回单列（仍然没有空洞） */
+@media (min-width: 1081px) and (max-width: 1340px) {
+  .about__contacts--stack {
+    grid-template-columns: 1fr;
+  }
+}
+
+.about__contact--wide {
+  grid-column: 1 / -1;
+}
+
+.about__contactRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 8px 10px;
+  flex-wrap: wrap;
+}
+
+.about__copy {
+  flex: 0 0 auto;
+  padding: 3px 9px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--ink-3);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.6);
+  transition:
+    color 0.35s var(--ease),
+    border-color 0.35s var(--ease),
+    background 0.35s var(--ease);
+}
+
+.about__copy:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* 兴趣 */
+.about__interests {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.about__interestList {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.about__interestList li {
+  padding: 5px 12px;
+  font-size: 13px;
+  color: var(--ink-2);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+/* 简历下载 */
+.about__resume {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.6);
+  transition:
+    color 0.4s var(--ease),
+    border-color 0.4s var(--ease),
+    transform 0.4s var(--ease);
+}
+
+.about__resume:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* 能力标签：沿用 mono 小标风格，可换行不溢出。
+   在宽屏 side 版式里 flex:1 撑满下方空白，底边与右侧动效块平齐。 */
+.about__chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  gap: 10px;
+  flex: 1;
+  margin-top: 14px;
+}
+
+.about__chip {
+  padding: 11px 14px;
+  font-size: 12.5px;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  color: var(--ink-2);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xs);
+  transition:
+    color 0.35s var(--ease),
+    border-color 0.35s var(--ease),
+    background 0.35s var(--ease);
+}
+
+.about__chip:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.about__badge {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 18px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  max-width: 360px;
+}
+
+.about__badgeDot {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  margin-top: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.about__badge div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.about__badge strong {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.about__badge span {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+/* 右侧文案 */
+.about__content {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.about__lede {
+  /* 三行等长文字块：字号按最长那行（≈41 个全角字）反推，避免在右栏 420px 下折成四行 */
+  font-size: clamp(18px, 1.25vw, 22px);
+  font-weight: 500;
+  line-height: 1.68;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.about__ledeLine {
+  display: block;
+}
+
+.about__text {
+  font-size: 15.5px;
+  line-height: 2;
+  color: var(--ink-2);
+  max-width: 62ch;
+}
+
+.about__quote {
+  position: relative;
+  margin: 8px 0 4px;
+  padding-left: 22px;
+  font-size: 17px;
+  line-height: 1.85;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+/* 三行金句：等距排列、视觉对齐；第三行用次级色做区分，不用列表符号 */
+.about__quoteLine {
+  display: block;
+  line-height: 2.15;
+}
+
+.about__quoteLine--sub {
+  color: var(--ink-3);
+  font-weight: 400;
+}
+
+.about__quote::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: var(--accent);
+}
+
+.about__contacts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 12px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+
+.about__contact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  /* 三小格模式下每格仅 ~139px：收紧内边距，给号码留出余量（实测 11 位数字 ≈96px） */
+  padding: 16px 16px;
+  background: var(--paper-2);
+  transition: background 0.4s var(--ease);
+}
+
+.about__contact:hover {
+  background: var(--white);
+}
+
+.about__contact a,
+.about__contactPlain {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  min-width: 0;
+  /* 号码 / ID 类一律不折行，禁止在数字中间断开 */
+  white-space: nowrap;
+  /* 兜底：容器真不够宽时才允许任意位置断行，避免溢出压到相邻格子 */
+  overflow-wrap: anywhere;
+  word-break: break-all;
+}
+
+.about__contact a {
+  border-bottom: 1px solid transparent;
+  transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+
+.about__contact a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* 项目数据 */
+.about__metrics {
+  margin-top: clamp(56px, 5vw, 88px);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.about__metrics ul {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.about__metrics li {
+  position: relative;
+  padding: 34px 26px 32px;
+}
+
+.about__metrics li + li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 26px;
+  bottom: 26px;
+  width: 1px;
+  background: var(--line);
+}
+
+.about__metricEn {
+  display: block;
+  margin-bottom: 14px;
+  font-size: 9.5px;
+  letter-spacing: 0.26em;
+  color: var(--muted);
+}
+
+.about__metricValue {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  color: var(--ink);
+}
+
+.about__metricValue strong {
+  font-size: clamp(32px, 2.7vw, 48px);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.about__metricValue em {
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.about__metricLabel {
+  display: block;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+/* 经历轨迹 */
+.about__timeline {
+  margin-top: clamp(64px, 6vw, 104px);
+}
+
+.about__timelineHead {
+  margin-bottom: 26px;
+}
+
+.about__row {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 300px) minmax(0, 1fr);
+  gap: 24px 48px;
+  align-items: baseline;
+  padding: 28px 0;
+  border-top: 1px solid var(--line);
+  transition: background 0.5s var(--ease);
+}
+
+.about__row:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.about__row:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.about__rowPeriod {
+  color: var(--ink-3);
+}
+
+.about__rowMain h3 {
+  font-size: 16.5px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.about__rowOrg {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.about__rowDesc {
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--ink-2);
+}
+
+@media (max-width: 1340px) {
+  .about__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+    gap: clamp(32px, 4vw, 64px);
+  }
+}
+
+@media (max-width: 1240px) {
+  .about__metrics ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .about__metrics li:nth-child(4)::before,
+  .about__metrics li:nth-child(4) {
+    border-top: 1px solid var(--line);
+  }
+  .about__metrics li:nth-child(4)::before {
+    display: none;
+  }
+  .about__metrics li:nth-child(5) {
+    border-top: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 1080px) {
+  .about__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .about__badge {
+    max-width: none;
+  }
+  .about__row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 700px) {
+  .about__metrics ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .about__contacts {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   高级感交互：关于我 · 每个文本框各不一样（2026-09-22）
+   ========================================================================== */
+
+/* 1) 引言 lede：进入视口时墨→橙流光横扫一次（text-gradient shimmer） */
+.about__lede {
+  background-image: linear-gradient(
+    92deg,
+    var(--ink) 0%,
+    var(--ink) 38%,
+    var(--accent) 50%,
+    var(--ink) 62%,
+    var(--ink) 100%
+  );
+  background-size: 220% 100%;
+  background-position: 130% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.reveal.is-in .about__lede {
+  animation: ledeShine 2.6s var(--ease) 0.35s both;
+}
+
+@keyframes ledeShine {
+  from {
+    background-position: 130% 0;
+  }
+  to {
+    background-position: -30% 0;
+  }
+}
+
+/* 不支持 background-clip:text 时回退为实色，避免文字消失 */
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .about__lede {
+    -webkit-text-fill-color: var(--ink);
+    color: var(--ink);
+    background: none;
+  }
+}
+
+/* 2) 正文段落①：hover 时左侧强调下划线自左画出 + 整段轻微右移 */
+.about__content > .reveal:nth-child(2) .about__text {
+  position: relative;
+  transition: transform 0.5s var(--ease);
+}
+
+.about__content > .reveal:nth-child(2) .about__text::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.6s var(--ease);
+}
+
+.about__content > .reveal:nth-child(2) .about__text:hover {
+  transform: translateX(5px);
+}
+
+.about__content > .reveal:nth-child(2) .about__text:hover::after {
+  width: 64px;
+}
+
+/* 3) 正文段落②：hover 时整段浮起一层极淡暖光（背景涂色，区别于①的线条） */
+.about__content > .reveal:nth-child(3) .about__text {
+  padding: 14px 18px;
+  margin: 0 -18px;
+  border-radius: var(--r-sm);
+  transition:
+    background 0.55s var(--ease),
+    box-shadow 0.55s var(--ease);
+}
+
+.about__content > .reveal:nth-child(3) .about__text:hover {
+  background: var(--accent-soft);
+  box-shadow: 0 18px 40px -28px rgba(217, 119, 43, 0.5);
+}
+
+/* 4) 引言：进入视口时左侧强调条自顶部生长（区别于 hover 触发的②③） */
+.about__quote::before {
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.7s var(--ease) 0.25s;
+}
+
+.reveal.is-in .about__quote::before {
+  transform: scaleY(1);
+}
+
+/* 5) 项目数据：数字滚动由 CountUp 组件驱动（JSX 已接） */
+
+/* 6) 联系方式：进入视口时每条链接下划线自左滑入（阶梯错峰） */
+.about__contacts .about__contact a {
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  border-bottom: 0;
+  padding-bottom: 2px;
+  transition:
+    background-size 0.55s var(--ease),
+    color 0.35s var(--ease);
+}
+
+.reveal.is-in .about__contacts .about__contact a {
+  background-size: 100% 1px;
+}
+
+.reveal.is-in .about__contacts .about__contact:nth-child(2) a {
+  transition-delay: 0.12s;
+}
+
+.reveal.is-in .about__contacts .about__contact:nth-child(3) a {
+  transition-delay: 0.24s;
+}
+
+.about__contacts .about__contact a:hover {
+  color: var(--accent);
+  background-size: 100% 1px;
+}
+
+/* 7) 经历轨迹行：hover 时年份变橙 + 左侧竖线点亮生长 */
+.about__row {
+  position: relative;
+}
+
+.about__row::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  top: 28px;
+  bottom: 28px;
+  width: 2px;
+  background: linear-gradient(var(--accent), rgba(217, 119, 43, 0.2));
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.5s var(--ease);
+}
+
+.about__row:hover::before {
+  transform: scaleY(1);
+}
+
+.about__row:hover .about__rowPeriod {
+  color: var(--accent-ink);
+}
+
+/* 去素：关于区块右上角一抹极淡暖光，增加层次（不抢内容） */
+.about::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: -8%;
+  right: -6%;
+  width: 640px;
+  height: 520px;
+  background: radial-gradient(ellipse at center, rgba(217, 119, 43, 0.07), transparent 66%);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+/* 8) 项目数据：hover 时顶部强调线自左画出 + 数字上浮 + 单位变橙 */
+.about__metrics li::after {
+  content: '';
+  position: absolute;
+  left: 26px;
+  right: 26px;
+  top: -1px;
+  height: 2px;
+  z-index: 1;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.55s var(--ease);
+}
+
+.about__metrics li:hover::after {
+  transform: scaleX(1);
+}
+
+.about__metricValue strong {
+  display: inline-block;
+  transition: transform 0.45s var(--ease);
+}
+
+.about__metrics li:hover .about__metricValue strong {
+  transform: translateY(-3px);
+}
+
+.about__metricValue em {
+  transition: color 0.35s var(--ease);
+}
+
+.about__metrics li:hover .about__metricValue em {
+  color: var(--accent-ink);
+}
+
+/* ==========================================================================
+   HR 引导条：About 标题正下方通栏卡片，点击平滑滚到 #case-homa
+   ========================================================================== */
+.about__hrbar {
+  margin-top: clamp(28px, 3.2vw, 46px);
+}
+
+.about__hrLink {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
+  align-items: center;
+  gap: clamp(18px, 2.4vw, 40px);
+  padding: 20px clamp(20px, 2.4vw, 32px);
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--accent);
+  border-radius: var(--r-md);
+  box-shadow: 0 16px 40px -34px rgba(12, 12, 14, 0.35);
+  overflow: hidden;
+  transition:
+    border-color 0.45s var(--ease),
+    box-shadow 0.45s var(--ease),
+    transform 0.45s var(--ease);
+}
+
+/* 极淡暖光扫过：只在 hover 时出现，不喧宾夺主 */
+.about__hrLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 160% at 12% 50%,
+    rgba(217, 119, 43, 0.09),
+    transparent 62%
+  );
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+}
+
+.about__hrLink:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 24px 52px -32px rgba(217, 119, 43, 0.55);
+}
+
+.about__hrLink:hover::after {
+  opacity: 1;
+}
+
+.about__hrTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  flex: 0 0 auto;
+  color: var(--accent-ink);
+  white-space: nowrap;
+}
+
+/* 呼吸灯：告诉眼睛这里是可点的入口 */
+.about__hrDot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.about__hrDot::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  animation: hrPulse 2.4s var(--ease-io) infinite;
+}
+
+@keyframes hrPulse {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.7);
+  }
+  70% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+
+.about__hrMain {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.about__hrMain strong {
+  font-size: clamp(15.5px, 1.15vw, 18px);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.5;
+  color: var(--ink);
+  transition: color 0.4s var(--ease);
+}
+
+.about__hrLink:hover .about__hrMain strong {
+  color: var(--accent-ink);
+}
+
+.about__hrSub {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink-3);
+}
+
+.about__hrGo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  height: 42px;
+  padding: 0 20px;
+  font-size: 13.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--white);
+  background: var(--ink);
+  border-radius: 999px;
+  transition:
+    background 0.4s var(--ease),
+    transform 0.4s var(--ease);
+}
+
+.about__hrGo svg {
+  transition: transform 0.45s var(--ease);
+}
+
+.about__hrLink:hover .about__hrGo {
+  background: var(--accent);
+}
+
+/* 下箭头轻微下沉，暗示"往下滑" */
+.about__hrLink:hover .about__hrGo svg {
+  transform: translateY(4px);
+}
+
+@media (max-width: 1080px) {
+  .about__hrLink {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .about__hrGo {
+    justify-self: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about__hrDot::after {
+    animation: none;
+  }
+}

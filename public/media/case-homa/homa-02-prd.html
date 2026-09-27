@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="tJJGfvVIXuqXk61WENAIjG">
+<head data-page-node-id="TGMBbBNT7wsMTpEhr2DtpH">
+<meta charset="UTF-8" data-page-node-id="hzJc1MDHaxPChKxEMGvA63">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="NIYgU2oyxBkWapkBq5tFrc">
+<title>AI营销素材工厂 · 产品需求文档（PRD）</title>
+<style>
+  body{font-family:"Microsoft YaHei","微软雅黑","PingFang SC","Hiragino Sans GB",sans-serif;background:#f2f4f8;margin:0;padding:0}
+  #prdWrap{max-width:1400px;margin:0 auto;padding:24px 20px 80px}
+  /* 双栏 dock 骨架样式（不在 #prdContent 内，不会被复制走） */
+  #dock{position:fixed;top:0;right:0;width:520px;height:100vh;background:#fff;border-left:1px solid #E8EBF0;box-shadow:-4px 0 18px rgba(0,0,0,.06);display:none;flex-direction:column;z-index:60}
+  #dock.open{display:flex}
+  #dockBar{height:44px;display:flex;align-items:center;gap:8px;padding:0 12px;border-bottom:1px solid #E8EBF0;flex:none}
+  #dockBar b{font-size:13px}
+  #dockTitle{font-size:11.5px;color:#6B7280;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .zm{margin-left:auto;display:flex;border:1px solid #E8EBF0;border-radius:6px;overflow:hidden}
+  .zm button{border:none;background:#fff;padding:3px 9px;font-size:12px;cursor:pointer;font-family:inherit;border-right:1px solid #E8EBF0}
+  .zm button:last-child{border-right:none}
+  .zm button:hover{background:#FFF3E6}
+  #dockFrame{flex:1;border:none;width:100%}
+  #dockToggle{position:fixed;right:0;top:14px;z-index:70;background:#F07D1A;color:#fff;border:none;border-radius:8px 0 0 8px;padding:9px 12px;font-size:12.5px;cursor:pointer;font-family:inherit;box-shadow:-2px 2px 8px rgba(0,0,0,.12)}
+  body.dock-open #prdWrap{margin-right:520px;max-width:1400px}
+  .float{position:fixed;bottom:18px;z-index:80}
+  #btnCopy{left:18px}
+  #saveZone{right:18px;display:flex;gap:8px}
+  .act{background:#fff;border:1px solid #E8EBF0;border-radius:9px;padding:9px 15px;font-size:12.5px;cursor:pointer;font-family:inherit;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+  .act:hover{border-color:#F07D1A;color:#C9610A}
+  .act.pri{background:#F07D1A;color:#fff;border:none;font-weight:600}
+  #toast{position:fixed;left:50%;transform:translateX(-50%);bottom:70px;background:#1F2937;color:#fff;font-size:12.5px;padding:10px 18px;border-radius:8px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:99;max-width:70vw;text-align:center}
+  .edited-cell{background:#ECFDF3 !important;outline:2px solid #86EFAC}
+</style>
+</head>
+<body data-page-node-id="EAaGgWuO0D8LOTDMit6Eov">
+
+<button id="dockToggle" onclick="PM.toggleDock()" data-page-node-id="M8iD2YSRoscqAwX4CQa2D6">双栏预览</button>
+
+<div id="dock" data-page-node-id="rdbiODtl8IVbz6TMInhOsV">
+  <div id="dockBar" data-page-node-id="QiuO7KekKlxDXotm6nSNSC">
+    <b data-page-node-id="hcekFyBHC4izOdyX3EPHMr">原型预览</b><span id="dockTitle" data-page-node-id="8MWmyNooj0ZqgbYv7vsF7z">未打开</span>
+    <div class="zm" data-page-node-id="gr6Ul9NhpOwkSBZu9q0xDv">
+      <button onclick="PM.zoom(-0.1)" data-page-node-id="O3mXeGQ1kgC3XxgjkbiOhX">－</button><button id="zLabel" onclick="PM.zoom(0,true)" data-page-node-id="N8b4wNWQrj9U4jqct9riQE">100%</button><button onclick="PM.zoom(0.1)" data-page-node-id="crLGLXK7qY9lyRmxMndpJB">＋</button><button onclick="PM.fit()" data-page-node-id="1mfRgAF8tdvY2xYf0Hl1eY">适配</button>
+    </div>
+    <button class="act" style="padding:4px 9px" onclick="PM.openProto()" data-page-node-id="Q87iNdcWLpenPYWGpJlWKR">原窗口打开</button>
+    <button class="act" style="padding:4px 9px" onclick="PM.toggleDock()" data-page-node-id="dy5VXqVY4UQxLuKwvAVCuk">收起</button>
+  </div>
+  <iframe id="dockFrame" src="" data-page-node-id="ImayTwg6AdNdyIZmih5GOE"></iframe>
+</div>
+
+<div id="prdWrap" data-page-node-id="MdY3OqhVZyFtPQ1ymSDDF9">
+<main id="prdContent" contenteditable="true" spellcheck="false" data-page-node-id="dQN4BCaGyelYjbelqa2TAF">
+<style>
+  /* 文档级样式：必须在 #prdContent 内部，才会被一键复制带走 */
+  :root{
+    --pm-accent:#F07D1A;
+    --pm-ink:#1F2937;
+    --pm-heading:#7C4A16;
+    --pm-line:#F3E2CE;
+    --pm-soft:#FDF4EA;
+  }
+  #prdContent{background:#fff;border-radius:14px;padding:34px 40px 48px;max-width:1336px;margin:0 auto;font-family:"Microsoft YaHei","微软雅黑","PingFang SC",sans-serif;color:var(--pm-ink);font-size:13.5px;line-height:1.75;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+  #prdContent h1.doc-title{font-size:30px;font-weight:800;margin:0 0 6px;color:var(--pm-heading)}
+  #prdContent p.doc-sub{font-size:13px;color:#6B7280;margin:0 0 26px}
+  #prdContent h2{font-size:21px;font-weight:800;margin:34px 0 14px;padding-left:12px;border-left:5px solid var(--pm-accent);color:var(--pm-heading)}
+  #prdContent h3{font-size:16px;font-weight:700;margin:22px 0 10px;color:var(--pm-heading)}
+  #prdContent table{width:100%;border-collapse:collapse;table-layout:fixed;margin:12px 0 18px;font-size:13px}
+  #prdContent th{background:var(--pm-soft);border:1px solid var(--pm-line);padding:9px 12px;text-align:left;font-weight:700;color:var(--pm-heading)}
+  #prdContent td{border:1px solid var(--pm-line);padding:9px 12px;vertical-align:top;word-break:break-word}
+  #prdContent .meta-table td:first-child{background:var(--pm-soft);font-weight:600;width:160px}
+  #prdContent .scope-card,#prdContent .risk-card{border-radius:10px;padding:12px 16px;margin:10px 0;font-size:13px}
+  #prdContent .scope-card{background:#F3FAF5;border-left:4px solid #34A853}
+  #prdContent .risk-card{background:#FEF6F4;border-left:4px solid #E8563F}
+  #prdContent .scope-card ul,#prdContent .risk-card ul{margin:6px 0 0 20px}
+  #prdContent .scope-card li,#prdContent .risk-card li{margin:3px 0}
+  #prdContent .scheme-table{font-size:12.5px}
+  #prdContent td.mod{background:var(--pm-soft);font-weight:700;text-align:center}
+  #prdContent td.fn{font-weight:600}
+  #prdContent td.proto{text-align:center;background:#FAFBFC}
+  #prdContent img.proto-shot{max-width:100%;height:auto;border:1px solid var(--pm-line);border-radius:7px;display:block;margin:0 auto}
+  #prdContent p.asset-note{margin:6px 0 0;font-size:11.5px;color:#6B7280;text-align:center}
+  #prdContent p.asset-note a{color:var(--pm-accent)}
+  #prdContent td.desc{padding:10px 12px}
+  #prdContent .desc-block{margin:0 0 9px}
+  #prdContent .desc-block:last-child{margin-bottom:0}
+  #prdContent .desc-block>b{display:block;color:var(--pm-heading);font-size:12.5px;margin-bottom:3px}
+  #prdContent .desc-block p{margin:2px 0;padding-left:2px}
+  #prdContent .source-note{font-size:12px;color:#6B7280;background:#FAFBFC;border-left:3px solid var(--pm-line);padding:8px 12px;margin:8px 0}
+  #prdContent .goal-table td{text-align:left}
+  #prdContent pre.seq-code{background:#1F2937;color:#E5E7EB;border-radius:9px;padding:14px 16px;overflow-x:auto;font-family:Consolas,Monaco,monospace;font-size:12px;line-height:1.7}
+  #prdContent .alert{background:#FFF9F0;border:1px solid #F5D9B8;border-radius:8px;padding:10px 14px;margin:10px 0;font-size:12.5px}
+  #prdContent .flow-shot{max-width:100%;height:auto;border:1px solid var(--pm-line);border-radius:8px;display:block;margin:0 auto}
+  #prdContent ul,#prdContent ol{margin:8px 0 8px 22px}
+  #prdContent li{margin:4px 0}
+</style>
+
+<h1 class="doc-title" data-page-node-id="xuDjfDkwztVYgpFjI6OP6z">AI 营销素材工厂 · 产品需求文档（PRD）</h1>
+<p class="doc-sub" data-page-node-id="0QRls4BP6gEG5YSmzeRUys">奥马冰箱国内营销中心 · 视觉设计岗 ｜ Web 端内部工具 ｜ v1.0</p>
+
+<h2 data-page-node-id="Oon3XF2JfP3O7I8MZ2zJ4L">📋 项目信息</h2>
+<table class="meta-table" data-page-node-id="Y2YBkyHznEDj40EoQaTkFw"><tbody data-page-node-id="GUfi1tCtFrjq2dyWMHX4tk">
+<tr data-page-node-id="Fx4Es0tX6kPARogoJlf4mR"><td data-page-node-id="SS3DtnCgZkixNgQErSlwT7">项目名称</td><td data-page-node-id="ts15TD8Uf08WECaqxdGA8O">AI 营销素材工厂（内部内容生产工具）</td></tr>
+<tr data-page-node-id="T0Jb4sJYzZCUo0rfxlrKql"><td data-page-node-id="1C7ggwQJJMq7ORvui9hy38">版本号</td><td data-page-node-id="NihInfwR14cdZkaEbpkFyJ">v1.0（首次评审版）</td></tr>
+<tr data-page-node-id="CLaV0h2mLDsLcHrl1KCsrM"><td data-page-node-id="9xeyNZH784HHsnxEm9a76u">文档负责人</td><td data-page-node-id="upqBzcEgirHoXmWkY6hoBN">待确认（项目负责人）</td></tr>
+<tr data-page-node-id="za6K7CenAUoA8bLSuryd1U"><td data-page-node-id="AFDGtMXIammcpn3b8uRSG3">需求状态</td><td data-page-node-id="pLXaQ5pdwU0sdR0DqqBeFo">待评审</td></tr>
+<tr data-page-node-id="Uv2bEPODd4wf0EEH9kLzH9"><td data-page-node-id="ui8gO4GsxiaZ47mwapaM0N">目标用户</td><td data-page-node-id="KLuUo0aIf3eToC4S3ORGCr">国内营销中心视觉设计岗（主用户）、营销中心负责人（查看视角）</td></tr>
+<tr data-page-node-id="90dDHbtEDJyA8hmENmF7ze"><td data-page-node-id="KhRgdmko1Fs1qTcsmo5ph6">涉及端</td><td data-page-node-id="ZaENtbEKJtVPyoBrh4I2xh">PC Web 端（Chrome / Edge 主流版本），不涉及移动端</td></tr>
+<tr data-page-node-id="n3QKTC3JlDQycIoNiBkA2m"><td data-page-node-id="Epu1LAjaFCJgjDxG88adFf">功能入口</td><td data-page-node-id="9mVLp6k4tcljeyu9nAlT1u">营销内部工作台统一入口 → 「AI 素材工厂」模块</td></tr>
+<tr data-page-node-id="VE0YKisyFpDc2Q0l9wCrUI"><td data-page-node-id="x4TICIiAX4a9Y9dGjkdsFP">关联文件</td><td data-page-node-id="an8nJ6Uy8w8OPjbN9Hm4S1">《AI营销素材工厂-需求洞察.html》（需求挖掘）、《AI营销素材工厂-prototype.html》（交互原型）、两张流程图</td></tr>
+<tr data-page-node-id="wFwBJiCHiNoS7vrYS6DDEr"><td data-page-node-id="4ZvMroEZY8DJARL9b6YkMk">品牌视觉约束</td><td data-page-node-id="6DWVESKhoFHA2J8VAYtkQN">主色「奥马橙」#F07D1A，Logo 固定右下角，禁用「第一 / 最 / 唯一」等绝对化用语</td></tr>
+</tbody></table>
+
+<h2 data-page-node-id="W3vjsHXFXtOaon27OX6jZq">📝 版本记录</h2>
+<table class="version-table" data-page-node-id="CTEjPleNnqury5RQsWglbq"><colgroup data-page-node-id="AYjCWaA5mdMk9paMi1N3xh"><col style="width:90px" data-page-node-id="yAIl7ao23Hs3dvfPQLgLB5"><col style="width:120px" data-page-node-id="WnfcyGF9WYFAa6Bdo6DYxJ"><col style="width:120px" data-page-node-id="YCROFrnRZxIEVz3OxQrYG4"><col data-page-node-id="mDu57F0LlMTQFZHb0rzMgI"></colgroup>
+<thead data-page-node-id="OzbFUYGvCCyR5h9qzdBvgB"><tr data-page-node-id="HxNegFlXQ20HSetqi8flwV"><th data-page-node-id="885XNqmBSUx8oEflM47hC7">版本</th><th data-page-node-id="wumNAmXiFKEBtOAYhxGapD">日期</th><th data-page-node-id="5k2msnoFAnAToc1eWWNNvA">修订人</th><th data-page-node-id="H2ItW8be0YHyJq7GZrM8Fs">修订说明</th></tr></thead>
+<tbody data-page-node-id="wMAgnDZ9iEADcPrPGyCsBf">
+<tr data-page-node-id="44HnSkry8KlwQhrVkxaRkC"><td data-page-node-id="FSHiWbp4x6tjQzaACYMvrE">v1.0</td><td data-page-node-id="Tx1BXFgIf40aMANCVLdRuv">2026-09-23</td><td data-page-node-id="hVIaKuWC2hrBYwahSWmEeU">需求分析</td><td data-page-node-id="D6CxPkuBNAOXJpnjZXh25I">首版：确立「在新品上市周期内，让 1-2 人的视觉设计岗批量产出可投放的多平台素材」这一目标，覆盖 8 个页面；新增第 3 章规则表（额度与并发、素材状态、模板启停、角色权限）；范围块明确本期不做自动发布与公网版本。</td></tr>
+</tbody></table>
+
+<h2 data-page-node-id="HZzRTLjRy31CKvzDixVMXg">一、需求背景</h2>
+<p data-page-node-id="QVqGguqi5zbjCyzw56fbuI">奥马冰箱国内营销中心的视觉设计岗，在新品上市、大促与平台热点等高密度节点，需要在数天内产出覆盖小红书首图、抖音封面、电商主图与视频号封面的全套视觉物料，并同步承担短视频剪辑全流程。目前每位设计同学需<b data-page-node-id="p0V9TbGTCzwm2pzwRFpSDg">独立制作</b>产品主图、详情页、场景图、营销海报与宣传物料，产能完全依附于个人工时。</p>
+<p data-page-node-id="ai629IF7DnOsGn5BoY8zDD">直接后果是：<b data-page-node-id="Qfh0U2dtio1zDzS3sXw5Vo">供给跟不上节点</b>——素材产出速度追不上内容消耗速度，临近上市只能降低产出数量或压缩精修质量；长期后果是<b data-page-node-id="BGcKsAbkBNayp0D8D6UOxF">国内认知差填不上</b>——奥马连续 17 年蝉联中国冰箱出口冠军、累计销量超 1.5 亿台，但国内端被媒体评价为「没有铺天盖地的营销宣传」，出口端的产品优势没有被翻译成消费者听得懂的平台内容。同期竞品已跑通「内容种草 + 直播下单」的闭环，并形成了以「594mm 零嵌」「母乳 4℃ 专舱」为代表的可复用消费者语言。</p>
+<p class="source-note" data-page-node-id="GPei15BcPyCTU2B6GFDVtM">事实来源：职责与产能描述引自《Homa 国内营销类 · 市场经理》招聘 JD（2026-09-21 发布）；「17 年出口冠军 / 1.5 亿台」与「国内缺少大规模营销宣传」引自公开报道（新浪财经、艾肯家电网 2026 广东优品展报道）；竞品内容表现引自公开报道（容声方糖系列登顶抖音大家电榜、方糖 2.0 上市首周单品第一）。<b data-page-node-id="ncQzlMiVC2yuoZRB5HKHTu">目前没有内部素材产能与投放效果的真实数据，本需求的问题判断基于上述公开信息与岗位文本，产能基线待首次使用后回填。</b></p>
+
+<h2 data-page-node-id="kpIfZtSY0EkZq3Ywdym1iN">二、需求目标</h2>
+<p data-page-node-id="YKOZyQgKZSAqvURuupbn1h"><strong data-page-node-id="rcu8QRJbxntlAHdQ1l8C1y">让 1-2 人的视觉设计岗，在一个新品上市周期内稳定交付全部所需的多平台素材，并且产出的素材能被真正投放使用，而不是堆在个人文件夹里。</strong></p>
+<table class="goal-table" data-page-node-id="O7ERAzrKsEhaEzZ2z6uGML"><colgroup data-page-node-id="hbuBOuKam7r2YNxko3BsAT"><col style="width:22%" data-page-node-id="4L7fdRLuDAw2sapnCcxMws"><col style="width:16%" data-page-node-id="8fANBgJ9CnCJqpXl5bNPJA"><col style="width:26%" data-page-node-id="Twr7zBkH0fz3SlclwE5o5B"><col style="width:10%" data-page-node-id="BTGLbQLR94DSQozHrNxi1z"><col data-page-node-id="8RsThdhiKYKPToaL267lQz"></colgroup>
+<thead data-page-node-id="4ds2pTYTcWNeti6DsOSmfp"><tr data-page-node-id="8ICsIMTJtQ92w8QzaBar00"><th data-page-node-id="hThn2chZ4Axf17GORpAuBU">用户结果</th><th data-page-node-id="rj6rJHAFU3HCPWgV2Ixl86">衡量指标</th><th data-page-node-id="g9qjJTZEXetwFhFpCNJhJV">统计口径</th><th data-page-node-id="EiF4qwg9SN7ZMwdqW4QEO9">预期方向</th><th data-page-node-id="7Lv7aOxO3dWCR5DrqdH8Oc">目标值</th></tr></thead>
+<tbody data-page-node-id="ShawX3xg1u4lyBwWKAN15d">
+<tr data-page-node-id="J6hsYuJo20r2PscLazghtG"><td data-page-node-id="IG1ZtawIaArmovX1pHrwqL">在上市节点前凑齐内容包要求的全部素材</td><td data-page-node-id="qAFutWIDRFbpc7uqOC2ySr">内容包交付达成率</td><td data-page-node-id="WKASGgPknlHBHwTisY5VWa">上市前完成入库的素材数 / 内容包计划素材数</td><td data-page-node-id="3SmJxAzC1QzHYtG1xCyAAZ">↑</td><td data-page-node-id="GlptGsHBHS5YdbBRmvM6Cr">待基线确认</td></tr>
+<tr data-page-node-id="vaZZPv1NtwmKDWfPGf18gO"><td data-page-node-id="afeaHMMs9qlWXSJz2fDbzL">单张素材不再消耗整块工时</td><td data-page-node-id="V3BojPjF1vTuKRCctQSKAo">单张素材平均耗时</td><td data-page-node-id="PMEKShrWvXqY8tok1EcwQN">（素材入库时间 − 任务创建时间）的中位数</td><td data-page-node-id="EhRmfufYo1fP5jJqesibWz">↓</td><td data-page-node-id="aizisZenOrT7adzcCOvoIW">待基线确认</td></tr>
+<tr data-page-node-id="egMTKtpgj2LVuZXxLBUbvm"><td data-page-node-id="QdfEriByQQfAvNlIHerJRE">产出的素材能被实际投放使用</td><td data-page-node-id="0cb5ao87AIHbvNQtnhd4m7">素材采用率</td><td data-page-node-id="xHFPruRzOfDBcKYa9Hs3Rb">被投放使用的素材数 / 入库素材数</td><td data-page-node-id="6QOId0TINFHLxjkKpJvxrM">↑</td><td data-page-node-id="B1b9HPIwDYKaIZSdjWUrMA">待基线确认</td></tr>
+<tr data-page-node-id="h52hHoGVWGaDz4LRX2P4KG"><td data-page-node-id="g2SwUOukTUlb0G2qLpCZdD">同一卖点一次产出多平台规格，不用逐平台重做</td><td data-page-node-id="6Llb6OJMHRLNccfHzSIvZK">多平台一次产出率</td><td data-page-node-id="HjZSQfBFxzzGxD0PBCk3Af">单任务同时产出多规格的素材数 / 单任务总产出数</td><td data-page-node-id="XMYfWcc3EciVpdsefbr28f">↑</td><td data-page-node-id="UHdJ7Aim5SQUbWErCoyM0p">待基线确认</td></tr>
+<tr data-page-node-id="q2kpGyaHtFyMU0Fgpltmyo"><td data-page-node-id="aA9Xfdd6QXtTJWv92Qh4O0">低效模板能被及时识别并淘汰</td><td data-page-node-id="4cofMbs2Xr9KBaxLXTugBD">待复盘模板占比</td><td data-page-node-id="wQImj3SFtBiWcltgHG510A">处于「待复盘」状态的模板数 / 启用中模板数</td><td data-page-node-id="BIRVedAQ50SebVLIveCIoG">↓</td><td data-page-node-id="TEvFQKcpEGQAlvxnCqETbN">待基线确认</td></tr>
+</tbody></table>
+<div class="alert" data-page-node-id="C2o2xwp4AMyzUTSWemqSm1">上述目标值一律记为「待基线确认」：<b data-page-node-id="aFqgh8OwsBTZnCqs4VFhO1">缺少工具上线前的真实基线数据，本次不设定具体提升幅度</b>。上线后由第 3.1 条口径回填，并在第二个迭代版本补充实际目标值。</div>
+
+<h2 data-page-node-id="fqRRCBAok6uYsdhm9GGp2L">三、需求概述</h2>
+<div class="scope-card" data-page-node-id="uNgx8vqUd1xFdCG3mndTmV"><b data-page-node-id="A2Y8ycADDwHWK6GXPmpuKo">本期范围</b>
+  <ul data-page-node-id="Dy5GfnZwXg9IDBZCBrV7NA">
+    <li data-page-node-id="3u7R1fGEqrqw0Yp6OHGyBR">Web 端内部工具，覆盖「新建生成任务 → AI 批量产出 → 人工精修入库 → 素材库检索复用 → 数据回流与模板迭代」完整链路，共 8 个页面。</li>
+    <li data-page-node-id="FKb0rbvQWLKkAYgE8OU7pS">首批接入产品线：母婴健康储鲜（526 法式平嵌母婴冰箱）、嵌入式美学厨居、鸿蒙智联。</li>
+    <li data-page-node-id="8VYQBl5KtcxlSmLDn0UHR6">首批支持规格：小红书首图 3:4、抖音封面 9:16、电商主图 1:1、视频号封面 16:9。</li>
+    <li data-page-node-id="C4xcnZFmCsjEB1L2f8Zhqc">首批用户：国内营销中心视觉设计岗，营销中心负责人仅开放查看视角。</li>
+  </ul>
+</div>
+<div class="risk-card" data-page-node-id="WqJrLScQEf0Uqjy6udcvaI"><b data-page-node-id="y0OQ96UKyMDZ7HLLAq5bfH">本期不做什么 / 暂不展开</b>
+  <ul data-page-node-id="apSFLlm7XQR7n7dmldSLJA">
+    <li data-page-node-id="qOqpuxBd5opgLnlJSTBO1I"><b data-page-node-id="BbF3BfDYo5NHq6nN78ojMh">不做平台的自动发布与账号矩阵管理</b>：依赖各平台开放平台授权与合规审批，本期素材出厂后仍需人工投放。</li>
+    <li data-page-node-id="ukG3314jYKGMDT2UZKw4kc"><b data-page-node-id="gY2wl3adkNBVOjLqApbjKF">不替换 PS / PR 等专业软件</b>：AI 产出只到候选稿，最终精修与终审仍在专业软件完成，工具不承载专业修图能力。</li>
+    <li data-page-node-id="F5MUtJZaFONYfVhe0FlrKF"><b data-page-node-id="3LEMqwdtw5BctRD0lnKz08">不做公网对外开放版本</b>：涉及品牌资产与未发布新品素材，仅限内网账号访问。</li>
+    <li data-page-node-id="oVEaXFdqhKi9g7nu4h5siH"><b data-page-node-id="DU6XAFGgA2zrvoQhFxFJrI">不做平台侧表现数据的自动拉取</b>：曝光、点击、互动数据本期走手动录入 + 内部统计，开放平台对接列后续。</li>
+    <li data-page-node-id="u9P7iy7HQqoDmXHCxaUC0F"><b data-page-node-id="mioBcxtKuJaLjBMub6YmNR">不生成含真实人物的素材外投版本</b>：含人脸素材需额外确认肖像授权流程，本期只做检出与拦截。</li>
+  </ul>
+</div>
+
+<table class="overview-table" data-page-node-id="i5WEsXuTigA1up9xTmm6S4"><colgroup data-page-node-id="X4lsymSBhWaztBzzIM6rDl"><col style="width:80px" data-page-node-id="AQ3MDQFKbaLFpTqIcJQ1rr"><col style="width:180px" data-page-node-id="D9rF8TFH0Nn4GCFwhkl0c0"><col data-page-node-id="VggVuI48u7E9j2Cpk2GCal"></colgroup>
+<thead data-page-node-id="B4GTXHN9BVbuQCm1m3x2UI"><tr data-page-node-id="rhezQ9PlrfjnVFkUar6jAo"><th data-page-node-id="GawMRWHbmnq1dlInUNAUBr">模块</th><th data-page-node-id="zMbdsJkRw8sXooGRnslPcO">一级功能</th><th data-page-node-id="X2h2Lzz3mw2GG7DNiLE3fM">说明</th></tr></thead>
+<tbody data-page-node-id="ITCLyWzYCy5pdA1yMpanUO">
+<tr data-page-node-id="l1hmx2fyJzJAV7HCq4QQIK"><td data-page-node-id="BKhMdPLnV9A4e5wNjTCAgx">1</td><td data-page-node-id="3mM50uE57oHMxDbPcPCduo">内容生产链路</td><td data-page-node-id="TnotKHIYVxNtNerlfwqaeT">从任务创建到结果筛选、精修入库的主链路，含工作台、新建任务、生成队列、结果墙、精修入库 5 个页面</td></tr>
+<tr data-page-node-id="SIPLRlob7Y4mi8iNa7Kv8X"><td data-page-node-id="DTYecBXKVAitOXruQ4mSf9">2</td><td data-page-node-id="iQr2TItzKjpI3QxzlhHiQQ">资产管理</td><td data-page-node-id="0DE4TpovOC1ulfxtpztu9T">素材的归档检索与场景模板的生命周期管理，含素材库、模板库 2 个页面</td></tr>
+<tr data-page-node-id="c4OpEJd0P87P4llceHDoP2"><td data-page-node-id="aU6DB2cI5f9cQHgG1xLA2o">3</td><td data-page-node-id="jpkvIEyZe2wqR0V21CQS6e">效果追踪</td><td data-page-node-id="4Wqv0WkUNLI8ey0et8phEQ">素材效率与模板表现的统计分析，含数据看板 1 个页面</td></tr>
+</tbody></table>
+
+<h3 data-page-node-id="Rr9UNgJvNbeVDHgFASmB7M">3.1 算力额度与并发规则（全链路通用）</h3>
+<table class="rule-table" data-page-node-id="TDpCaOUaoDo5cUdLGBgDyw"><colgroup data-page-node-id="hASZJ7M9c7Bg72dyUVX3E0"><col style="width:26%" data-page-node-id="rASewo5ZDfpcaek7LEbpMZ"><col style="width:24%" data-page-node-id="Mx1y5QJVF1Hl9q2OTZRwS8"><col data-page-node-id="HUwFauyFWylf4GRKixzM4A"></colgroup>
+<thead data-page-node-id="WHQosrHjTnLW2XSuXZCLH9"><tr data-page-node-id="h9EjxIq8ObZkPwVoCuzy1w"><th data-page-node-id="UhhSPODmK6llCQgXXiyCQc">维度</th><th data-page-node-id="UmYGxh8AG6sONLL1wd4WNV">取值</th><th data-page-node-id="mM7wmr6iX5cOncTTVgoHTE">说明</th></tr></thead>
+<tbody data-page-node-id="QaUxmJEHCtQ1CiqWkq2Lkm">
+<tr data-page-node-id="lswMRBPnAtCsytEXEOHo8G"><td data-page-node-id="LbEjM2f0HVZRH2odDlHjkb">月度额度</td><td data-page-node-id="FIkCNc1mQSasmytQ1dsT1K">500 点 / 账号</td><td data-page-node-id="PIq8EliAUQGyIVYpivXKKk">每月 1 日重置，未用完不累计结转</td></tr>
+<tr data-page-node-id="GGs5axCv76BsJRLjDxPAeC"><td data-page-node-id="h0NaBIlW4vgaDY0T5eXe3q">单次消耗</td><td data-page-node-id="JNnGV58ylzb4hAbbCpjm4K">每张候选素材 1 点</td><td data-page-node-id="BzQOrMaRqURrZdIXUAOEyC">按平台规格数量 × 候选张数计算，提交前展示预计消耗</td></tr>
+<tr data-page-node-id="fpZMDaYbPHPBtJ8fffNTKT"><td data-page-node-id="bFqsxouFHastWs7srdBCom">并发通道</td><td data-page-node-id="MzlFNLDXDBJ5Ye4DuNk24j">4 条</td><td data-page-node-id="o1Ylr5iBx4w3CfpEgENKiR">同一账号同时在生成任务的批次上限，超出自动排队，不抢占他人任务</td></tr>
+<tr data-page-node-id="E41TECRMEEDSVBfR7RCrY1"><td data-page-node-id="yAfnH0xq9V89xLuKeqwlIE">额度不足</td><td data-page-node-id="ugW6hUmTnKs3js5QVmeTST">阻断提交</td><td data-page-node-id="TbA3gxIKpEh9xw8Mas4jb1">剩余额度小于预计消耗时，生成按钮置灰并提示本月剩余额度</td></tr>
+<tr data-page-node-id="BY6FncuV47NHlxjDfzLdaG"><td data-page-node-id="PEFu00IItRPHAYVLfNYh0s">任务取消</td><td data-page-node-id="RlN5WafAulnKeBZHaHPa4S">仅退还未开始批次</td><td data-page-node-id="1ao50sDEguMfz0dvQuj64d">已开始生成的批次不退点，队列中的批次全额退还</td></tr>
+</tbody></table>
+
+<h3 data-page-node-id="YFdU0FbQaboTclVpCbgaTg">3.2 素材状态流转规则</h3>
+<table class="rule-table" data-page-node-id="WDLcoBewuvc0mGflwBoC4W"><colgroup data-page-node-id="PPU5oHwqIhumAwyGoxzMxI"><col style="width:26%" data-page-node-id="pb45uVYYMMlrLeP0bMryWb"><col style="width:24%" data-page-node-id="z1A8aM3FcJsk6V3S6NHBxe"><col data-page-node-id="9qIGEcYpUi4YY8jidBiBwR"></colgroup>
+<thead data-page-node-id="BQmYRHBH0WgnCNEb2hDZy7"><tr data-page-node-id="TNA1tYDX5EpIJ9svgLAtJ0"><th data-page-node-id="CqygNZGJdWafUNqlvNivb6">状态</th><th data-page-node-id="UBEgkGhBBYkXGG0XObuKON">可流转到</th><th data-page-node-id="Dk3BhFiWGsobcLGBS61lrh">说明</th></tr></thead>
+<tbody data-page-node-id="GE0zK5JQboq1ZKUj4GOYFm">
+<tr data-page-node-id="oeqxE9AN6ZVIC4xAYcEbBs"><td data-page-node-id="GAV2gJjpZqKufiYmYXMdhY">候选待选</td><td data-page-node-id="X7Z2w3QZBodtrNGFYtSLUQ">待精修 / 自动清理</td><td data-page-node-id="DEN0NQ2DCEBHiEUa6riiRW">生成后默认状态，未选中候选保留 7 天后自动清理，清理前 1 天站内提醒责任人</td></tr>
+<tr data-page-node-id="bxSaXyzalc4FSTWS0je6k0"><td data-page-node-id="NCncOhyqLS71m6EvTptU0s">待精修</td><td data-page-node-id="zJHwE0U0sFhE7bngLQpmbj">已入库 / 回归候选待选</td><td data-page-node-id="PBooE0Am7DAbT6n3zhB218">检查项未全部确认时不得入库；退回后需备注原因</td></tr>
+<tr data-page-node-id="hJVGG4QmqTwps7J5kPCciV"><td data-page-node-id="YTbGjeXrAgKWlLMuqQdw4O">已入库</td><td data-page-node-id="V5AYmFoDKiCBOphxhCq8pv">已归档</td><td data-page-node-id="Zd9GZK36PPgBfmIfh7J8d7">入库即生成版本号，同一素材再次精修后版本号递增（v1.0 → v1.1）</td></tr>
+<tr data-page-node-id="0PkbNaz18A8rXrUlN8oFDS"><td data-page-node-id="EvMrVLChOk1G6pLvJKdk8a">已归档</td><td data-page-node-id="ez1uSiMNg03tuEpNWtzmiw">—</td><td data-page-node-id="9ieg2bl9MyDIc3NJdlWK7u">仅可查看与恢复，不可直接编辑，归档后仍计入历史使用数据</td></tr>
+</tbody></table>
+
+<h3 data-page-node-id="K8tr75GicENIfhv24yaL3K">3.3 模板启停阈值规则</h3>
+<table class="rule-table" data-page-node-id="PsvTv4V0RqjqV066XdwB3Z"><colgroup data-page-node-id="sFfXOhlIwEUVF2RfSMnNCy"><col style="width:26%" data-page-node-id="gDhdBaUA5oeb6PTVTpknHR"><col style="width:24%" data-page-node-id="E97TXNTSA252YqENnDy0FH"><col data-page-node-id="d5TNzRcD0DWfHSid5CeO5H"></colgroup>
+<thead data-page-node-id="cn1wsPkmxTGQQITHFyRFMh"><tr data-page-node-id="Z02tyZ1gRuI4AFcdfsKI9C"><th data-page-node-id="3xiNkTawVGT4kp3WWEL7gC">判定条件</th><th data-page-node-id="ht5YOjAgHXsaNdiKw4UlpG">处置</th><th data-page-node-id="tSI1GGrhreqC4EmeTe82yP">说明</th></tr></thead>
+<tbody data-page-node-id="p5Gd45e9VjXSrgy25W8sFp">
+<tr data-page-node-id="W4aO9ll9AxPlZYc3k8LfJ4"><td data-page-node-id="uUhGL9gJUCRXHPHHSkDCDs">采用率低于 45%，或使用次数不足 10 次</td><td data-page-node-id="r3lvEdOZP1ZYpVg2oNt7Rv">标记「待复盘」</td><td data-page-node-id="gzjsqYr7FB9m3M36dyleCW">仍在可用列表，但排序降权，不再出现在推荐位</td></tr>
+<tr data-page-node-id="JQklMpf5EBgHVmdyQ2WYNB"><td data-page-node-id="GOvHeRPPA3IsfIMKF8KbAr">处于「待复盘」连续两周无改善</td><td data-page-node-id="CFd5WOYSepZK45FGoAfGYm">下线归档</td><td data-page-node-id="AxRhGMRu56oYmm1EMhli01">旧版本保留可回滚，避免低质模板持续消耗算力</td></tr>
+<tr data-page-node-id="hFH7ubVC3DShu0W7ltx4DT"><td data-page-node-id="9a6beiXNRIRY1UfgUOCtEO">采用率高于 65%</td><td data-page-node-id="44rMLgG1FvVDLVHkejFYoB">提升变体预算</td><td data-page-node-id="Ake8cLdF5OliZi9nULBHOf">在同等需求下自动提高该模板的候选产出张数</td></tr>
+</tbody></table>
+
+<h3 data-page-node-id="grAN1GMR8BlkVHzaZ78u2k">3.4 角色权限矩阵</h3>
+<table class="rule-table" data-page-node-id="yE1FXNtfKJA0YufLcrtNho"><colgroup data-page-node-id="y4Ux153nkzbsAzb45bawd7"><col style="width:26%" data-page-node-id="EG6gE4cQ3RCiFf4WiDJJtf"><col style="width:24%" data-page-node-id="1fNoDyqsxCl7UPrIEFFf3M"><col data-page-node-id="qUcX2ZVE5vZDtiNFrVT9c9"></colgroup>
+<thead data-page-node-id="yALDgYDPN6mtsmxEE7xHVM"><tr data-page-node-id="GbVTc0mDb2wCks7ikAKFxY"><th data-page-node-id="xGXSEN1aRPsiosLQCPHxfW">能力</th><th data-page-node-id="35GHFN8BW7QtzoxfpMLGKG">视觉设计岗</th><th data-page-node-id="SjiM9KTDXFL9CQKVRu7TBV">营销中心负责人</th></tr></thead>
+<tbody data-page-node-id="p44pcGqZCbHppVTGBN2xZd">
+<tr data-page-node-id="N2ILiNOOZ07O0EOEuNHaFc"><td data-page-node-id="7AldXzVQ7Px6vPupfOXokq">新建 / 取消生成任务</td><td data-page-node-id="4BXRRANtKsAc7221sNk3Wn">可</td><td data-page-node-id="sDqsvHERnlhY6SadEXAsM2">不可</td></tr>
+<tr data-page-node-id="8Q7Mhv9Y4qaWnufLpQBtw8"><td data-page-node-id="4v3jMArbu9xxxS9UpJHZk9">精修与入库确认</td><td data-page-node-id="drhz3p2KnnYmjz9ungElua">可</td><td data-page-node-id="6xLWSBeZOvTGQgo3NtGf0p">不可</td></tr>
+<tr data-page-node-id="vNGu1w4koQlFiGrQUamSC7"><td data-page-node-id="nvQE4FVgfUErScA1KCBwqi">素材查看与下载</td><td data-page-node-id="gzE9zPrazjgMzELPat41hO">可</td><td data-page-node-id="N0EsoYIbzgejiYhN7EEMju">可</td></tr>
+<tr data-page-node-id="cDVZUAxRfUhbXIhvrL0ncb"><td data-page-node-id="S3LqvNQjlxHE15a2NzwkPV">模板启用 / 下线</td><td data-page-node-id="sav71ihMJvG4C27lYOYXKN">可</td><td data-page-node-id="iEADrkce6nGLfAEqzZBJ7C">需审批</td></tr>
+<tr data-page-node-id="A23kMtjdRjxgxDIgajboIp"><td data-page-node-id="RH51CcimaiYwajGcNTddWQ">数据看板查看</td><td data-page-node-id="60waL604FVAaIBqBKjlHeg">可</td><td data-page-node-id="QGmczd5ZAk0E627AYOfWv5">可（含全部成员数据）</td></tr>
+<tr data-page-node-id="0fAkEK8v9k4jh9cQDLZb6x"><td data-page-node-id="zMnAvJkNwyhcdnsNS0BVTh">品牌视觉约束修改</td><td data-page-node-id="chKeojhJpeYJZFpkcvmFuC">不可</td><td data-page-node-id="iTmzSkpYWFT3mI6lweYIPE">不可（由品牌归口维护）</td></tr>
+</tbody></table>
+
+<h2 data-page-node-id="yci0sEOQChSGrPpy8rGgzH">四、业务流程图</h2>
+<p data-page-node-id="9TbWMqGRhgVEWvQTugCMxa">覆盖「营销节点触发 → 模板复用」的完整链路，含<strong data-page-node-id="5hAMlfrZMXWFIiwJQRnsHm">合规前置校验</strong>与<strong data-page-node-id="3Bw6gn9qMVoiXXoTG6L9HD">发布前检查</strong>两个拦截点，以及数据驱动的模板迭代闭环：</p>
+<img class="flow-shot" src="../流程图/AI营销素材工厂-flow.png" alt="业务流程图" width="2038" height="4188" data-page-node-id="lJIioFF6ngaGO4uLNZ9KNo">
+<p class="asset-note" data-page-node-id="8VQJpK7JjcNQ6MaCbqEJgm"><a href="../流程图/AI营销素材工厂-flow.html" data-page-node-id="0ptrshXbC8ODTyGUGnOp1j">打开可交互流程图</a></p>
+
+<h2 data-page-node-id="uf7lrBqbHXkSt5UfaP6uJG">五、交互流程图</h2>
+<p data-page-node-id="hDpBV8SuqYbX9ijEqP8vBE">8 个核心界面的跳转链路。实线为用户主动跳转，虚线为数据回流驱动的下一步动作：</p>
+<img class="flow-shot" src="../流程图/AI营销素材工厂-screenflow.png" alt="交互流程图" width="3000" height="1800" data-page-node-id="GzchhCHXNe2IExQGsGS2Qr">
+<p class="asset-note" data-page-node-id="gDmhj6Bh8KdrDlC0fmuL78"><a href="../流程图/AI营销素材工厂-screenflow.html" data-page-node-id="xcA5RyJFFxGjolyEvbc4FD">打开可交互流程图（可缩放拖拽）</a></p>
+
+<h2 data-page-node-id="zGObKKBMAN1tv4lzXz45my">六、详细方案</h2>
+<table class="scheme-table" data-page-node-id="aBHER4TkWtGOMIHXkW4OhQ"><colgroup data-page-node-id="WRYyQwqM5ivtmkghIcWI9Z"><col style="width:100px" data-page-node-id="ORtd7HcSxdjCV7alEXaxVO"><col style="width:130px" data-page-node-id="DmWKQHBv10dLR6doHym92x"><col style="width:360px" data-page-node-id="Vo0QIkpAnkbxr6HyDcxeUr"><col data-page-node-id="fIvqHwrPDnnxOm0HpsW2fQ"></colgroup>
+<thead data-page-node-id="vL1jYSpNEUqDoJs2BEuwpx"><tr data-page-node-id="TpO0fiPTZ5crggsAvg5vqP"><th data-page-node-id="Do76znDDppd7qqHvDpRrMC">一级模块</th><th data-page-node-id="fwqc6CLi8JHO756LVHUoOK">二级功能</th><th data-page-node-id="RK119xQ3grGH6xSjWDyFku">原型</th><th data-page-node-id="mTgtzXmRxB4jC1crK88UCv">描述</th></tr></thead>
+<tbody data-page-node-id="10u08fjQCQzKy8R2sLM1To">
+
+<tr data-preview="p-workbench" data-page-node-id="EJfpv2FobDlnZ7WbS2Hzyz">
+  <td class="mod" rowspan="5" data-page-node-id="iS3ndNZN0Uy8uWd0bQl3E2">1<br data-page-node-id="F5KiMfdLxNXiDJvu9r6QpW">内容生产链路</td>
+  <td class="fn" data-page-node-id="MYu1sIuTTY6kdfYAuMz2fB">1.1 工作台</td>
+  <td class="proto" data-page-node-id="iPg0r2YN7DjcATnKBRB8tG">
+    <img class="proto-shot" src="../原型截图/AI营销素材工厂-工作台.png" alt="工作台" width="2560" height="1778" data-page-node-id="MIZ8OJEuq9rzUDKxdc0Wg7">
+    <p class="asset-note" data-page-node-id="iIUYbqvbuINArtoMFwOOZQ"><a href="../原型/AI营销素材工厂-prototype.html#p-workbench" data-page-node-id="1jbBspEYpTX59YnbcGLhq8">打开可点击原型</a></p>
+  </td>
+  <td class="desc" data-page-node-id="kC9BYITINrz5hBPGz9kjWw">
+    <div class="desc-block" data-page-node-id="5EyIysmYq5LpkOlB8DUwg9"><b data-page-node-id="TgjK7s6pzRN78doecv8Enc">【页面元素】</b>
+      <p data-page-node-id="AG33mpQDzCyVycz4ZmsQUi">1、顶部导航栏：Logo + 产品名「AI 营销素材工厂」+ 五个一级入口（工作台 / 新建任务 / 素材库 / 数据看板 / 模板库）</p>
+      <p data-page-node-id="WXX3bCkAMtFCizxhqT6wHH">2、左侧二级菜单：内容生产（工作台、新建生成任务、任务队列、最近结果）、资产管理（素材库、精修与入库、模板库）、效果追踪（数据看板）</p>
+      <p data-page-node-id="j9VhAsL0WJ5JCsbntPL5UC">3、指标卡区四张：本周待产素材（12/20 张，附所属内容包与距上市天数）、待精修入库（8 张）、本月素材采用率（61.2%，附环比）、算力额度（剩余 160/500 点）</p>
+      <p data-page-node-id="OnD3lDgHNHTk9cnjRxXE1c">4、进行中的内容包表：内容包名称、关联产品线、进度条与完成比、节点标签（距上市 5 天 / 常规节奏 / 已交付）</p>
+      <p data-page-node-id="wSBZmSmU0Jy8dBJdHc70y8">5、最近生成区：两张素材卡（缩略图 + 平台规格 + 标题 + 卖点标签），下方一行注明当前锁定的品牌主色</p>
+      <p data-page-node-id="BJGIitXD2zBBEFz1DeTkgl">6、今日推荐表：模板名、关联卖点、近 30 天使用次数、采用率、套用按钮</p>
+      <p data-page-node-id="do1HNNhAPXfh3AnwkCZe0o">7、右下角主按钮「＋ 新建内容包」，次按钮「查看任务队列」</p>
+    </div>
+    <div class="desc-block" data-page-node-id="wWfVK41uYFH2PwArJW1Z6Z"><b data-page-node-id="HFGAPLWWDuVpxJOS5YT6nP">【交互说明】</b>
+      <p data-page-node-id="1uTVybgrp9ECp80oOtAU2r">1、点击「＋ 新建内容包」 → 进入新建生成任务页</p>
+      <p data-page-node-id="4SKw8LFgwMzBKjncuSlUf2">2、点击内容包表格行 → 进入该内容包的任务队列</p>
+      <p data-page-node-id="ThTdwHL6NHjV2LyqA7BjLG">3、点击模板表的「套用」按钮 → 携带该模板参数直接进入新建生成任务页，并预填步骤 2 的场景模板</p>
+      <p data-page-node-id="azuGvlU2lwMwBKpobldsk7">4、点击「待精修入库」指标卡 → 进入最近结果页</p>
+      <p data-page-node-id="8jkWFltrodhHcJdqriHwdQ">5、点击顶部导航「素材库 / 数据看板 / 模板库」 → 切换至对应模块</p>
+    </div>
+    <div class="desc-block" data-page-node-id="KJ7pgHVC1S7XJuz10Gx7E8"><b data-page-node-id="TkrnPekriudUB0qHUY1ccV">【数据与内容规则】</b>
+      <p data-page-node-id="QRjRS9IFE1jUQjKm8UBItO">1、进度取该内容包下所有任务中「已完成批次数 / 计划批次数」，一条任务跨多个平台时按批次计数</p>
+      <p data-page-node-id="V22U9D03JVAYmV55e8UERA">2、采用率取近 30 天入库素材中被实际投放使用的比例，口径与「模板启停阈值」规则表一致</p>
+      <p data-page-node-id="Gk1666PpkpVwkX4BMhnYEH">3、今日推荐仅展示状态为「启用中」且使用次数不少于 10 次的模板，按采用率降序取前 3</p>
+    </div>
+    <div class="desc-block" data-page-node-id="JrosUe5jNeNVJrExArCTRz"><b data-page-node-id="1BtnilR3hGArHKfL4hdTPB">【边界说明】</b>
+      <p data-page-node-id="9xxOUBS3Vrutkg4IcKftRQ">1、无任何进行中内容包 → 内容包表区域展示空态插画与「新建第一个内容包」引导按钮</p>
+      <p data-page-node-id="9Jg20HwIndi5GxR6HkAoQo">2、算力额度为 0 → 新建按钮置灰，点击提示「本月额度已用完，额度于次月 1 日重置」</p>
+      <p data-page-node-id="3cmidOXTAAdKYlZEZExtOA">3、距节点不足 3 天且完成比低于 60% → 节点标签转为红色并加「即将逾期」前缀</p>
+    </div>
+  </td>
+</tr>
+
+<tr data-preview="p-create" data-page-node-id="tpZSmvlumg7FLxVHLUw2bB">
+  <td class="fn" data-page-node-id="ew2c6qWFlg6gYqCatwuCeM">1.2 新建生成任务</td>
+  <td class="proto" data-page-node-id="mCczD9ctMgbtcNUa5UZVu2">
+    <img class="proto-shot" src="../原型截图/AI营销素材工厂-新建任务.png" alt="新建生成任务" width="2560" height="1640" data-page-node-id="ixbwbwox7aNI9A3PAILpng">
+    <p class="asset-note" data-page-node-id="4tCkfAwDxIv8bLRtCnXpL5"><a href="../原型/AI营销素材工厂-prototype.html#p-create" data-page-node-id="5HOkeZ3Xbgs5cSWZ34tAit">打开可点击原型</a></p>
+  </td>
+  <td class="desc" data-page-node-id="eEExwKGqao1i3SBhmh9aYL">
+    <div class="desc-block" data-page-node-id="LBqa6K2PxA2X8b79Mt9e0T"><b data-page-node-id="TbahOnslhJc0Eg2xlAwZAf">【页面元素】</b>
+      <p data-page-node-id="BwsKrOJrM92ggydGBQSCKc">1、四步表单，自上而下：选择产品线（下拉单选）、选择卖点标签（多选标签组，最多 2 个）、选择平台与规格（四宫格卡片多选）、场景风格与数量（两个下拉）</p>
+      <p data-page-node-id="QolcyJHhSVEnpQSnkGhRDQ">2、右侧「生成配置预览」卡：内容包归属、场景模板、平台数、预计产出张数、预计耗时、本次消耗算力点数</p>
+      <p data-page-node-id="oQV2rHrcWCPK5uhKbnGhmL">3、右侧「合规前置校验」卡：品牌主色已锁定 / 卖点文案已过审 / 无绝对化用语 / 待补产品实拍参考图，各以标签呈现</p>
+      <p data-page-node-id="WszlOG2UAaWzWtPc7M1rA5">4、底部操作区：保存为草稿、开始生成</p>
+    </div>
+    <div class="desc-block" data-page-node-id="qUnXZ1MjOUXhp6WASXPNw6"><b data-page-node-id="O5IzFjoPiu4npVfcIZOwwt">【交互说明】</b>
+      <p data-page-node-id="0wj2M7N0nvQbf0u6e40ZTu">1、点击卖点标签 → 选中或取消选中，选中超过 2 个时第 3 个不可点并提示「最多同时串联 2 个卖点，避免构图元素过载」</p>
+      <p data-page-node-id="W2CG7e7VAaBlWCFG6IXUlY">2、完成卖点选择 → 右侧预览卡自动匹配并展示推荐场景模板名与版本号</p>
+      <p data-page-node-id="wWa489oei35qhF7ewJ5SkJ">3、勾选平台规格卡片 → 预览卡同步更新平台数、预计产出张数与消耗点数</p>
+      <p data-page-node-id="Y4itzOPIJn2QwdClXWV923">4、点击「开始生成」 → 进入任务队列页并开始执行</p>
+      <p data-page-node-id="HkbPYdpiSyAQtTxCNDZNza">5、点击「保存为草稿」 → 表单当前值存入草稿，返回工作台，草稿在工作台以「草稿」标签呈现</p>
+    </div>
+    <div class="desc-block" data-page-node-id="rKwX2T3i2UfTeHzlqWeTks"><b data-page-node-id="21PElT2hhkdUYTSDuHWgOa">【功能逻辑】</b>
+      <p data-page-node-id="411JNHNQQTfzvNQhdudmuc">1、卖点标签数量与 style（场景风格）共同决定可选模板范围：所选组合无匹配模板时，标签组下方提示「当前组合暂无模板，建议先到模板库新建」</p>
+      <p data-page-node-id="cEJxUsPKGoeNY9VYJFGxAa">2、预计产出 = 已选平台数 × 每个平台候选张数，任一项为 0 时「开始生成」不可点击</p>
+    </div>
+    <div class="desc-block" data-page-node-id="WXelsaSAlM4Abh5OLwuA7Z"><b data-page-node-id="Ys1C3UxrrAsjwq8fSN7PfE">【前置条件与权限】</b>
+      <p data-page-node-id="UDnWoWGjbzgN1joEAH37bu">1、剩余算力额度须不小于预计消耗，否则「开始生成」置灰（见「算力额度与并发」规则）</p>
+      <p data-page-node-id="nmtgTjQmk6DUwqnLMFOICX">2、合规前置校验存在「不通过」项（如检测到未过审文案）时阻断提交；仅「待补」提示项不阻断，但需在结果页提示人工关注</p>
+    </div>
+    <div class="desc-block" data-page-node-id="bAmq2x7YGgGHrjcDd73gDU"><b data-page-node-id="eUm74PPgWfYZj63tLBBTuk">【边界说明】</b>
+      <p data-page-node-id="i4LfLbJSii0x1ktF28tlii">1、未上传产品实拍参考图 → 允许生成，但在结果页顶部提示「本次未使用实拍参考，冰箱外观请重点人工核对」</p>
+      <p data-page-node-id="yHx5YdGALYKlYXasGMHRQq">2、同一账号 30 秒内重复点击「开始生成」 → 仅受理一次，避免重复消耗额度</p>
+      <p data-page-node-id="RXpTI1oRzEztjXsN4r6gPF">3、草稿保留 30 天，超时自动清理并在清理前提醒一次</p>
+    </div>
+  </td>
+</tr>
+
+<tr data-preview="p-progress" data-page-node-id="0RdG5DRng3ptGoFMQitnkz">
+  <td class="fn" data-page-node-id="RIlcRl2UcCDIjqVxv8H3Xn">1.3 生成中与任务队列</td>
+  <td class="proto" data-page-node-id="G08OHMzhQK32SIqFpfqrJt">
+    <img class="proto-shot" src="../原型截图/AI营销素材工厂-生成中.png" alt="生成中与任务队列" width="2560" height="1640" data-page-node-id="1rKTidrlJnVCwiO2qBwKhc">
+    <p class="asset-note" data-page-node-id="Ll54CyHUS2rJQSagzHwhjJ"><a href="../原型/AI营销素材工厂-prototype.html#p-progress" data-page-node-id="OuV053yUEZLJ6trIyRmEVN">打开可点击原型</a></p>
+  </td>
+  <td class="desc" data-page-node-id="bZ37PpC0GmL9sD6NfOJyPA">
+    <div class="desc-block" data-page-node-id="mHwJdNgHgo5bPKkjWNdXB4"><b data-page-node-id="9zoXJDXzWZKGMdGrTsEcOS">【页面元素】</b>
+      <p data-page-node-id="EOVfYJEbiFU8k74sMADOhB">1、标题区：当前任务名（含内容包与产品线）+「暂停队列」「查看已产出」按钮</p>
+      <p data-page-node-id="OZbPH8cmF5g8X6goOgvF0L">2、批次卡片列表：每张卡含平台规格名、状态标签（生成中 / 排队中 / 未开始）、进度条、产出进度文案</p>
+      <p data-page-node-id="GO4oyE3wt6FPaHG7FzuWka">3、执行日志区：等宽字体的滚动日志，含时间戳与动作描述</p>
+      <p data-page-node-id="lvrLYWHHB0m8RC5eTxuT4R">4、右侧「实时进度」卡：已产出 / 计划产出大数字、总进度条、预计剩余时间</p>
+      <p data-page-node-id="kSxYLA7Ix9S12NtKPbdchy">5、右侧「算力与队列」表：当前并发占用、本次消耗、队列等待批次数</p>
+    </div>
+    <div class="desc-block" data-page-node-id="8eoiXCO0A0kM12Doazw0g6"><b data-page-node-id="fyRzMJe05MYKr4HAUyTXYU">【交互说明】</b>
+      <p data-page-node-id="aHzAWBaTd4dUyWzAcmnIX4">1、任务执行中每 5 秒自动刷新进度与日志，不做整页刷新</p>
+      <p data-page-node-id="HRAeViG9HpxKji7M1H8Xoh">2、点击「暂停队列」 → 暂停尚未开始的批次，已进入生成的批次继续跑完，按钮变为「继续队列」</p>
+      <p data-page-node-id="JfiI4Gt2WIDfwvwyDEJZ1g">3、点击「查看已产出」 → 进入生成结果页，仅展示已完成批次的候选</p>
+      <p data-page-node-id="m9kJfL8dHuHAn4XWFxFWyE">4、任一子批次卡片点击 → 展开该批次下每张候选的实时状态</p>
+    </div>
+    <div class="desc-block" data-page-node-id="ahqs1Bgd5FPs4u6QRnYFvt"><b data-page-node-id="JjbQWVz62AEQCkTRvZaBYn">【功能逻辑】</b>
+      <p data-page-node-id="50p5cu0FAkZPg5ECmx718H">1、批次执行顺序按用户勾选平台的先后顺序，同一任务的平台规格之间不并发，避免同任务抢占资源</p>
+      <p data-page-node-id="tPcllinAGpx6WGBPSxQzbd">2、单批次超过 10 分钟未完成 → 标记该批次为异常并释放通道，日志留痕，未消耗的批次额度自动退回</p>
+    </div>
+    <div class="desc-block" data-page-node-id="o2VvavgpcW5XBwSiBqzb5n"><b data-page-node-id="uKYbmLUTJjUD10rsyhtJPv">【边界说明】</b>
+      <p data-page-node-id="ExkHX16yss1pdZG1HloICU">1、生成过程中关闭页面 → 任务在服务端继续执行，回到任务队列页可看到进度恢复</p>
+      <p data-page-node-id="3Jc5aPHyQb13Yu9SWS1SMn">2、某批次生成失败 → 卡片显示「失败」并提供「重试该批次」按钮，重试不额外扣点</p>
+      <p data-page-node-id="nFrqC6UzAaOJuOCjvM9rrI">3、并发通道满 → 新批次自动排队并在卡片显示队列位次</p>
+    </div>
+  </td>
+</tr>
+
+<tr data-preview="p-result" data-page-node-id="q27Scot735aHPnZaFvkJTs">
+  <td class="fn" data-page-node-id="Cz5t7FduR8QyxBghiCDeFd">1.4 生成结果 Gallery</td>
+  <td class="proto" data-page-node-id="scvpsCbtRJRSVmA6uj1bBF">
+    <img class="proto-shot" src="../原型截图/AI营销素材工厂-生成结果.png" alt="生成结果" width="2560" height="2148" data-page-node-id="oq6ZXrVYdp634Pf2Xkn81D">
+    <p class="asset-note" data-page-node-id="CxsFjUHByl797FCRRDFBYq"><a href="../原型/AI营销素材工厂-prototype.html#p-result" data-page-node-id="JHuMExxBtbDUMtDD5LRHEx">打开可点击原型</a></p>
+  </td>
+  <td class="desc" data-page-node-id="6RDcBN4PrHGk3sNRLe0tHS">
+    <div class="desc-block" data-page-node-id="SnCyUCL5wgb3HtMnZY6j3R"><b data-page-node-id="9A2HJcymIvFhD199EMesE9">【页面元素】</b>
+      <p data-page-node-id="x19L9r0rYBCXo5iYDCUDMa">1、按平台规格分组的候选网格（小红书首图 / 抖音封面 / 电商主图三组），每组 4 张候选卡</p>
+      <p data-page-node-id="76DJCswLEm1sJZrQBOP5R7">2、候选卡：缩略图、候选编号（A1/A2…）、合规状态标签（合规通过 / 待人工确认 / 含人脸待处理）</p>
+      <p data-page-node-id="od8AiCQ8PlwKbnTpZYjcXM">3、右侧「已选」卡：已选中候选编号列表、未选中候选的清理规则说明</p>
+      <p data-page-node-id="7Kktn5ADxP6POueGwVWFul">4、右侧「本次生成参数」表：模板版本、卖点、风格、算力消耗</p>
+      <p data-page-node-id="beEEi7WLQR3westO0DweFh">5、右侧「合规自检结果」卡：通过 / 待人工确认 / 需处理 三类计数</p>
+      <p data-page-node-id="xfOyRztb90jPlPKP1Jilff">6、顶部操作：批量下载、重新生成选中、「精修并入库」主按钮</p>
+    </div>
+    <div class="desc-block" data-page-node-id="8Nmjj6mxnMg7xcCmiXSFgW"><b data-page-node-id="ZRf25VzAo5Kf1KFGcBzhT8">【交互说明】</b>
+      <p data-page-node-id="VhBH4OeYwhF7DPr2RjrBHK">1、点击候选卡 → 选中或取消选中，卡片边框高亮并同步计入右侧「已选」列表</p>
+      <p data-page-node-id="RMAz2DDKVaaGjutyfFDN2A">2、点击「重新生成选中」 → 对已选候选重新产出新的一组候选项，消耗额度按算力额度规则计算并二次确认</p>
+      <p data-page-node-id="jtlu9w1jm1AVz1GJQwDhOr">3、点击「精修并入库」 → 携带已选候选进入精修与入库页（至少选中 1 张才可点击，未选中时置灰）</p>
+      <p data-page-node-id="JN2XA0LNi1d7BKXwC6OaI4">4、点击「批量下载」 → 下载已选候选的原始分辨率文件，不含品牌水印</p>
+    </div>
+    <div class="desc-block" data-page-node-id="nvOghe1VgGb3XRSbalxK5T"><b data-page-node-id="yhmfoO9D5wrOD3FGsBeDz4">【功能逻辑】</b>
+      <p data-page-node-id="wCL0Anlp0T3DmClkdOblmM">1、含人脸的候选卡不被禁止选中，但选中后在「已选」区提示「含人脸素材需完成肖像授权方可外投」，该项检查留到精修页确认</p>
+      <p data-page-node-id="mBwgxVcYEydogov5Yl8cZ9">2、待人工确认的候选需设计师在精修页逐张确认后才能入库，不在本页放行</p>
+    </div>
+    <div class="desc-block" data-page-node-id="w3npvmxv97UToGHprXoXpA"><b data-page-node-id="8vx0ne6OkaJHnoeTJ85lKa">【文案规范】</b>
+      <p data-page-node-id="FZoBEvfcDMWQ9x4R4PwIGq">1、合规状态标签文案固定为：合规通过 / 待人工确认 / 含人脸待处理，不随场景改写</p>
+      <p data-page-node-id="ktcooFDjXn0Ngaa7QgzIDI">2、空选态提示：「请至少选择 1 张候选后再进入精修」</p>
+    </div>
+    <div class="desc-block" data-page-node-id="InDuCDxlRlApPTmQ955O51"><b data-page-node-id="Gxf6Ldc2RzsX8vZElvOnEo">【数据与内容规则】</b>
+      <p data-page-node-id="hVb6FHMynDBFJG6t6WNJc9">1、候选编号规则：平台字母代号 + 序号（小红书=A、抖音=B、电商主图=C、视频号=D）</p>
+      <p data-page-node-id="CWoq5xfUr5Sz5kK2AiRS04">2、同一任务的候选默认保留 7 天，倒计时在卡组标题右侧显示</p>
+    </div>
+    <div class="desc-block" data-page-node-id="L0KNnyewq7z3Q2EwLk4Trk"><b data-page-node-id="SBfPn35hDXZGxfk3bmtGQd">【边界说明】</b>
+      <p data-page-node-id="4mfEaBazRnaeHqo22G2SfP">1、某平台批次失败 → 该分组显示为空分组并提供「重试该规格」入口，其余分组正常操作</p>
+      <p data-page-node-id="A2muvXxvB2xg15uzaiXEFs">2、未上传实拍参考图的任务 → 本页顶部展示橙色提示条「本次未使用实拍参考，冰箱外观请重点人工核对」</p>
+      <p data-page-node-id="gJus5GbE6OYi0X3z70RqBi">3、全部候选均未选中直接点击「精修并入库」 → 按钮置灰并 Toast 提示空选态文案</p>
+    </div>
+  </td>
+</tr>
+
+<tr data-preview="p-refine" data-page-node-id="DtmqkcFvlVn7iBAuSCFxf9">
+  <td class="fn" data-page-node-id="k8ySGPiPWXejXjMj4QfHZJ">1.5 精修与入库</td>
+  <td class="proto" data-page-node-id="vsOiImWiN2CQTtFG8mn2Bo">
+    <img class="proto-shot" src="../原型截图/AI营销素材工厂-精修入库.png" alt="精修与入库" width="2560" height="1972" data-page-node-id="Wz5fkOw1XMi7wPpWTD8iDD">
+    <p class="asset-note" data-page-node-id="BBdWUDFhnGFq7Dhw3mDHMe"><a href="../原型/AI营销素材工厂-prototype.html#p-refine" data-page-node-id="USM3V7EHsJR1PnyHfjYgxZ">打开可点击原型</a></p>
+  </td>
+  <td class="desc" data-page-node-id="DAcuu1gJJPaHcdc5BJAvlS">
+    <div class="desc-block" data-page-node-id="zw0CqtqfhyFM0GTjcJEdXF"><b data-page-node-id="0psyZoz6HEVUOzZFgmHzAG">【页面元素】</b>
+      <p data-page-node-id="cRDJ1LVopsYGY9762UQPmL">1、左侧预览区：大图预览、工具栏（裁剪换尺寸 / 替换文案层 / 调色 / 去瑕疵）、当前缩放比例</p>
+      <p data-page-node-id="gcZHOBzw2C4B4AELmo6l5H">2、右侧「入库信息」：素材标题输入框（带默认值）、适用平台下拉、关联卖点标签组</p>
+      <p data-page-node-id="0LFn6G6wBPkNBdBt96krNA">3、右侧「发布前检查项」五条：冰箱外观与实拍一致 / 无绝对化用语 / Logo 位置与尺寸规范 / 已确认肖像或物权授权 / 参数文案与产品手册一致</p>
+      <p data-page-node-id="la4ttvS86kOnLfsCv3Gx9x">4、右侧「版本与来源」表：版本号、来源模板、生成任务号、责任人</p>
+      <p data-page-node-id="13TtQophj65OnUiAdV33sr">5、底部操作：存为草稿、「确认入库」主按钮</p>
+    </div>
+    <div class="desc-block" data-page-node-id="ruWfZxTDuFgJSysqNpjgkE"><b data-page-node-id="zYu5sFzx8x3ASJzKpNzGWG">【交互说明】</b>
+      <p data-page-node-id="yXrF4npQEzZaaS7F70svmp">1、点击工具栏任一项 → 在预览区打开对应编辑抽屉，操作仅在本地预览生效，原始候选文件保留</p>
+      <p data-page-node-id="DhcwnChbQxNbgQJDJhAcu9">2、勾选检查项 → 实时更新完成计数，五项全选后「确认入库」方可点击</p>
+      <p data-page-node-id="EiMCscE5jXd2ooCfRG1yoh">3、点击「确认入库」 → 素材写入素材库并生成版本号，页面跳转到素材库并高亮该条新素材</p>
+      <p data-page-node-id="zDYfEEjePsjCgZbfPfyoLH">4、点击「存为草稿」 → 保留当前编辑状态，素材状态回到「待精修」</p>
+    </div>
+    <div class="desc-block" data-page-node-id="RxnHkBuz2XoYnYSmA0x03s"><b data-page-node-id="uPdtC6N9P5mhU51rT1wjZD">【功能逻辑】</b>
+      <p data-page-node-id="VMGwAsQcHzKauSByPPTjUl">1、检查项未全部勾选时，「确认入库」保持置灰；存在未勾选项但用户坚持入库的场景本期不开放，全部五项均为必选</p>
+      <p data-page-node-id="5WXSRlR4HxZ8JZmImEwxIa">2、标题默认由「产品线 + 卖点 + 平台 + 版本」自动拼接生成，可覆盖；入库时若检测到重名，自动在末尾追加序号</p>
+    </div>
+    <div class="desc-block" data-page-node-id="ZAlaaTlhQdnVb7b5tPhaz6"><b data-page-node-id="4bsum45noDVOYS6ZoW7657">【前置条件与权限】</b>
+      <p data-page-node-id="ng69mfJjTEIoIp9D5iS0Zn">1、仅视觉设计岗可提交入库（见「角色权限矩阵」规则），营销负责人视角下本页为只读</p>
+      <p data-page-node-id="OOjoHX2VfDMa87FmmdMZ0f">2、来源模板已下线时仍允许入库，但需在版本来源卡标注「来源模板已下线」</p>
+    </div>
+    <div class="desc-block" data-page-node-id="AjBIEQAaHBqa3inp2zXhlY"><b data-page-node-id="bPBlfCz9L0gcpNu5RfXocN">【边界说明】</b>
+      <p data-page-node-id="cbAbZI1kRhEvvAUQVEFmJJ">1、同一候选被第二个账号同时打开精修 → 后进入者看到提示「该素材正在被 X 编辑」，且只能查看不可提交</p>
+      <p data-page-node-id="dU7cmMCcQsuvbZQOqeA2QO">2、肖像授权检查项未勾选且素材含人脸 → 提交时额外弹二次确认，说明「未授权素材不得用于外投渠道」</p>
+      <p data-page-node-id="rGus77kqByIBIr7vh3IOIs">3、适用平台改动后，原平台尺寸的裁剪结果失效 → 提示需重新设置裁剪</p>
+    </div>
+  </td>
+</tr>
+
+<tr data-preview="p-library" data-page-node-id="gBNCHFFdmJAjJBaD3MJGXl">
+  <td class="mod" rowspan="2" data-page-node-id="5rDuogWxE6oPbvCnDrNk0M">2<br data-page-node-id="Yz6CBv0zzcngp9xSF6WRSs">资产管理</td>
+  <td class="fn" data-page-node-id="TnmHu7QNI0XIy6V8cPVyCc">2.1 素材库</td>
+  <td class="proto" data-page-node-id="IQASIjKz1MU1v1J5Wwrgpk">
+    <img class="proto-shot" src="../原型截图/AI营销素材工厂-素材库.png" alt="素材库" width="2560" height="1640" data-page-node-id="JPqJ2fdJc43fdWZA6IEM8K">
+    <p class="asset-note" data-page-node-id="nD2R7pyzrMs6vmcDl3E57Y"><a href="../原型/AI营销素材工厂-prototype.html#p-library" data-page-node-id="eiLZw3ybxvSmCCBUc2caTO">打开可点击原型</a></p>
+  </td>
+  <td class="desc" data-page-node-id="BjUZsZTyJXlvvVbIAUQyvu">
+    <div class="desc-block" data-page-node-id="vnUfjC5SHe7NqMg6GN2vcZ"><b data-page-node-id="uqaM6yJCf4fpqhep4AbEZs">【页面元素】</b>
+      <p data-page-node-id="ZEsKgHUR37DdFzkXZfwYHf">1、筛选栏：产品线、平台、卖点、状态四个下拉 + 标题搜索框 + 已命中条数</p>
+      <p data-page-node-id="mwBt9ThntkJLGYsKIaUsqs">2、排序下拉：按更新时间 / 使用次数 / 采用率</p>
+      <p data-page-node-id="J8AZwV0w2tFxUG1a7U1Y6E">3、素材卡片网格：缩略图、标题、卖点标签、版本号、使用次数、更新时间</p>
+      <p data-page-node-id="Y2rFTdrX9NtdD13dyg4sqL">4、右上角「＋ 新建」按钮</p>
+    </div>
+    <div class="desc-block" data-page-node-id="ICOchhR4jhAJlkoMNStWMu"><b data-page-node-id="EOdGdmusoNDFBxgl1fY2ch">【交互说明】</b>
+      <p data-page-node-id="7ZwbFoWj5euZgl6o1kKPFO">1、切换任一筛选项 → 卡片网格实时刷新，无需点击查询按钮</p>
+      <p data-page-node-id="YvgkaSiMjeET3Rk5E4z1rO">2、点击素材卡片 → 打开素材详情抽屉，含大图、完整参数、使用记录与下载按钮</p>
+      <p data-page-node-id="LktuRZod6gWFXJ9vKF1JcK">3、悬停卡片 → 浮层显示「下载 / 编辑 / 复制生成参数」三个快捷操作</p>
+      <p data-page-node-id="9KJ0WCYCfjF3e6srHNCL6y">4、点击「复制生成参数」 → 复制该素材的模板与参数组合，可在新建任务页直接粘贴复用</p>
+    </div>
+    <div class="desc-block" data-page-node-id="gPh92TLe9delDgEfMzkyC7"><b data-page-node-id="CCkozKJOd4SnRNGJGa433M">【数据与内容规则】</b>
+      <p data-page-node-id="SWAGojnV2BdHvQbOYhLPYI">1、列表仅展示状态为「已入库」与「已归档」的素材，「待精修」状态素材不进库内列表</p>
+      <p data-page-node-id="J7B21CxvYouiQ0kts9x7J3">2、使用次数按下载与投放登记累计，同一素材在同一内容包中多次使用计多次</p>
+      <p data-page-node-id="YOv4fBgyCXfuFrbHfNfdLa">3、默认排序按更新时间倒序，每页展示 24 条，滚动到底自动加载下一页</p>
+    </div>
+    <div class="desc-block" data-page-node-id="K7t0PihbOHetiM9gVsOQGL"><b data-page-node-id="Aos78bhu5umaK0cc6OHp0y">【边界说明】</b>
+      <p data-page-node-id="OF7SAGXlJkC2Nnu4QcFzCk">1、筛选结果为空 → 展示空态插画 + 「放宽筛选条件」按钮（点击重置全部筛选项）</p>
+      <p data-page-node-id="VMAyOf6v8pwWc5greY5YX7">2、素材的原图文件已被清理 → 卡片缩略图显示占位图并标注「原文件已过期，仅保留元数据」</p>
+      <p data-page-node-id="H9lm5l4X5ceEKC16fCooa5">3、搜索输入包含禁用词 → 不影响结果，但该次搜索不计入使用热度统计</p>
+    </div>
+  </td>
+</tr>
+
+<tr data-preview="p-template" data-page-node-id="8eEYeALLesW3ZR3EU9P3aF">
+  <td class="fn" data-page-node-id="HZYZsGdY4D70E3VB3Dz27r">2.2 模板库</td>
+  <td class="proto" data-page-node-id="dJOhAmEH532SkmY966mFb0">
+    <img class="proto-shot" src="../原型截图/AI营销素材工厂-模板库.png" alt="模板库" width="2560" height="1664" data-page-node-id="VYP03JfGtkwbSaAseGO5pi">
+    <p class="asset-note" data-page-node-id="LRW77xbjvCvzWsMXKlA507"><a href="../原型/AI营销素材工厂-prototype.html#p-template" data-page-node-id="rGrQPBVd3QZRgoM6xAjBns">打开可点击原型</a></p>
+  </td>
+  <td class="desc" data-page-node-id="C3DUJoHiCBWY3WSlB7KDLG">
+    <div class="desc-block" data-page-node-id="UAYDFKsavvz3v5kmaUuExF"><b data-page-node-id="gEeoudwWYJJUvrFU7qMRMJ">【页面元素】</b>
+      <p data-page-node-id="oSfUHsvSRTn4u1QEYSds8I">1、按卖点分组的模板表：模板名、适用平台标签、当前版本、使用次数、采用率、状态标签（启用中 / 灰度测试中 / 已下线）</p>
+      <p data-page-node-id="j14gVJy8cf9nJZuwyhf0XR">2、模板示例卡三张：示例图、模板名、构图描述（画面占比、色温、道具）、品牌约束说明</p>
+      <p data-page-node-id="CjB0Lwml7fK9TbhJuHLyZ4">3、底部「模板迭代机制」说明卡</p>
+      <p data-page-node-id="oyQ1w4WBaROAWAbv2C5QfP">4、右上角：导入实拍参考图、「＋ 新建模板」</p>
+    </div>
+    <div class="desc-block" data-page-node-id="fZghuGmLVARm1bKX4fNjIP"><b data-page-node-id="nEK09lOwoVtKZ0ykF43TCb">【交互说明】</b>
+      <p data-page-node-id="zoCOCYCBSk1FZH9oLKQ4r7">1、点击「＋ 新建模板」 → 打开模板编辑抽屉，填写模板名、卖点归属、构图描述、品牌约束后提交为「灰度测试中」版本</p>
+      <p data-page-node-id="G1rzjNYmxcb2dDWAfnpDJ8">2、点击模板行的操作列 → 展开「启用 / 下线 / 回滚版本 / 查看历史版本」四个动作</p>
+      <p data-page-node-id="rPQWD7807u2zTb1MOOX5Zu">3、点击「回滚版本」 → 弹出历史版本列表，选择后模板回到该版本，当前版本保留可在回滚</p>
+      <p data-page-node-id="Vv813CO2UnuoimDIfJlwJa">4、点击「导入实拍参考图」 → 上传产品实拍图并绑定到指定产品线，供生成时调用</p>
+    </div>
+    <div class="desc-block" data-page-node-id="7IEuPZZDAqmr0FKUCHhVEn"><b data-page-node-id="gAg93SZn4MfTEWHguks7Sw">【功能逻辑】</b>
+      <p data-page-node-id="S1AXQZbO62imiSPpVAFeui">1、模板启停阈值与「待复盘」判定统一由「模板启停阈值」规则表定义，本页不再重复写阈值数字</p>
+      <p data-page-node-id="zNdDNMudgoQ8Rjzn7ayWQY">2、模板下线后，已在「候选待选」或「待精修」状态的关联素材不受影响，可继续完成入库流程</p>
+    </div>
+    <div class="desc-block" data-page-node-id="RhMPV2cH9CHsqRHjvlWbST"><b data-page-node-id="094pfPQWvAlLzihBq1VUaJ">【前置条件与权限】</b>
+      <p data-page-node-id="M9Hk7sqLx3W5AZCR9oyGyK">1、模板启用与下线需营销中心负责人审批（见「角色权限矩阵」规则），视觉设计岗可提交申请但不可直接生效</p>
+      <p data-page-node-id="bDHQWPJqxcJ9dEXD1HndFy">2、灰度测试中的模板仅创建者与审批人可见可套用</p>
+    </div>
+    <div class="desc-block" data-page-node-id="PHGsOe29ZVBbE3VHgB4mD2"><b data-page-node-id="qFIFJu1KksOC0qctwG7dqR">【边界说明】</b>
+      <p data-page-node-id="Fog7c46NfBvjSSKuViZ0Kk">1、下线一个模板时若仍有进行中的生成任务在用它 → 允许下线，任务继续执行，但新任务不可再选该模板</p>
+      <p data-page-node-id="KsFhYY95hmD3aaAA6voDM9">2、某卖点下暂无模板 → 该分组显示「暂无模板」并提供「基于该卖点新建模板」入口</p>
+    </div>
+  </td>
+</tr>
+
+<tr data-preview="p-data" data-page-node-id="XjA72juO69QbXqQmRuMP1V">
+  <td class="mod" data-page-node-id="omCrsHzqIWtIhcevprjktV">3<br data-page-node-id="RovQHlfra2Z0F12o9YsXmq">效果追踪</td>
+  <td class="fn" data-page-node-id="8faJ7X1couGhF2qdNUrIu8">3.1 数据看板</td>
+  <td class="proto" data-page-node-id="iS3GULFG35rOStockshvTC">
+    <img class="proto-shot" src="../原型截图/AI营销素材工厂-数据看板.png" alt="数据看板" width="2560" height="2118" data-page-node-id="ygiDL8QdlfhE1Dy7KWFRIf">
+    <p class="asset-note" data-page-node-id="aUHXB2O7bgVYaJrDlHTqSq"><a href="../原型/AI营销素材工厂-prototype.html#p-data" data-page-node-id="Ta6nsiFnBVTGAfNuNDIkdl">打开可点击原型</a></p>
+  </td>
+  <td class="desc" data-page-node-id="ZPMWFtKSwVmLloF98clKjU">
+    <div class="desc-block" data-page-node-id="on5POTJwnWzSoCXDeRKqES"><b data-page-node-id="EUbz9a5f4gGiTBUhVWewoG">【页面元素】</b>
+      <p data-page-node-id="YypGcD4exkEuAUy8sUdW9p">1、口径说明卡：明确平台侧表现数据需对接后回填，当前为手动录入 + 内部统计</p>
+      <p data-page-node-id="1xNMy5Lpsgewith4gEPswy">2、四张指标卡：素材产出量（486 张，其中 AI 生成 372 张）、单张平均耗时（18 分钟）、素材采用率（61.2%）、平台平均点击率（待连接口）</p>
+      <p data-page-node-id="NwTbxeFpyMkOmacfc8HhpL">3、图表区：各平台素材采用率柱状图、近 8 周素材产出趋势折线图（AI 生成量 vs 纯手工量）</p>
+      <p data-page-node-id="bW7Qk96stTV2eylX43zUvM">4、Top 5 卖点模板表现表：模板、关联卖点、产出素材数、采用率、平均迭代次数、行动建议</p>
+      <p data-page-node-id="BHra5oqkAb6u1khF0CswSA">5、周期筛选下拉（近 7 天 / 近 30 天 / 本季度）与「导出报表」按钮</p>
+    </div>
+    <div class="desc-block" data-page-node-id="zN7GPPLfyRK80okLDIDZij"><b data-page-node-id="RZSeGsTIIXYeNvBXD3ajpF">【交互说明】</b>
+      <p data-page-node-id="zwNrvAzTW5MfmEJjTpTIxR">1、切换周期筛选 → 全部指标卡、图表与表格同步刷新</p>
+      <p data-page-node-id="PnInUnATU5pfDJHB5k3qC6">2、点击柱状图的某根柱子 → 下钻到该平台的素材列表（跳转素材库并将平台筛选项预置为对应值）</p>
+      <p data-page-node-id="4ehcMVMv9BeRZGh8ziZPKX">3、点击 Top 5 表格行 → 跳转模板库并高亮该模板</p>
+      <p data-page-node-id="AgnqfQgJS0ldDp3Hi2JZuf">4、点击「导出报表」 → 导出当前周期的指标明细表格文件</p>
+    </div>
+    <div class="desc-block" data-page-node-id="PE7u4suq1gX3E5VNdcIRGf"><b data-page-node-id="TxmVtVOtIbZpDTedvt6Qf8">【数据与内容规则】</b>
+      <p data-page-node-id="aUXvyvnvfPE8VNfgilDCH6">1、单张平均耗时 =（素材入库时间 − 任务创建时间）的中位数，统计样本为该周期内已入库素材</p>
+      <p data-page-node-id="I5tEoagCl3uOjVymhvRLgm">2、采用率 = 被投放使用的素材数 / 入库素材数，与「模板启停阈值」规则表、第二章目标表口径一致</p>
+      <p data-page-node-id="p5vjymVOBaMFPiGHAmM3wx">3、平台平均点击率本期展示「待连接口」占位，开放平台对接完成后自动启用真实数值</p>
+    </div>
+    <div class="desc-block" data-page-node-id="4GyP8E7DCEWEo6bSmwmksk"><b data-page-node-id="vtyHGDAeSPQwpw5E0e83Zf">【边界说明】</b>
+      <p data-page-node-id="e8FzEPbDpjLILKd9Dx3zJo">1、某平台在周期内无入库素材 → 该柱显示 0 并在下方标注「本期无数据」，不绘制占位柱</p>
+      <p data-page-node-id="0A8OYAG5eACFW2wRmvih3a">2、样本量少于 10 条的模板不进入 Top 5 排名，避免小样本误导判断</p>
+      <p data-page-node-id="q6uFRdutOwlw8aF6E8EZDK">3、手动录入数据与后续接口数据并存时，展示优先级为接口数据，并在口径说明卡注明数据来源</p>
+    </div>
+  </td>
+</tr>
+
+</tbody></table>
+
+<h2 data-page-node-id="BjslannV0MsOVlU9Lh7HdR">七、数据埋点</h2>
+<table class="tracking-table" data-page-node-id="QMUbz83bI7gTAByZA8Tfz9"><colgroup data-page-node-id="3SzH0VRjtjf1hoiEeRem01"><col style="width:65px" data-page-node-id="hyjkdrWIsuO9XCh7SjkY2m"><col style="width:145px" data-page-node-id="xFwhCpPCPTEhGbNlJa8ylY"><col style="width:150px" data-page-node-id="z4Brv4fa8JVJDY2mZVgiM6"><col style="width:90px" data-page-node-id="OaL52mlS96lXZpyaBMhVjN"><col data-page-node-id="W0jYU3WJWzWTkj7M72NUmB"><col data-page-node-id="30f33DozTTNXRNB9Ywa1zf"></colgroup>
+<thead data-page-node-id="wkaQ37BCKcNaM13U8Q5HVR"><tr data-page-node-id="NB9mIZrpRf57bz8neP9SVk"><th data-page-node-id="lxiilYlewbnPw7YNfB3peU">序号</th><th data-page-node-id="EmkI0ksGYnlC2NMwupMeBj">埋点名</th><th data-page-node-id="dZ99jkOrrgxwqzqPjgxCHS">埋点中文名</th><th data-page-node-id="t7txcq9KYHbUFR7SkClmP6">埋点类型</th><th data-page-node-id="nDoQX51xO3cGNWjmynJSXC">埋点参数</th><th data-page-node-id="XbxhFiYvM2Qy4UWyEKiyez">参数值</th></tr></thead>
+<tbody data-page-node-id="EOTkUnEAZUcw3WHubxOMEj">
+<tr data-page-node-id="87DFWTBVXhirv2JGpoaTdF"><td data-page-node-id="OpFCZd0Qbxj27fRcV2ozz4">1</td><td data-page-node-id="JVFSSFsc9Dgo0PZyZF7DYF">task_create_submit</td><td data-page-node-id="OPT8cVxo9UNZzZ0ryWdYwJ">提交生成任务</td><td data-page-node-id="Zx5ICEuIHeG9IDfRNy5wwv">提交结果</td><td data-page-node-id="Dhj6QaLRA6iVsDdMHnyxgV">product_line, sell_point_list, platform_list, point_cost</td><td data-page-node-id="JwxpEH6xPvVkZmBCBCPIv3">待确认（用户提供参考）</td></tr>
+<tr data-page-node-id="4281VORUfttC6hoNgTGDay"><td data-page-node-id="fZ3NSNyGGrfvI2eLt6noqW">2</td><td data-page-node-id="8SIuJnV1MIRUJCSv0nLSHl">task_batch_view</td><td data-page-node-id="YulghpHq4doFcXMKAIG5Je">任务队列页曝光</td><td data-page-node-id="7VeL6wYY0VJRWmAth15kB7">曝光</td><td data-page-node-id="parHo5R41pkBwuaVyxG22j">task_id, batch_status</td><td data-page-node-id="Ox4Bp1swHUHHVRIfJ4D5M2">待确认（用户提供参考）</td></tr>
+<tr data-page-node-id="iZg4Fvf3O50B8vBJBfkaRy"><td data-page-node-id="AFr2GJydczWX16Yit3DVPg">3</td><td data-page-node-id="wNNxeWNAAftNvECc5geohp">generate_result_view</td><td data-page-node-id="d0uKsI0Kep92798JfbhxAJ">生成结果页曝光</td><td data-page-node-id="vQOdf1UKoZCdjn9RTES4lS">曝光</td><td data-page-node-id="mLsgfXlxr82q6BEJg90QDh">task_id, candidate_count</td><td data-page-node-id="B6LAM1we6iBbG0KuX0I4KT">待确认（用户提供参考）</td></tr>
+<tr data-page-node-id="TVQbCUXJLPt7ZSoXDj6ib0"><td data-page-node-id="njLXg82zqimC7hjWgBc3vI">4</td><td data-page-node-id="9IHfJiq0PE3RiD9C8yYDg3">candidate_select</td><td data-page-node-id="CwCziYF0dku7NiVVhS5FQ8">选中候选素材</td><td data-page-node-id="mJjXjQpJL1ylnQCIgcWhn1">点击</td><td data-page-node-id="UpiaESxZVXptbgHnxk3FyM">candidate_id, platform, compliance_status</td><td data-page-node-id="EBYMi05KeWgiTTZzSPc53D">待确认（用户提供参考）</td></tr>
+<tr data-page-node-id="xlLMzAudhe7d5pOTLqVifU"><td data-page-node-id="Hk37Fg1zNk8oTHmgRKwKBY">5</td><td data-page-node-id="4wOPnNx7zZ1uBnBNRvTJEj">asset_refine_save</td><td data-page-node-id="go2u0LD6W6PW1jWXffgnlT">精修完成并入库</td><td data-page-node-id="11J26JEN95WulQYoHzjO7m">提交结果</td><td data-page-node-id="Q3ZYeFprORFWHmrWOXP3pz">asset_id, check_item_count, cost_minutes</td><td data-page-node-id="bkH6z71X3HpOejX2Nc2h5n">待确认（用户提供参考）</td></tr>
+<tr data-page-node-id="VW36LfpdZpFsOY6xVhAHcC"><td data-page-node-id="jz6SNa4hHzict1buxcvgy3">6</td><td data-page-node-id="2bvStLu5bQdaryNSJhvVAt">asset_library_search</td><td data-page-node-id="mG1vfvh5oc8B7wPEWs4svO">素材库检索</td><td data-page-node-id="cXqkBpVDGBPuXhzBFORoQN">点击</td><td data-page-node-id="TtinpuJJ4YDHHBpFBj4Vu0">filter_product_line, filter_platform, result_count</td><td data-page-node-id="qr17BSFz7N6j4pk8yFgC33">待确认（用户提供参考）</td></tr>
+<tr data-page-node-id="r90gO2fSHkbzWYzsy4oDms"><td data-page-node-id="WXwrQos4FZbjHCHgPI8GwA">7</td><td data-page-node-id="JQ6mmnBw80W4njoiqyH4K6">template_apply</td><td data-page-node-id="jQtV8sFkVhkeemcFQSIGqL">套用模板生成</td><td data-page-node-id="tpR9XB18Ml4zxJOnUxkVEZ">点击</td><td data-page-node-id="zoRDLoh61Dvy3HLgoOtCvk">template_id, template_version</td><td data-page-node-id="kFnrVTtams0n6KkMnTyEb6">待确认（用户提供参考）</td></tr>
+<tr data-page-node-id="6Mm0qX11txXNqb10BcLMVY"><td data-page-node-id="kX5ezQkDHRq0EzQ3H69b7o">8</td><td data-page-node-id="LV45XMZLaHTM1mO8iIXpuw">board_period_switch</td><td data-page-node-id="EGeX0y9nWfzcITPLOW4CRL">数据看板周期切换</td><td data-page-node-id="L0pVc5NjqdAFZsI63CuCaw">点击</td><td data-page-node-id="YIymesO2g6spFFHonzdyU8">period</td><td data-page-node-id="PN2OwUaKJGsMM6XJmLM5a7">待确认（用户提供参考）</td></tr>
+</tbody></table>
+<div class="alert" data-page-node-id="2jimCESRSzPW3xF9jgGlmk">埋点命名按业务语义取 snake_case；因<b data-page-node-id="rf8c2n5Z47EXngONgFIsKj">缺少公司内部埋点字典</b>，所有参数与参数值暂记「待确认」，待数据侧提供字典后统一替换，本版不猜测字段名。</div>
+
+<h2 data-page-node-id="vOIJJQbRLTHQEGKqsHzBw3">八、时序图</h2>
+<p data-page-node-id="PC3GZZcFX6QGTy9jfGGl3s">以下为可复制的 Mermaid 源码（研发与测试直接取用；研发按此写逻辑，测试按此写用例）：</p>
+<pre class="seq-code" data-page-node-id="ax9DOUUwai7L24mhAWMsPi"><code data-page-node-id="ZAnDB0KjvJ0Lb9DYjDUoyt">sequenceDiagram
+  autonumber
+  participant U as 设计师
+  participant W as Web 端
+  participant O as 任务编排
+  participant G as AI 生图引擎
+  participant C as 合规自检
+  participant S as 素材存储
+
+  U-&gt;&gt;W: 填写产品线 / 卖点 / 平台规格
+  W-&gt;&gt;O: 提交生成请求
+  O-&gt;&gt;O: 校验额度与并发通道
+  alt 校验不通过
+    O--&gt;&gt;W: 返回阻断原因（额度不足 / 文案未过审）
+    W--&gt;&gt;U: 生成按钮置灰并提示
+  else 校验通过
+    O-&gt;&gt;O: 扣减额度，按平台拆分为批次
+    loop 每个批次
+      O-&gt;&gt;G: 下发批次（模板版本 + 品牌约束 + 风格）
+      G-&gt;&gt;G: 生成候选图
+      G--&gt;&gt;O: 回传候选文件
+      O-&gt;&gt;C: 发起合规自检（绝对化词 / 第三方标识 / 人脸）
+      C--&gt;&gt;O: 返回自检结论
+      O--&gt;&gt;W: 推送批次进度与候选状态
+    end
+  end
+  U-&gt;&gt;W: 选中候选并发起精修
+  W-&gt;&gt;O: 请求精修会话（含并发占用锁）
+  U-&gt;&gt;W: 完成五项检查并确认入库
+  W-&gt;&gt;S: 写入素材、标签与版本号
+  S--&gt;&gt;W: 返回入库成功与版本号
+  W--&gt;&gt;U: 跳转素材库并高亮新素材</code></pre>
+
+<p data-page-node-id="IA7nrKRDiy0XFFkgvcayMv">关键对象状态：</p>
+<pre class="seq-code" data-page-node-id="y3Sq0XZF0EXSSph9acX3hy"><code data-page-node-id="HjSE8w9z7hKfbPazELuGpP">stateDiagram-v2
+  [*] --&gt; 候选待选: AI 产出
+  候选待选 --&gt; 待精修: 设计师选中
+  候选待选 --&gt; [*]: 7 天未选中自动清理
+  待精修 --&gt; 已入库: 五项检查全部确认
+  待精修 --&gt; 候选待选: 退回并备注原因
+  已入库 --&gt; 已归档: 手动归档
+  已归档 --&gt; 已入库: 恢复使用
+  已入库 --&gt; [*]</code></pre>
+
+<h3 data-page-node-id="PSH24jUUMQXce1uY7bDEAZ">待后续确认的产品口径</h3>
+<ul data-page-node-id="tMSTOKqbZeunfGV6scXaIK">
+  <li data-page-node-id="Hzw4o0j3LJJH6wZg6Qp6qq">埋点字典与字段命名规范 —— 卡在：数据/增长侧同事；影响：第七章全部「待确认」参数需替换后才能上线。</li>
+  <li data-page-node-id="M9qudHRU5sWusvakqFjrCO">算力单价与月度额度 500 点是否为最终定价 —— 卡在：工具采购归口；影响：第 3.1 条额度规则与必备的成本核算。</li>
+  <li data-page-node-id="Hl67h1Uuqh7VKPkIGqajBh">采用率的下游口径「被投放使用」如何判定（人工登记 vs 平台回填）—— 卡在：媒介投放同事；影响：第 2 章目标表与数据看板采用率是否可用。</li>
+  <li data-page-node-id="kGut4NUdnzCO1tBe7CJV6a">含人脸素材的肖像授权流程由谁审批、是否在本工具内闭环 —— 卡在：法务；影响：第 1.5 节检查项是否改为强校验。</li>
+  <li data-page-node-id="AW0RopJxpdLk4lkMJBGJ03">模板启停阈值 45% / 10 次是否为最终值 —— 卡在：营销负责人；影响：第 3.3 条规则与模板的下线判定。</li>
+  <li data-page-node-id="31E9J3jVnW2lmCKhFDsteF">是否需要支持视频剪辑（JD 含短视频剪辑职责）—— 卡在：需求方；影响：本期范围为「图片素材」，视频能力列为下一版本评估项。</li>
+</ul>
+
+</main>
+</div>
+
+<div class="float" id="btnCopy" data-page-node-id="yoL9zan75mWK6MqU8NuUyl"><button class="act pri" onclick="PM.copyAll()" data-page-node-id="XD3pIeIr83TBFR8jv4jzK8">📋 一键复制全文</button></div>
+<div class="float" id="saveZone" data-page-node-id="DEIq4Q3ryBC8C0kEeCNptH">
+  <button class="act" onclick="PM.save()" data-page-node-id="lnASoLxStr07kqYOn3T8Dg">查看正文 HTML</button>
+  <button class="act pri" onclick="PM.save()" data-page-node-id="VSQQmuCZbFGVDZ7KdlUkXz">💾 保存并通知 AI</button>
+</div>
+<div id="toast" data-page-node-id="lHgpmRCuPbhXQorWLyW9tQ"></div>
+
+<script>
+var PM = (function(){
+  var CATALOG = [
+    {id:'p-workbench', name:'1.1 工作台'},
+    {id:'p-create',    name:'1.2 新建生成任务'},
+    {id:'p-progress',  name:'1.3 生成中与任务队列'},
+    {id:'p-result',    name:'1.4 生成结果 Gallery'},
+    {id:'p-refine',    name:'1.5 精修与入库'},
+    {id:'p-library',   name:'2.1 素材库'},
+    {id:'p-template',  name:'2.2 模板库'},
+    {id:'p-data',      name:'3.1 数据看板'}
+  ];
+  var PROTO = '../原型/AI营销素材工厂-prototype.html';
+  var dock = document.getElementById('dock'), frame = document.getElementById('dockFrame');
+  var cur = null, loaded = false, z = 1;
+
+  function toast(msg){
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.style.opacity = 1;
+    clearTimeout(t._h); t._h = setTimeout(function(){ t.style.opacity = 0; }, 4200);
+  }
+  function openDock(){ dock.classList.add('open'); document.body.classList.add('dock-open'); document.getElementById('dockToggle').textContent='收起预览'; }
+  function closeDock(){ dock.classList.remove('open'); document.body.classList.remove('dock-open'); document.getElementById('dockToggle').textContent='双栏预览'; }
+
+  function show(pageId, silent){
+    if(cur === pageId && loaded) return;
+    cur = pageId;
+    var item = CATALOG.filter(function(x){return x.id===pageId;})[0];
+    if(!loaded){ frame.src = PROTO + '#' + pageId; loaded = true; }
+    else { frame.contentWindow.location.hash = '#' + pageId; }
+    document.getElementById('dockTitle').textContent = item ? item.name : pageId;
+    if(!silent) openDock();
+  }
+
+  function scrollSpy(){
+    var rows = [].slice.call(document.querySelectorAll('#prdContent tr[data-preview]'));
+    if(!rows.length) return;
+    var mid = window.innerHeight * 0.45, best = null, bestD = Infinity;
+    rows.forEach(function(r){
+      var b = r.getBoundingClientRect();
+      var d = Math.abs(b.top + b.height/2 - mid);
+      if(d < bestD){ bestD = d; best = r; }
+    });
+    if(best && best.getBoundingClientRect().bottom > 0 && best.getBoundingClientRect().top < window.innerHeight){
+      show(best.getAttribute('data-preview'), !dock.classList.contains('open'));
+    }
+  }
+
+  function applyZoom(){
+    frame.style.transformOrigin = 'top left';
+    frame.style.transform = 'scale(' + z + ')';
+    frame.style.width = (100 / z) + '%';
+    frame.style.height = (100 / z) + '%';
+    document.getElementById('zLabel').textContent = Math.round(z*100) + '%';
+  }
+
+  /* 编辑变更追踪 + 撤销重做（快照栈，够用且稳） */
+  var stack = [], ptr = -1, lock = false;
+  function snapshot(){
+    if(lock) return;
+    var html = document.getElementById('prdContent').innerHTML;
+    if(ptr >= 0 && stack[ptr] === html) return;
+    stack = stack.slice(0, ptr + 1);
+    stack.push(html);
+    if(stack.length > 60){ stack.shift(); }
+    ptr = stack.length - 1;
+  }
+  function restore(i){
+    if(i < 0 || i >= stack.length) return;
+    lock = true; ptr = i;
+    document.getElementById('prdContent').innerHTML = stack[i];
+    lock = false;
+  }
+
+  function markChanged(){
+    document.querySelectorAll('#prdContent [data-original]').forEach(function(el){
+      if(el.innerHTML !== el.getAttribute('data-original')){
+        el.setAttribute('data-changed','true'); el.classList.add('edited-cell');
+      }
+    });
+  }
+
+  function copyAll(){
+    var main = document.getElementById('prdContent');
+    var imgs = [].slice.call(main.querySelectorAll('img'));
+    var miss = 0, done = 0;
+    function finish(){
+      var clone = main.cloneNode(true);
+      clone.querySelectorAll('[contenteditable]').forEach(function(el){ el.removeAttribute('contenteditable'); });
+      var html = clone.outerHTML, text = clone.innerText;
+      function fallback(){
+        var ta = document.createElement('textarea');
+        ta.value = html; ta.style.position='fixed'; ta.style.left='-9999px';
+        document.body.appendChild(ta); ta.select();
+        var ok = false; try{ ok = document.execCommand('copy'); }catch(e){}
+        document.body.removeChild(ta);
+        toast(ok ? '已复制全文（降级模式：纯 HTML 源码，粘贴后需渲染）'
+                 : '复制失败：浏览器不支持，请手动全选复制');
+      }
+      if(navigator.clipboard && window.ClipboardItem){
+        try{
+          var item = new ClipboardItem({'text/html': new Blob([html],{type:'text/html'}),
+                                        'text/plain': new Blob([text],{type:'text/plain'})});
+          navigator.clipboard.write([item]).then(function(){
+            toast('已复制全文（含格式）' + (miss ? '｜注意：' + miss + ' 张图片为本地路径，粘贴到外部需重新插入图片' : ''));
+          }, fallback);
+        }catch(e){ fallback(); }
+      } else { fallback(); }
+    }
+    if(!imgs.length) return finish();
+    imgs.forEach(function(img){
+      var abs = new URL(img.getAttribute('src'), location.href).href;
+      fetch(abs).then(function(r){ return r.blob(); }).then(function(b){
+        var fr = new FileReader();
+        fr.onload = function(){ img.src = fr.result; done++; if(done + miss === imgs.length) finish(); };
+        fr.readAsDataURL(b);
+      }).catch(function(){ miss++; if(done + miss === imgs.length) finish(); });
+    });
+  }
+
+  function save(){
+    document.execCommand && document.execCommand('defaultParagraphSeparator', false, 'p');
+    markChanged(); snapshot();
+    var html = document.documentElement.outerHTML;
+    var blob = new Blob([html], {type:'text/html;charset=utf-8'});
+    var name = 'AI营销素材工厂-PRD.html';
+    if(window.showSaveFilePicker){
+      window.showSaveFilePicker({suggestedName:name, types:[{description:'HTML',accept:{'text/html':['.html']}}]})
+        .then(function(h){ return h.createWritable(); })
+        .then(function(w){ return w.write(blob).then(function(){ return w.close(); }); })
+        .then(function(){ toast('已保存：' + name + '｜下一步请把改动后的文件告知 AI 以便同步原型与流程图'); })
+        .catch(function(){ download(); });
+    } else { download(); }
+    function download(){
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = name; a.click();
+      toast('已下载副本：' + name + '，请覆盖到原文件后告知 AI');
+    }
+  }
+
+  document.addEventListener('keydown', function(e){
+    if(!(e.ctrlKey || e.metaKey)) return;
+    var k = e.key.toLowerCase();
+    if(k === 'z' && !e.shiftKey){ e.preventDefault(); restore(ptr - 1); }
+    else if((k === 'y') || (k === 'z' && e.shiftKey)){ e.preventDefault(); restore(ptr + 1); }
+  });
+  window.addEventListener('scroll', scrollSpy);
+  window.addEventListener('load', function(){
+    document.querySelectorAll('#prdContent td, #prdContent p, #prdContent li, #prdContent h1, #prdContent h2, #prdContent h3')
+      .forEach(function(el){ el.setAttribute('data-original', el.innerHTML); });
+    snapshot();
+  });
+  document.getElementById('prdContent').addEventListener('input', function(){ snapshot(); });
+
+  return {
+    toggleDock: function(){ dock.classList.contains('open') ? closeDock() : (openDock(), show(cur || CATALOG[0].id)); },
+    openProto: function(){ if(cur) window.open(PROTO + '#' + cur, '_blank'); },
+    zoom: function(d, reset){ z = reset ? 1 : Math.max(0.35, Math.min(1.6, z + d)); applyZoom(); },
+    fit: function(){ z = (dock.clientWidth - 8) / 1280; applyZoom(); },
+    copyAll: copyAll, save: save, _spy: scrollSpy
+  };
+})();
+</script>
+</body>
+</html>

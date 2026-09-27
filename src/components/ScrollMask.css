@@ -1,0 +1,225 @@
+/* ==========================================================================
+   ScrollMask — 滚动遮罩揭示（自研版）
+   进度由 JS 写入 --p（0→1），本文件全部用纯 CSS 消费。
+   配色严格取作品集 tokens：纸面 #f6f6f4 / 墨黑 #0c0c0e / 暖橙 #d9772b
+   ========================================================================== */
+
+.smask {
+  --mask-bg: #f6f6f4;
+  --fh: min(66vh, 620px);
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---------- 画面框 ---------- */
+.smask__frame {
+  position: relative;
+  height: var(--fh);
+  width: calc(var(--fh) * 0.8); /* 4 / 5 */
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  background: var(--mask-bg);
+  box-shadow:
+    0 40px 80px -46px rgba(12, 12, 14, 0.5),
+    0 2px 12px -6px rgba(12, 12, 14, 0.22);
+  isolation: isolate;
+}
+
+.smask__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 揭示时轻微回缩，制造"推近"的呼吸感 */
+  transform: scale(calc(1.06 - var(--p, 0) * 0.06));
+  will-change: transform;
+}
+
+/* ---------- 遮罩层（变体共用外壳） ---------- */
+.smask__mask {
+  position: absolute;
+  inset: 0;
+  background: var(--mask-bg);
+  will-change: transform, mask-image;
+}
+
+/* ① IRIS 圆孔：从中心张开的圆形孔洞 */
+.smask__mask--iris {
+  --r: calc(var(--p, 0) * 138%);
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 46%,
+    transparent 0 var(--r),
+    #000 calc(var(--r) + 3%)
+  );
+  mask-image: radial-gradient(
+    circle at 50% 46%,
+    transparent 0 var(--r),
+    #000 calc(var(--r) + 3%)
+  );
+}
+
+/* ② WIPE 擦除：整块向一侧滑出 */
+.smask__mask--wipe {
+  transform: translateX(calc((1 - var(--p, 0)) * 102%));
+}
+
+/* ③ CURTAIN 幕布：左右两片向两侧分开 */
+.smask__mask--curtain {
+  background: transparent;
+}
+.smask__mask--curtain::before,
+.smask__mask--curtain::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.6%;
+  background: var(--mask-bg);
+}
+.smask__mask--curtain::before {
+  left: 0;
+  transform: translateX(calc(var(--p, 0) * -101%));
+}
+.smask__mask--curtain::after {
+  right: 0;
+  transform: translateX(calc(var(--p, 0) * 101%));
+}
+
+/* ④ SLATS 百叶：竖向叶片逐片收起（带错峰） */
+.smask__mask--slats {
+  background: transparent;
+  display: flex;
+}
+.smask__slat {
+  flex: 1 1 0;
+  background: var(--mask-bg);
+  --d: calc(var(--i) * 0.085);
+  --pc: clamp(0, calc(var(--p, 0) * 1.6 - var(--d)), 1);
+  transform: scaleY(calc(1 - var(--pc)));
+  transform-origin: center;
+}
+
+/* ⑤ GRID 网格：方块按对角顺序收缩消隐 */
+.smask__mask--grid {
+  background: transparent;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 8), 1fr);
+  grid-template-rows: repeat(var(--rows, 6), 1fr);
+}
+.smask__cell {
+  background: var(--mask-bg);
+  --d: calc((var(--cx) + var(--cy)) * 0.055);
+  --pc: clamp(0, calc(var(--p, 0) * 1.62 - var(--d)), 1);
+  transform: scale(calc(1 - var(--pc)));
+  opacity: calc(1 - var(--pc));
+  border-radius: 1px;
+}
+
+/* ⑥ TYPE 镂字：海报从字母里长出来，直至铺满 */
+.smask__mask--type {
+  background: var(--mask-bg);
+  overflow: hidden;
+}
+.smask__type {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  white-space: nowrap;
+  font-size: calc(120px + var(--p, 0) * 900px);
+}
+
+/* ---------- 关闭态提示（随揭示淡出） ---------- */
+.smask__note {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  opacity: clamp(0, calc(1 - var(--p, 0) * 1.9), 1);
+  pointer-events: none;
+}
+.smask__hint {
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+.smask__noteLine {
+  margin-top: 4px;
+  width: 46px;
+  height: 1px;
+  background: var(--accent);
+}
+
+/* ---------- 六向切换器 ---------- */
+.smask__bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 3px;
+  margin-top: 16px;
+}
+.smask__tab {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-xs);
+  /* 性能：滚动提示胶囊不做实时模糊 */
+  background: rgba(255, 255, 255, 0.78);
+  transition:
+    border-color 0.35s var(--ease),
+    background 0.35s var(--ease);
+}
+.smask__tabEn {
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+}
+.smask__tabCn {
+  font-size: 10.5px;
+  color: var(--muted);
+}
+.smask__tab:hover {
+  border-color: var(--ink-3);
+}
+.smask__tab.is-on {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.smask__tab.is-on .smask__tabEn {
+  color: var(--accent-ink);
+  font-weight: 500;
+}
+.smask__tab.is-on .smask__tabCn {
+  color: var(--accent-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .smask__img,
+  .smask__mask,
+  .smask__mask--curtain::before,
+  .smask__mask--curtain::after,
+  .smask__slat,
+  .smask__cell {
+    transition: none;
+  }
+}

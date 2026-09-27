@@ -1,0 +1,776 @@
+/* ---------- 全屏 Hero ---------- */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--paper);
+  isolation: isolate;
+}
+
+/* 背景视频 */
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* 4 个场景视频的公共容器：
+   - 墨色兜底，视频未装载时不闪白
+   - 鼠标纵向驱动的 --hand 变换只作用在容器这一层（而不是每个 video），
+     四个场景共享同一次变换，鼠标移动时只有一层需要重采样 */
+.hero__scenes {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  /* --hand 0=顶部(伸展) 1=底部(收回)：幅度刻意压小，只做呼吸感 */
+  transform: translateY(calc((var(--hand, 0.5) - 0.5) * 18px))
+    scale(calc(1.04 + (0.5 - var(--hand, 0.5)) * 0.05));
+  will-change: transform;
+}
+
+/* 4 个场景叠满同一区域，只有当前那个 opacity:1，交叉淡入 1000ms */
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1000ms var(--ease-io, ease-in-out);
+  /* 不改 filter：满屏视频做实时滤镜会让解码出的每一帧都过一遍滤镜管线，
+     软渲染下单帧可达 100ms+。提亮交给 duotone / glow 两层静态叠加。 */
+}
+
+.hero__video.is-on {
+  opacity: 1;
+}
+
+/* 冷调场景（雪山 / 竹林剑客）的轻暗化：保证纸白文字压得住画面 */
+.hero__dim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: rgba(12, 12, 14, 0);
+  transition: background 1000ms var(--ease-io, ease-in-out);
+}
+
+.hero--tone-paper .hero__dim {
+  background: rgba(12, 12, 14, 0.46);
+}
+
+/* 冷调场景：把暖阳薄雾 / 暖光提亮压下去，别跟暗化打架（只过渡 opacity） */
+.hero__duotone,
+.hero__glow {
+  transition: opacity 700ms var(--ease);
+}
+
+.hero--tone-paper .hero__duotone {
+  opacity: 0.45;
+}
+
+.hero--tone-paper .hero__glow {
+  opacity: 0.5;
+}
+
+/* 暖阳薄雾：静态暖光轻染 —— 原先靠 mix-blend-mode: screen 提亮，现改为普通半透明，
+   透明度按 screen 等效换算回调，避免画面发闷（性能：全屏混色层不再逐帧重混） */
+.hero__duotone {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    150deg,
+    rgba(255, 216, 142, 0.16) 0%,
+    rgba(255, 255, 255, 0) 56%,
+    rgba(255, 184, 124, 0.1) 100%
+  );
+}
+
+/* 暖光提亮：左上暖金主光 + 整片阳光辉光 —— 同时承担原先 video filter 的 brightness(1.42) 提亮职责 */
+.hero__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(52% 46% at 32% 28%, rgba(255, 226, 150, 0.34), transparent 70%),
+    radial-gradient(60% 54% at 78% 76%, rgba(255, 196, 130, 0.22), transparent 74%),
+    radial-gradient(120% 100% at 50% 40%, rgba(255, 240, 200, 0.12), transparent 72%);
+}
+
+/* 遮罩：左重右轻——左侧保留纸色保证标题可读，右侧几乎透明，让双色调人物透出来、更亮更清晰 */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      100deg,
+      rgba(242, 242, 240, 0.9) 0%,
+      rgba(242, 242, 240, 0.52) 34%,
+      rgba(242, 242, 240, 0.12) 64%,
+      rgba(242, 242, 240, 0) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(242, 242, 240, 0.34) 0%,
+      rgba(242, 242, 240, 0) 26%,
+      rgba(242, 242, 240, 0) 68%,
+      rgba(242, 242, 240, 0.5) 100%
+    );
+}
+
+/* 鼠标跟随柔光 —— 性能改造：
+   原写法是整块全屏 radial-gradient，圆心由 --mx/--my 控制，并 transition 于 background。
+   → 鼠标每动一次就要把整块全屏渐变重新光栅化一遍（1920×1080 = 207 万像素，2K/4K 更凶），
+     而且渐变光栅走 CPU（Skia），独显也救不了。实测这一项就要吃掉 8 FPS。
+   现写法：渐变只画一次，固定在一块 920×920 的方层里，之后只做 translate3d 位移。
+   → 每帧成本从"重画全屏"降为"挪一下已缓存的图层"。
+   ★ 注意：用 circle closest-side 而不是裸 circle —— 裸 circle 默认 farthest-corner，
+     半径会变成约 651px（比原来的 460px 大 1.41 倍），柔光会明显摊开失真。
+     closest-side 在正方形里 = 460px，与原来的 circle 460px 完全等价，视觉零变化。 */
+.hero__spot {
+  position: absolute;
+  inset: 0;
+  overflow: hidden; /* 新增：裁掉溢出部分 */
+  pointer-events: none;
+  background: none; /* 删掉原来的全屏 radial-gradient */
+}
+
+.hero__spot::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 920px;
+  height: 920px;
+  background: radial-gradient(
+    circle closest-side,
+    rgba(217, 119, 43, 0.14),
+    rgba(217, 119, 43, 0.05) 45%,
+    transparent 72%
+  );
+  transform: translate3d(calc(var(--mx, 960px) - 460px), calc(var(--my, 453px) - 460px), 0);
+  will-change: transform;
+  transition: transform 0.35s linear; /* 只过渡 transform，不再过渡 background */
+}
+
+/* 周期性斜向光束：让首屏"活"起来（高级感 · 与结尾的连续漂移不同，这里是定时一掠） */
+.hero__media::after {
+  content: '';
+  position: absolute;
+  top: -30%;
+  left: -40%;
+  width: 34%;
+  height: 160%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.34), transparent);
+  transform: translateX(0) skewX(-18deg);
+  pointer-events: none;
+  /* 只动 transform/opacity，且不再做混合 —— 这一条可被合成器独立处理 */
+  will-change: transform, opacity;
+  animation: heroSweep 9.5s ease-in-out infinite;
+}
+
+/* 性能自适应兜底：帧时间 > 40ms（≈25 FPS）时由 Hero.jsx 给 <html> 加上 perf-lite。
+   降级只停这一个动画；场景视频一律照常播放（首屏可见必须处于播放态）。
+   元素保留在原位、保留原有样式，只是不再来回扫掠 —— 画面不会缺任何东西。 */
+.perf-lite .hero__media::after {
+  animation: none;
+}
+
+@keyframes heroSweep {
+  0%,
+  100% {
+    transform: translateX(0) skewX(-18deg);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.85;
+  }
+  62% {
+    transform: translateX(420%) skewX(-18deg);
+    opacity: 0;
+  }
+}
+
+/* 超大描边背景字：借鉴 Future 3D Portfolio 的巨型 outline 排版 */
+.hero__ghost {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  bottom: 13%;
+  display: flex;
+  gap: 90px;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  /* 提升为独立合成层：巨型描边字不再参与逐帧重绘 */
+  will-change: transform;
+  animation: ghostDrift 46s linear infinite;
+}
+
+.hero__ghost span {
+  font-family: var(--font-sans);
+  font-size: clamp(110px, 14vw, 240px);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.2px rgba(12, 12, 14, 0.085);
+}
+
+@keyframes ghostDrift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: 104px;
+  padding-bottom: 92px;
+}
+
+/* 顶部信息条 */
+.hero__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  opacity: 0;
+  animation: heroFade 1s var(--ease) 0.05s both;
+}
+
+.hero__metaRight {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.hero__metaSep {
+  width: 22px;
+  height: 1px;
+  background: var(--line);
+}
+
+/* train-bob：轻微的"列车在跑"悬浮感。
+   只挂在文字内容块（.hero__content，受 max-width 860px 约束）上 ——
+   之前包住整条通栏时 2K 下动画面积约 205 万 px，是掉帧的主要来源之一。
+   视频层不加 bob，避免每帧重采样；scale(1.03) 常驻，防止上下位移时露出边缘。 */
+.hero__bob {
+  animation: heroBob 3s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes heroBob {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.03);
+  }
+  50% {
+    transform: translate3d(0, -4px, 0) scale(1.03);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__bob {
+    animation: none;
+  }
+}
+
+/* 主体：左文字 / 视频铺满背景，文字叠加其上 */
+.hero__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  margin: auto 0;
+  padding: 40px 0 28px;
+}
+
+.hero__content {
+  position: relative;
+  min-width: 0;
+  max-width: 860px;
+}
+
+/* 局部文字遮罩（v3 复刻要求）：
+   文字可读性不许靠"改画面"解决（不许给视频加滤镜/降饱和/提亮压暗），
+   只能靠这层只盖住文字块附近的渐变解决 —— 自下而上、不铺满全屏。
+   ▸ 冷调场景（scene3/4）：黑色渐变 0 → 0.35，配纸白文字
+   ▸ 暖调场景（scene1/2）：改用极淡的纸色渐变，配墨色文字
+     （黑色渐变压在墨色字上会糊成一团，所以暖调用同向的浅色版本，
+      两边都是"局部遮罩"，都不动画面本身的色彩。） */
+.hero__content::before {
+  content: '';
+  position: absolute;
+  left: -28px;
+  right: -40px;
+  top: -18px;
+  bottom: -30px;
+  z-index: -1;
+  border-radius: 18px;
+  pointer-events: none;
+  opacity: 1;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0) 72%);
+  transition: opacity 700ms var(--ease);
+}
+
+.hero--tone-ink .hero__content::before {
+  background: linear-gradient(to top, rgba(242, 242, 240, 0.42), rgba(242, 242, 240, 0) 74%);
+}
+
+/* 主标题 */
+.hero__title {
+  font-size: clamp(52px, 7vw, 122px);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.99;
+  color: var(--ink);
+}
+
+.hero__line {
+  display: block;
+  opacity: 0;
+}
+
+.hero.is-ready .hero__line {
+  animation: heroRise 1.05s var(--ease) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* 衬线斜体英文行 */
+.hero__serif {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 22px;
+  font-family: Georgia, 'Times New Roman', 'Songti SC', 'STSong', serif;
+  font-size: clamp(19px, 1.55vw, 28px);
+  letter-spacing: -0.01em;
+  color: var(--ink-2);
+  opacity: 0;
+}
+
+.hero__serif em {
+  font-style: italic;
+  color: var(--ink);
+}
+
+.hero__serif span {
+  color: var(--ink-3);
+}
+
+.hero.is-ready .hero__serif {
+  animation: heroFade 1s var(--ease) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* 说明 + 按钮 */
+.hero__desc {
+  /* 三行稳定排版：文案用 \n 断行 + pre-line 保留换行；
+     宽度/字号按最长那行（第三行 ≈53 个全角字 ≈795px @15px）反推，保证不折成四行 */
+  max-width: 840px;
+  margin-top: 26px;
+  font-size: 15px;
+  line-height: 1.85;
+  white-space: pre-line;
+  color: var(--ink-2);
+  opacity: 0;
+}
+
+.hero__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 30px;
+  opacity: 0;
+}
+
+.hero.is-ready .hero__desc,
+.hero.is-ready .hero__actions {
+  animation: heroFade 1s var(--ease) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* ---------- 场景切换器 · Lumora 形态 ----------
+   画面底部居中的悬浮胶囊条：深色半透底 + 细白描边 + 内侧顶部高光
+   （高光用 .glass-sim 那套伪元素描边写法，绝对不用 backdrop-filter）。
+   激活项是"白色实心 pill 浮在深色条上"，靠 transform 在条内滑动。 */
+.hero__switch {
+  position: absolute;
+  left: 50%;
+  /* 让开底部滚动字幕（44px 高） */
+  bottom: clamp(78px, 10vh, 104px);
+  z-index: 4;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  gap: 0;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(10, 10, 12, 0.45);
+  box-shadow: 0 8px 26px -12px rgba(0, 0, 0, 0.55);
+  opacity: 0;
+}
+
+/* 内侧顶部高光（仿玻璃，非毛玻璃）：上下两条由亮到透的描边 */
+.hero__switch::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.15) 20%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.15) 80%,
+    rgba(255, 255, 255, 0.45) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.hero.is-ready .hero__switch {
+  animation: heroFade 1s var(--ease) 0.44s both;
+}
+
+/* 白色激活 pill：4 等分宽度，靠 translateX 滑到激活列 */
+.hero__switchPill {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px) / 4);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 2px 10px -3px rgba(0, 0, 0, 0.45);
+  transform: translateX(calc(var(--i, 0) * 100%));
+  transition: transform 300ms var(--ease);
+  pointer-events: none;
+}
+
+.hero__sceneBtn {
+  position: relative;
+  z-index: 1;
+  padding: 7px 18px;
+  border: 0;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+  opacity: 0.6;
+  transition:
+    opacity 0.3s var(--ease),
+    color 0.3s var(--ease);
+}
+
+.hero__sceneBtn:hover {
+  opacity: 0.85;
+}
+
+/* 激活项：文字反转成深墨色，压在白色 pill 上 */
+.hero__sceneBtn.is-on {
+  opacity: 1;
+  color: var(--ink);
+}
+
+/* ---------- 场景配色：冷调场景（scene3/4）文字转纸白 ---------- */
+.hero__title,
+.hero__serif,
+.hero__desc,
+.hero__sceneBtn,
+.hero__facts strong,
+.hero__metaRight,
+.hero__scroll .mono {
+  transition: color 700ms var(--ease);
+}
+
+/* 冷调场景用指令指定的纸白 #f5f5f2（比 --paper #f2f2f0 略亮一点，
+   压在暗画面上时边缘更干净；指令给的色值，非站点变量） */
+.hero--tone-paper .hero__title {
+  color: #f5f5f2;
+}
+.hero--tone-paper .hero__serif {
+  color: #f5f5f2;
+}
+.hero--tone-paper .hero__desc {
+  color: rgba(245, 245, 242, 0.86);
+}
+.hero--tone-paper .hero__sceneBtn {
+  color: #f5f5f2;
+}
+.hero--tone-paper .hero__facts strong {
+  color: #f5f5f2;
+}
+.hero--tone-paper .hero__facts span {
+  color: rgba(245, 245, 242, 0.62);
+}
+.hero--tone-paper .hero__metaRight,
+.hero--tone-paper .hero__scroll .mono {
+  color: rgba(245, 245, 242, 0.72);
+}
+.hero--tone-paper .hero__metaSep {
+  background: rgba(245, 245, 242, 0.35);
+}
+.hero--tone-paper .eyebrow {
+  color: var(--accent);
+}
+
+/* ---------- 移动端：切换器收成紧凑圆点 ----------
+   说明：指令给了「隐藏按钮」和「紧凑圆点」两种选择，这里选紧凑圆点 ——
+   手机上仍可切换场景，只是不占横向空间。圆点用 padding + background-clip
+   做出 26×26 的点击热区，避免小圆点戳不中。 */
+@media (max-width: 767px) {
+  /* 列宽收成 26px 的圆点格：pill 的宽度与位移必须跟着改，
+     否则 pill 仍按 1/4 条宽计算，会和圆点错位（v3 修的对齐 bug）。 */
+  .hero__switch {
+    grid-template-columns: repeat(4, 26px);
+    gap: 4px;
+    padding: 4px;
+    bottom: clamp(66px, 9vh, 88px);
+  }
+  .hero__switchPill {
+    width: 26px;
+    /* 一格 = 26px 圆点 + 4px 间距 = 30px */
+    transform: translateX(calc(var(--i, 0) * 30px));
+  }
+  .hero__sceneBtn {
+    width: 26px;
+    height: 26px;
+    padding: 6px;
+    border-radius: 999px;
+    font-size: 0; /* 收掉文字，只留圆点，但不缩小 26×26 的点击热区 */
+    background: #ffffff;
+    background-clip: content-box;
+    opacity: 0.35;
+  }
+  .hero__sceneBtn:hover {
+    opacity: 0.6;
+  }
+  .hero__sceneBtn.is-on {
+    opacity: 1;
+  }
+}
+
+/* ---------- 右侧 ScrollMask 海报舞台已移除：视频铺满首屏，文字直接叠加（2026-09-22） ---------- */
+
+/* 底部：滚动提示 + 快速事实 */
+.hero__foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  margin-top: auto;
+  opacity: 0;
+  animation: heroFade 1s var(--ease) 0.6s both;
+}
+
+.hero__scroll {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.hero__scrollLine {
+  position: relative;
+  width: 1px;
+  height: 46px;
+  overflow: hidden;
+  background: linear-gradient(to bottom, var(--ink), transparent);
+}
+
+.hero__scrollLine::after {
+  content: '';
+  position: absolute;
+  top: -46px; /* 起始位置保留；位移全部交给 transform */
+  left: 0;
+  width: 1px;
+  height: 46px;
+  background: var(--accent);
+  will-change: transform;
+  animation: scrollTrace 2.4s var(--ease-io) infinite;
+}
+
+.hero__facts {
+  display: flex;
+  align-items: flex-end;
+  gap: 56px;
+}
+
+.hero__facts li {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.hero__facts strong {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: color 0.35s var(--ease);
+}
+
+.hero__facts span {
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.hero__facts li:hover strong {
+  color: var(--accent-ink);
+}
+
+/* 底部滚动字幕 */
+.hero__ticker {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  /* 性能：这条是通栏背景条，backdrop-filter 会强制整条做实时模糊采样，
+     是全站最贵的一处；改成同色系的纯色半透，视觉几乎无差，GPU 开销大幅下降。 */
+  background: rgba(242, 242, 240, 0.8);
+}
+
+.hero__tickerTrack {
+  display: flex;
+  width: max-content;
+  /* 提升为独立合成层：跑马灯不再参与逐帧重绘 */
+  will-change: transform;
+  animation: marquee 42s linear infinite;
+}
+
+.hero__tickerGroup {
+  display: flex;
+  align-items: center;
+}
+
+.hero__tickerGroup span {
+  display: inline-flex;
+  align-items: center;
+  gap: 40px;
+  padding-right: 40px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.hero__tickerGroup span::after {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+/* ---------- 动画 ---------- */
+@keyframes heroRise {
+  from {
+    opacity: 0;
+    transform: translateY(38px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@keyframes heroFade {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* 原实现对 0%→100% 动的是 top，每帧触发一次 layout，而它在 hero 内部，布局会波及整块。
+   现改为只动 transform：起点仍是 top:-46px 的位置（位移 0），终点是 top:+46px（位移 92px），
+   即 -46 → +46 这段行程，视觉轨迹与改前完全一致。 */
+@keyframes scrollTrace {
+  0% {
+    transform: translateY(0);
+  }
+  60%,
+  100% {
+    transform: translateY(92px);
+  }
+}
+
+/* ---------- 自适应 ---------- */
+@media (max-width: 1500px) {
+  .hero__content {
+    max-width: 780px;
+  }
+}
+
+@media (max-width: 1240px) {
+  .hero__content {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 860px) {
+  .hero__inner {
+    padding-top: 96px;
+    padding-bottom: 84px;
+  }
+  .hero__foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+  }
+  .hero__facts {
+    flex-wrap: wrap;
+    gap: 24px 36px;
+  }
+  .hero__ghost {
+    bottom: 8%;
+  }
+}

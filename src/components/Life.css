@@ -1,0 +1,446 @@
+/* ---------- 产品之外 · #life ----------
+   设计语言沿用站点现有：细边框 + 小圆角 + 纸色底 + 等宽小标。
+   本区块零新增循环动画（入场复用 Reveal），唯一的一次性过渡是 lightbox 的 160ms opacity。 */
+.life {
+  position: relative;
+  padding: clamp(72px, 8vw, 128px) 0 clamp(64px, 7vw, 112px);
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+}
+
+/* ---------- 三段共用的小表头 ---------- */
+.life__sub {
+  margin-top: clamp(48px, 5vw, 80px);
+}
+
+.life__subHead {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.life__subEn {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--accent-ink);
+}
+
+.life__subCn {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.life__subNote {
+  margin-left: auto;
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+/* ================================================================
+   ① 校园生活：横向滚动画廊
+   ================================================================ */
+.life__gallery {
+  margin-top: 22px;
+}
+
+.life__rail {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  padding: 2px 0 6px;
+  /* 隐藏原生横向滚动条，视觉上是一条干净的图带；仍可用触控板/触屏滑动 */
+  scrollbar-width: none;
+}
+
+.life__rail::-webkit-scrollbar {
+  display: none;
+}
+
+.life__rail.is-drag {
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* ★ 方案 A（指令二选一，选 A）：统一行高 + 卡片宽度随图片原始比例自适应。
+   之前是"统一格子宽度 + object-fit: cover"，竖图（life-03 东方之门 / life-08 正装肖像）
+   被裁得只剩中间一段，楼顶弧形直接没了。
+   改成 img 固定 height、width: auto 后，每张图宽度 = 行高 × 原始宽高比，
+   横图自然更宽、竖图自然更窄，横向滚动条带天生兼容横竖混排，且**零裁切**。 */
+.life__shot {
+  flex: 0 0 auto;
+  margin: 0;
+  scroll-snap-align: start;
+  overflow: hidden;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  transition: border-color 0.4s var(--ease);
+}
+
+.life__shot:hover {
+  border-color: var(--accent);
+}
+
+.life__shot img {
+  display: block;
+  /* 行高统一 → 图带齐平；宽度交给原图比例，竖图不再被裁 */
+  height: clamp(180px, 16vw, 240px);
+  width: auto;
+  object-fit: contain;
+  pointer-events: none; /* 拖拽时不触发浏览器原生图片拖影 */
+}
+
+.life__cap {
+  padding: 8px 10px;
+  border-top: 1px solid var(--line-soft);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--ink-3);
+}
+
+.life__railCtrl {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.life__hint {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--muted);
+}
+
+.life__arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.life__arrow {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--white);
+  color: var(--ink-2);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    border-color 0.3s var(--ease),
+    color 0.3s var(--ease);
+}
+
+.life__arrow:hover {
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ================================================================
+   ② 副业实战：三张数据卡
+   ================================================================ */
+.life__cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 22px;
+}
+
+.life__card {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 20px 18px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  transition:
+    border-color 0.4s var(--ease),
+    box-shadow 0.5s var(--ease);
+}
+
+.life__card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 26px 48px -32px rgba(217, 119, 43, 0.4);
+}
+
+.life__cardTop {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.life__plat {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--accent-ink);
+}
+
+.life__platCn {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+/* 大号等宽数字：沿用首页 metrics 的"数字先说话"层级 */
+.life__big {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  margin-top: 18px;
+  font-size: clamp(26px, 2.3vw, 36px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.life__big em {
+  font-style: normal;
+  font-size: 0.55em;
+  color: var(--ink-3);
+}
+
+.life__bigUnit {
+  font-size: 0.42em;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+}
+
+.life__bigLabel {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.life__rows {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.life__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px dashed var(--line-soft);
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.life__row:last-child {
+  border-bottom: 0;
+}
+
+.life__row strong {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* 截图缩略：auto-fit → 拼多多只有 1 张时自动占满整行 */
+.life__thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.life__thumb {
+  position: relative;
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  cursor: zoom-in;
+  transition: border-color 0.3s var(--ease);
+}
+
+.life__thumb:hover {
+  border-color: var(--accent);
+}
+
+.life__thumb img {
+  display: block;
+  width: 100%;
+  height: 168px;
+  object-fit: cover;
+}
+
+.life__thumb--bd img {
+  height: 260px;
+}
+
+.life__zoom {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  padding: 3px 6px;
+  border-radius: var(--r-xs);
+  background: rgba(242, 242, 240, 0.88);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--ink-3);
+}
+
+/* ================================================================
+   ③ 量潮科技 · 商务 BD 实习
+   ================================================================ */
+.life__bd {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 28px;
+  margin-top: 22px;
+}
+
+.life__bdText {
+  padding: 26px 26px 24px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+
+.life__bdPeriod {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--accent-ink);
+}
+
+.life__bdTitle {
+  margin: 10px 0 12px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.life__bdDesc {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.85;
+  color: var(--ink-2);
+}
+
+.life__bdShots {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* ================================================================
+   图片放大层（点击时才挂载）
+   ================================================================ */
+.life__lb {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: clamp(20px, 4vw, 56px);
+  background: rgba(10, 10, 12, 0.82);
+  cursor: zoom-out;
+  /* 一次性 160ms opacity 淡入：只在点击瞬间跑一次，不是循环动画 */
+  animation: lifeLbIn 160ms var(--ease) both;
+}
+
+@keyframes lifeLbIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.life__lbFig {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  max-width: 100%;
+  cursor: default;
+}
+
+.life__lbImg {
+  display: block;
+  max-width: min(92vw, 900px);
+  max-height: 82vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--r-md);
+  background: var(--paper);
+}
+
+.life__lbCap {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: rgba(245, 245, 242, 0.78);
+}
+
+.life__lbClose {
+  position: absolute;
+  top: clamp(16px, 3vw, 30px);
+  right: clamp(16px, 3vw, 30px);
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(10, 10, 12, 0.4);
+  color: rgba(245, 245, 242, 0.9);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  cursor: pointer;
+}
+
+.life__lbClose:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+/* ================================================================
+   自适应
+   ================================================================ */
+@media (max-width: 1100px) {
+  .life__cards {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .life__bd {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .life__subHead {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+  .life__subNote {
+    margin-left: 0;
+    width: 100%;
+  }
+  /* 移动端卡片宽度是随图片比例自适应的，这里只能压行高，不能再写 width */
+  .life__shot img {
+    height: 200px;
+  }
+  .life__bdShots {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .life__lb {
+    animation: none;
+  }
+}

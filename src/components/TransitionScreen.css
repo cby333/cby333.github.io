@@ -1,0 +1,199 @@
+/* ---------- 全屏转折屏 ---------- */
+/* 纸白反色段：浅底 + 墨字 + 一行暖橙强调，与全站明亮调统一，不再用纯黑满屏制造突兀反差。
+   巨字逐行裁切升起，作为「关于我 → 精选项目」的呼吸转折点。 */
+
+.tscreen {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: var(--paper-2);
+  color: var(--ink);
+  overflow: hidden;
+  padding: clamp(90px, 12vh, 170px) 0;
+}
+
+/* 网格底纹复用 .grid-lines，墨色极淡描边以适配浅色底 */
+.tscreen .grid-lines {
+  background-image: linear-gradient(to right, rgba(12, 12, 14, 0.05) 1px, transparent 1px);
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+}
+
+.tscreen__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+.tscreen__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: clamp(26px, 4vh, 52px);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: rgba(12, 12, 14, 0.6);
+}
+
+.tscreen__eyebrow em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+/* 进入视口时 eyebrow 尾部画出一条强调线 */
+.tscreen__eyebrow::after {
+  content: '';
+  width: 0;
+  height: 1px;
+  background: var(--accent);
+  transition: width 0.9s var(--ease) 0.35s;
+}
+
+.tscreen.is-in .tscreen__eyebrow::after {
+  width: 46px;
+}
+
+.tscreen__statement {
+  margin: 0;
+  font-weight: 600;
+  font-size: clamp(46px, 8.4vw, 130px);
+  letter-spacing: -0.04em;
+  line-height: 1.04;
+}
+
+.ts__line {
+  display: block;
+  overflow: hidden;
+}
+
+.ts__lineInner {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 1.05s var(--ease);
+}
+
+.ts__line:nth-child(2) .ts__lineInner {
+  transition-delay: 0.16s;
+}
+
+.tscreen.is-in .ts__lineInner {
+  transform: translateY(0);
+}
+
+.ts__lineInner.is-accent {
+  background-image: linear-gradient(
+    90deg,
+    var(--accent) 0%,
+    #ffd9a8 22%,
+    var(--accent) 45%,
+    #ffd9a8 68%,
+    var(--accent) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: tsShimmer 4.5s linear infinite;
+}
+
+/* 离屏暂停：tsShimmer 动的是 background-position，属重绘类动画，
+   比 transform 类贵，不在视口里就没必要跑 */
+.tscreen.is-offscreen .ts__lineInner.is-accent {
+  animation-play-state: paused;
+}
+
+@keyframes tsShimmer {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .ts__lineInner.is-accent {
+    -webkit-text-fill-color: var(--accent);
+    color: var(--accent);
+    background: none;
+  }
+}
+
+.tscreen__sub {
+  max-width: 660px;
+  margin-top: clamp(30px, 4.5vh, 52px);
+  font-size: clamp(15px, 1.35vw, 19px);
+  line-height: 1.95;
+  letter-spacing: -0.012em;
+  color: rgba(12, 12, 14, 0.68);
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.9s var(--ease) 0.5s,
+    transform 1s var(--ease) 0.5s,
+    letter-spacing 1.1s var(--ease) 0.5s;
+}
+
+.tscreen.is-in .tscreen__sub {
+  opacity: 1;
+  transform: none;
+  letter-spacing: 0.01em;
+}
+
+/* 底部滚动提示，呼吸式微脉冲 */
+.tscreen__scroll {
+  position: absolute;
+  bottom: clamp(28px, 5vh, 56px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: rgba(12, 12, 14, 0.5);
+  animation: tsPulse 2.6s ease-in-out infinite;
+}
+
+.tscreen__scrollLine {
+  width: 1px;
+  height: 46px;
+  background: linear-gradient(to bottom, var(--accent), rgba(12, 12, 14, 0.12));
+}
+
+@keyframes tsPulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* 窄屏：滚动提示可省略，避免与巨字挤在一起 */
+@media (max-width: 720px) {
+  .tscreen__scroll {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ts__lineInner {
+    transform: none;
+    transition: none;
+  }
+  .tscreen__sub {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .tscreen__scroll {
+    animation: none;
+  }
+}

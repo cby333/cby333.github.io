@@ -1,0 +1,218 @@
+/* ---------- 个人优势 ---------- */
+.cap {
+  position: relative;
+  padding: clamp(96px, 9vw, 170px) 0 clamp(104px, 9.5vw, 184px);
+  background: var(--paper);
+  border-top: 1px solid var(--line);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.cap .container {
+  position: relative;
+  z-index: 2;
+}
+
+.cap__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: clamp(48px, 4.4vw, 76px);
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.cap__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(28px, 2.6vw, 44px);
+  background: var(--paper-2);
+  overflow: hidden;
+  transition: background 0.55s var(--ease);
+}
+
+.cap__card:hover {
+  background: var(--white);
+}
+
+/* 悬浮时从左侧长出的强调线 */
+.cap__line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: 50% 0;
+  transition: transform 0.6s var(--ease);
+}
+
+.cap__card:hover .cap__line {
+  transform: scaleY(1);
+}
+
+.cap__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cap__index {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  transition: color 0.45s var(--ease), border-color 0.45s var(--ease), background 0.45s var(--ease);
+}
+
+.cap__card:hover .cap__index {
+  color: var(--white);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.cap__en {
+  color: var(--muted);
+  font-size: 9.5px;
+  letter-spacing: 0.24em;
+}
+
+.cap__title {
+  font-size: clamp(18px, 1.45vw, 23px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.35;
+  margin-top: 6px;
+}
+
+.cap__desc {
+  font-size: 14px;
+  line-height: 1.95;
+  color: var(--ink-2);
+  flex: 1;
+}
+
+.cap__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding-top: 6px;
+}
+
+.cap__tags li {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  padding: 4px 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  transition: color 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+
+.cap__card:hover .cap__tags li {
+  border-color: rgba(217, 119, 43, 0.28);
+  color: var(--accent-ink);
+}
+
+/* 蓝图四角描边：hover 时四角 L 形支架淡入并轻微放大（区别于左侧强调线的"生长"） */
+.cap__card::before {
+  content: '';
+  position: absolute;
+  inset: 16px;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--accent), var(--accent)) left top / 18px 2px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) left top / 2px 18px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) right bottom / 18px 2px no-repeat,
+    linear-gradient(var(--accent), var(--accent)) right bottom / 2px 18px no-repeat;
+  opacity: 0;
+  transform: scale(0.96);
+  transition:
+    opacity 0.5s var(--ease),
+    transform 0.5s var(--ease);
+}
+
+.cap__card:hover::before {
+  opacity: 0.85;
+  transform: scale(1);
+}
+
+/* 去素：个人优势区块左下角一抹极淡暖光，平衡右侧空白 */
+.cap::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  left: -8%;
+  bottom: -10%;
+  width: 600px;
+  height: 460px;
+  background: radial-gradient(ellipse at center, rgba(217, 119, 43, 0.06), transparent 66%);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+/* 标题 hover：右移 + 尾部小箭头浮出（区别于四角描边 / 左侧强调线） */
+.cap__title {
+  transition: transform 0.5s var(--ease);
+}
+
+.cap__title::after {
+  content: '→';
+  display: inline-block;
+  margin-left: 8px;
+  font-weight: 400;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity 0.45s var(--ease),
+    transform 0.45s var(--ease);
+}
+
+.cap__card:hover .cap__title {
+  transform: translateX(4px);
+}
+
+.cap__card:hover .cap__title::after {
+  opacity: 1;
+  transform: none;
+}
+
+/* 单个标签 hover：暖橙描边 + 极淡底色 */
+.cap__tags li {
+  transition:
+    color 0.4s var(--ease),
+    border-color 0.4s var(--ease),
+    background 0.4s var(--ease);
+}
+
+.cap__tags li:hover {
+  color: var(--accent-ink);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+@media (max-width: 1180px) {
+  .cap__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .cap__grid {
+    grid-template-columns: 1fr;
+  }
+}

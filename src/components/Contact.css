@@ -1,0 +1,362 @@
+/* ---------- 收尾：整屏联系页 ---------- */
+.ct {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+  padding: clamp(88px, 7vw, 120px) 0 clamp(28px, 3vw, 40px);
+  background: var(--paper-2);
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ---------- 结尾背景视频（与首屏冷暖 / 动静反差） ---------- */
+.ct__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* 12 列底纹提到视频之上，保留整站的科技骨架 */
+.ct .grid-lines {
+  z-index: 1;
+}
+
+.ct__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 提亮：原先用 filter 实现，但对一块正在播放的满屏视频做实时滤镜 = 每一帧都过一遍
+     滤镜管线（修复 Hero 时实测：去掉这一条单项就把帧率从 16 提到 34.5）。
+     现改为视频原片输出，提亮交给下方 ct__duotone / ct__scrim 两层静态叠加补偿。 */
+  /* 自动缓慢漂移（Ken Burns）——首屏是"鼠标驱动的即时响应"，这里是"自走的呼吸" */
+  animation: ctDrift 32s ease-in-out infinite alternate;
+  /* 离屏时整体暂停：这一层 2K 下约 430 万 px，是本站最大的无限动画开销。
+     元素与样式都保留，只是不再运动，进入视口自动恢复。 */
+  animation-play-state: running;
+  will-change: transform;
+}
+
+.ct.is-offscreen .ct__video {
+  animation-play-state: paused;
+}
+
+@keyframes ctDrift {
+  from {
+    transform: scale(1.08) translate3d(-1.6%, -1.2%, 0);
+  }
+  to {
+    transform: scale(1.18) translate3d(1.6%, 1.2%, 0);
+  }
+}
+
+/* 冷阳光薄雾：现为普通半透明层（原 mix-blend-mode: screen —— 全屏混色会逐帧重混，
+   透明度按 screen 等效回调），并把原先 ct__video 承担的提亮一并补偿到这里 */
+.ct__duotone {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    200deg,
+    rgba(198, 240, 255, 0.24) 0%,
+    rgba(255, 255, 255, 0) 48%,
+    rgba(255, 214, 150, 0.14) 100%
+  );
+}
+
+/* 浅色遮罩：保住墨字可读，同时让视频以明亮通透的"活质感"透出 */
+.ct__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(248, 248, 246, 0.6) 0%,
+      rgba(248, 248, 246, 0.44) 42%,
+      rgba(248, 248, 246, 0.76) 100%
+    ),
+    radial-gradient(120% 90% at 50% 118%, rgba(150, 210, 225, 0.2), transparent 62%);
+}
+
+/* 鼠标跟随暖橙柔光：与首屏 hero__spot 同一套交互语言——鼠标走到哪，哪里就亮起来。
+   鼠标进入板块才淡入，离开后自然淡出，避免一直挂着一团光。 */
+.ct__spot {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    circle 430px at var(--mx, 50%) var(--my, 50%),
+    rgba(217, 119, 43, 0.26),
+    rgba(217, 119, 43, 0.09) 42%,
+    transparent 70%
+  );
+  transition:
+    opacity 0.55s var(--ease),
+    background 0.3s linear;
+}
+
+.ct:hover .ct__spot {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct__spot {
+    transition: opacity 0.2s linear;
+  }
+}
+
+/* 斜向光束：极淡的移动光栅，增加"高级感"层次 */
+.ct__media::after {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    115deg,
+    rgba(255, 255, 255, 0) 0 44px,
+    rgba(255, 255, 255, 0.07) 44px 46px
+  );
+  /* 只动 transform，且不再做混合 —— 可被合成器独立处理 */
+  animation: ctStreak 19s linear infinite;
+}
+
+@keyframes ctStreak {
+  from {
+    transform: translateX(-5%);
+  }
+  to {
+    transform: translateX(5%);
+  }
+}
+
+.ct__bloom {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: -34%;
+  width: 1180px;
+  height: 900px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(217, 119, 43, 0.16) 0%,
+    rgba(217, 119, 43, 0.06) 38%,
+    transparent 68%
+  );
+  /* 去掉 filter: blur(6px)：这块 1180×900 的层每帧都要重新做一遍高斯模糊，
+     而径向渐变本身就是柔的，肉眼几乎无差 */
+  pointer-events: none;
+  animation: bloomPulse 8s ease-in-out infinite;
+}
+
+/* 同上：离屏暂停，面积约 106 万 px */
+.ct.is-offscreen .ct__bloom {
+  animation-play-state: paused;
+}
+
+@keyframes bloomPulse {
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.06);
+  }
+}
+
+.ct__inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - clamp(116px, 10vw, 160px));
+}
+
+.ct__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ct__end {
+  color: var(--accent);
+}
+
+.ct__main {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  margin: auto 0;
+  padding: clamp(48px, 5vw, 84px) 0;
+}
+
+.ct__title {
+  font-size: clamp(46px, 6.4vw, 112px);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 1.02;
+  color: var(--ink);
+}
+
+.ct__desc {
+  max-width: 60ch;
+  font-size: 15.5px;
+  line-height: 1.95;
+  color: var(--ink-2);
+}
+
+.ct__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.ct__actions .btn--dark {
+  height: 52px;
+  padding: 0 28px;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+}
+
+/* 联系信息 */
+.ct__info {
+  display: grid;
+  /* 联系项已增至 5 项（+状态共 6 项）：改用自适应列，邮箱这种长串不再被挤窄 */
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.ct__infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 22px;
+  background: var(--white);
+  transition: background 0.45s var(--ease);
+}
+
+.ct__infoItem:hover {
+  background: var(--paper-2);
+}
+
+.ct__infoItem a,
+.ct__infoPlain {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--ink);
+  min-width: 0;
+  /* 号码 / ID 不折行；兜底允许任意断行，避免溢出压到相邻格子 */
+  white-space: nowrap;
+  overflow-wrap: anywhere;
+  word-break: break-all;
+}
+
+/* 进入视口时下划线自左滑入（区别于联系页主按钮的磁吸） */
+.ct__infoItem a {
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 2px;
+  transition:
+    color 0.3s var(--ease),
+    background-size 0.6s var(--ease);
+}
+
+.reveal.is-in .ct__infoItem a {
+  background-size: 100% 1px;
+}
+
+.ct__infoItem a:hover {
+  color: var(--accent);
+  background-size: 100% 1px;
+}
+
+.ct__infoNote {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+/* 页脚 */
+.ct__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: clamp(28px, 3vw, 44px);
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.ct__footerMid {
+  color: var(--muted);
+  opacity: 0.75;
+}
+
+.ct__top-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--ink-2);
+  transition: color 0.35s var(--ease);
+}
+
+.ct__top-link svg {
+  transition: transform 0.4s var(--ease);
+}
+
+.ct__top-link:hover {
+  color: var(--accent);
+}
+
+.ct__top-link:hover svg {
+  transform: translateY(-3px);
+}
+
+@media (max-width: 1080px) {
+  .ct__info {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ct__footerMid {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .ct__inner {
+    min-height: auto;
+  }
+  .ct__info {
+    grid-template-columns: 1fr;
+  }
+  .ct__actions {
+    flex-wrap: wrap;
+  }
+  .ct__actions .btn {
+    width: 100%;
+  }
+  .ct__footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
