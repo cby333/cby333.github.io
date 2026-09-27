@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="RB4nWM3eFEw2BnAphpHdAp">
+<head data-page-node-id="PRpCvLGPUSlUuN0EoLbR08">
+<meta charset="UTF-8" data-page-node-id="Hm4iDoJie7bLraMVhvvxAR">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="AFzrAKT1TByPjC3Ku8ipPE">
+<title>AI营销素材工厂 · 交互原型</title>
+<style>
+:root{
+  --oma:#F07D1A; --oma-d:#C9610A; --oma-l:#FFF3E6; --oma-xl:#FFFAF3;
+  --ink:#1F2937; --sub:#6B7280; --faint:#9CA3AF; --line:#E8EBF0; --bg:#F5F7FA;
+  --ok:#16A34A; --warn:#D97706; --err:#DC2626; --info:#2563EB;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft YaHei","微软雅黑","PingFang SC",sans-serif;background:var(--bg);color:var(--ink);font-size:13px;line-height:1.6}
+.screen{width:1280px;min-height:820px;background:var(--bg);display:flex;flex-direction:column;margin:0 auto}
+body.flat .screen{border-bottom:2px solid var(--oma);margin-bottom:24px}
+.screen:not(.active){display:none}
+body.flat .screen{display:flex !important}
+
+/* 顶栏 */
+.topbar{height:56px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 24px;gap:14px;flex:none}
+.logo{width:30px;height:30px;border-radius:8px;background:var(--oma);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px}
+.logo-t{font-size:15px;font-weight:700}
+.logo-s{font-size:11px;color:var(--faint);margin-left:-8px;padding-left:8px;border-left:1px solid var(--line)}
+.nav{display:flex;gap:2px;margin-left:18px}
+.nav a{padding:7px 14px;border-radius:7px;font-size:13px;color:var(--sub);text-decoration:none}
+.nav a:hover{background:var(--oma-xl);color:var(--oma-d)}
+.nav a.on{background:var(--oma-l);color:var(--oma-d);font-weight:600}
+.spacer{flex:1}
+.user{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--sub)}
+.avatar{width:28px;height:28px;border-radius:50%;background:var(--oma-l);color:var(--oma-d);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+.btn{padding:7px 16px;border-radius:7px;border:1px solid var(--line);background:#fff;font-size:13px;cursor:pointer;font-family:inherit;color:var(--ink)}
+.btn:hover{border-color:var(--oma);color:var(--oma-d)}
+.btn.pri{background:var(--oma);color:#fff;border:none;font-weight:600}
+.btn.pri:hover{background:var(--oma-d);color:#fff}
+.btn.sm{padding:5px 11px;font-size:12px}
+.btn.ghost{background:transparent}
+.btn.dis{background:#F3F4F6;color:var(--faint);border:none;cursor:not-allowed}
+
+/* 主体 */
+.main{flex:1;display:flex;gap:0;min-height:0}
+.side{width:188px;background:#fff;border-right:1px solid var(--line);padding:16px 12px;flex:none}
+.side-t{font-size:11px;color:var(--faint);padding:6px 10px;letter-spacing:.5px}
+.side a{display:block;padding:8px 10px;border-radius:7px;color:var(--sub);text-decoration:none;font-size:13px;margin-bottom:2px}
+.side a:hover{background:var(--oma-xl)}
+.side a.on{background:var(--oma-l);color:var(--oma-d);font-weight:600}
+.content{flex:1;padding:20px 24px;overflow:hidden}
+.page-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.page-h h2{font-size:18px;font-weight:700}
+.crumb{font-size:12px;color:var(--faint);margin-bottom:2px}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px}
+.grid{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.stat .v{font-size:26px;font-weight:700;line-height:1.2;margin-top:4px}
+.stat .k{font-size:12px;color:var(--sub)}
+.stat .d{font-size:11px;color:var(--faint);margin-top:4px}
+.up{color:var(--ok)} .down{color:var(--err)}
+
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:5px;background:var(--oma-l);color:var(--oma-d);margin:2px 4px 2px 0}
+.tag.g{background:#E8F5EE;color:#157A3C} .tag.b{background:#E8F0FE;color:#1B4DB1} .tag.o{background:#FFF1E0;color:#9A4D00} .tag.r{background:#FCECEC;color:#A32020} .tag.n{background:#F3F4F6;color:#6B7280}
+
+/* 列表与表格 */
+.tb{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;font-size:12.5px}
+.tb th{background:#FAFBFC;color:var(--sub);font-weight:600;text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);font-size:12px}
+.tb td{padding:11px 12px;border-bottom:1px solid #F1F3F6}
+.tb tr:last-child td{border-bottom:none}
+
+/* 表单 */
+.form-row{margin-bottom:16px}
+.form-row>label{display:block;font-size:13px;font-weight:600;margin-bottom:8px}
+.sel,.inp{width:100%;padding:8px 11px;border:1px solid var(--line);border-radius:7px;font-size:13px;font-family:inherit;background:#fff;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:7px 13px;border:1px solid var(--line);border-radius:7px;background:#fff;cursor:pointer;font-size:12.5px}
+.chip:hover{border-color:var(--oma)}
+.chip.on{background:var(--oma-l);border-color:var(--oma);color:var(--oma-d);font-weight:600}
+.spec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.spec{padding:11px;border:1px solid var(--line);border-radius:8px;cursor:pointer;text-align:center;background:#fff}
+.spec:hover{border-color:var(--oma)}
+.spec.on{border-color:var(--oma);background:var(--oma-xl)}
+.spec .n{font-size:13px;font-weight:600}
+.spec .s{font-size:11px;color:var(--faint)}
+.mock-frame{height:52px;border-radius:6px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:600}
+
+/* 生成进度 */
+.taskcard{border:1px solid var(--line);border-radius:10px;background:#fff;padding:14px;margin-bottom:10px}
+.pbar{height:6px;background:#F1F3F6;border-radius:3px;overflow:hidden;margin-top:8px}
+.pbar i{display:block;height:100%;background:var(--oma);border-radius:3px}
+.log{background:#1F2937;color:#D1D5DB;font-family:Consolas,monospace;font-size:11.5px;padding:12px;border-radius:8px;height:110px;overflow:hidden;line-height:1.9}
+
+/* gallery */
+.shot{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:#fff;cursor:pointer}
+.shot:hover{border-color:var(--oma)}
+.shot.on{border:2px solid var(--oma)}
+.shot .img{height:150px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;text-align:center;padding:12px;font-weight:600}
+.shot .meta{padding:9px 11px;font-size:12px}
+.shot .meta .t{font-weight:600;margin-bottom:3px}
+
+/* 素材库卡片 */
+.lib-card{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:#fff}
+.lib-card .img{height:118px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600}
+.lib-card .b{padding:10px 12px}
+.lib-card .t{font-weight:600;font-size:12.5px;margin-bottom:5px}
+
+/* 图表 */
+.bar-chart{display:flex;align-items:flex-end;gap:16px;height:150px;padding:12px 0 0}
+.bar{flex:1;background:var(--oma);border-radius:5px 5px 0 0;position:relative;text-align:center}
+.bar span{position:absolute;top:-20px;left:0;right:0;font-size:11px;color:var(--sub)}
+.bar em{position:absolute;bottom:-22px;left:0;right:0;font-size:11px;color:var(--faint);font-style:normal}
+.legend{display:flex;gap:14px;font-size:11.5px;color:var(--sub);margin-top:8px}
+.legend i{width:9px;height:9px;border-radius:2px;display:inline-block;margin-right:4px}
+
+/* footbar */
+.footbar{height:34px;background:#fff;border-top:1px solid var(--line);display:flex;align-items:center;padding:0 24px;font-size:11.5px;color:var(--faint);gap:16px;flex:none}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--ok);display:inline-block;margin-right:4px}
+
+/* 导出按钮 */
+.exportbar{position:fixed;right:18px;bottom:18px;display:flex;gap:8px;z-index:99}
+.exportbar .btn{box-shadow:0 2px 10px rgba(0,0,0,.12)}
+</style>
+</head>
+<body data-page-node-id="pPNHj74EORS19SxSHnO64Z">
+
+<!-- ============ P1 工作台 ============ -->
+<section class="screen active" id="p-workbench" data-page-node-id="Gx6Fcxjmx0dEFkXd5IJs1K">
+  <div class="topbar" data-page-node-id="MCYviWbrUhDyUplx3HTzrq">
+    <div class="logo" data-page-node-id="oOldo4HNXT4knRPixuyw5m">H</div><div class="logo-t" data-page-node-id="y8NH2DudYhOA5gQRdPvYWd">AI 营销素材工厂</div><div class="logo-s" data-page-node-id="23TUyFx884ymtHD3k8MyEB">Homa 国内营销中心 · 内部版 v1.0</div>
+    <div class="nav" data-page-node-id="154rZ2N73stXKAGuvDLwuS">
+      <a href="#p-workbench" class="on" data-page-node-id="DkUH5gnGd1QNS1gwOoDdY2">工作台</a>
+      <a href="#p-create" data-page-node-id="3HPqfnbSBrP7az3duwn0Hx">新建任务</a>
+      <a href="#p-library" data-page-node-id="BwqzkG69cFR5j7gNY6mCHD">素材库</a>
+      <a href="#p-data" data-page-node-id="RRg5XjYJCJkWrQnVdToV0F">数据看板</a>
+      <a href="#p-template" data-page-node-id="4NkyJyJDygyYvWYFiZCrLi">模板库</a>
+    </div>
+    <div class="spacer" data-page-node-id="js6Kq6JEMsQMBSkETKarmB"></div>
+    <div class="user" data-page-node-id="Waw6o2tX1n6BEpbKK5JnM3"><div class="avatar" data-page-node-id="jml7Kb7eB6FKmaB0DlAIYG">设</div>视觉设计组 · 内部账号</div>
+  </div>
+  <div class="main" data-page-node-id="A5wfYePYeqhg6NG7oZrGQW">
+    <div class="side" data-page-node-id="pGMwRgTtJCTVmXqtCOz3i4">
+      <div class="side-t" data-page-node-id="ZxM009i58QI6CcdlU3w7Bc">内容生产</div>
+      <a href="#p-workbench" class="on" data-page-node-id="nUawkIk9HWK2lgEmiB8L36">工作台</a>
+      <a href="#p-create" data-page-node-id="M2npRnw6A5TNEl4TSSrRUf">新建生成任务</a>
+      <a href="#p-progress" data-page-node-id="B8GDkYEHc0ATrAktRvRPhB">任务队列</a>
+      <a href="#p-result" data-page-node-id="UyC6UIpdFlpeYBjGNRa31R">最近结果</a>
+      <div class="side-t" data-page-node-id="SRjcuAy3PbvxNI1T7Rujor">资产管理</div>
+      <a href="#p-library" data-page-node-id="vweFRMwNMpZpupff4rPUqW">素材库</a>
+      <a href="#p-refine" data-page-node-id="twQBuysBmZf7GpIODIQq34">精修与入库</a>
+      <a href="#p-template" data-page-node-id="Dvheywqwu1VrN9tAmz4zvw">模板库</a>
+      <div class="side-t" data-page-node-id="Lz1qZmlwBuHIUnHMP6aJvX">效果追踪</div>
+      <a href="#p-data" data-page-node-id="DbSJdtPEQMUowJmk0b1uhm">数据看板</a>
+    </div>
+    <div class="content" data-page-node-id="CG6oSRTMSXgdonF3LBC6nc">
+      <div class="crumb" data-page-node-id="w0T5dNsa44VhuLcjIMbDwB">首页 / 工作台</div>
+      <div class="page-h" data-page-node-id="xT704cT8JljVhaJe33A5zB">
+        <h2 data-page-node-id="nRpDHxYGp3YzvXHZ5iNTwA">早上好，欢迎回来</h2>
+        <div data-page-node-id="lriCwmOQ80y7X1ql4n3lDD"><button class="btn" onclick="location.href='#p-create'" data-page-node-id="fnAekDaRb5VaRZWTKl5z2x">查看任务队列</button> <button class="btn pri" onclick="location.href='#p-create'" data-page-node-id="umzAuPyAodUDzh9dWOhvtT">＋ 新建内容包</button></div>
+      </div>
+      <div class="grid g4" style="margin-bottom:16px" data-page-node-id="lLh3bsvIYQDkEg9aEHPa3j">
+        <div class="card stat" data-page-node-id="YsmT712WrAha1tpMy5Ssp0"><div class="k" data-page-node-id="cs7HaC1C0gVXArMMMGQfPI">本週待产素材</div><div class="v" data-page-node-id="JGMDUUSWKCU4vKVwnvUsAw">12 <span style="font-size:13px;color:var(--faint)" data-page-node-id="fLo68m1eca3QzVbNQueYrj">/ 20 张</span></div><div class="d" data-page-node-id="Hc7HDpE45NBF0uDkGHOwGZ">526 母婴冰箱上市包 · 距上市发布还有 5 天</div></div>
+        <div class="card stat" data-page-node-id="WJJbjyJhHYkCsCA0Hac5Kp"><div class="k" data-page-node-id="IgfmWD8uib0BL7QYLB3FHZ">待精修入库</div><div class="v" data-page-node-id="k5Trtjnaser5se5ePkBUqM">8 <span style="font-size:13px;color:var(--faint)" data-page-node-id="GlTwa7wbBDiVCLF2CdRYgK">张</span></div><div class="d" data-page-node-id="y8GgncSbeAGNMSQeYtaJVz">AI 已产出，等待人工确认与打标</div></div>
+        <div class="card stat" data-page-node-id="F3KRLg7U0ovOLJLKVkAul9"><div class="k" data-page-node-id="QOG8ZUwDHBF9XYjjfYTAhN">本月素材采用率</div><div class="v" data-page-node-id="UbP6rBYyPVusQypg316gff">61.2%</div><div class="d" data-page-node-id="WMXgOKHtJXAIRDmQDX3Ok7"><span class="up" data-page-node-id="zstDGKC2nYv7SLmpZoAuDc">↑ 9.4pt</span> 对比上月（口径待基线确认）</div></div>
+        <div class="card stat" data-page-node-id="OjhGSsWUVrAFXgRE8jZHBC"><div class="k" data-page-node-id="KjtQxls4E1M4EZzlkx5YBf">算力额度</div><div class="v" data-page-node-id="OXJZ01dqW8b6O3E9ILmBHL">160 <span style="font-size:13px;color:var(--faint)" data-page-node-id="YPV6SEbH59IUZZPqa7gkbo">点</span></div><div class="d" data-page-node-id="yorQDKoBpUsmJThjDFrz84">本月剩余 160 / 500 点</div></div>
+      </div>
+
+      <div class="grid g2" style="grid-template-columns:1.35fr 1fr;margin-bottom:16px" data-page-node-id="8fWkffHpUVcm4QcXT3ASU3">
+        <div class="card" data-page-node-id="cNBQ1x3c2yZDQcSLuPGcFH">
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px" data-page-node-id="QJPtlqg3hVJ5BRGUaKhajy">
+            <b style="font-size:14px" data-page-node-id="4CcuUp5mq8JVGr7kIrWMJa">进行中的内容包</b><span class="tag o" data-page-node-id="aAcYGFhMEkAT0DcCdxMvBH">1 个临近节点</span>
+          </div>
+          <table class="tb" data-page-node-id="dBC0dQYjmZpr1YM1fYEVXj">
+            <tr data-page-node-id="UjIDSUTPlDtVZzk63BpXfj"><th style="width:34%" data-page-node-id="DBYFTbaBZy4q7ArjuBlSD2">内容包</th><th data-page-node-id="518D121ed6VMCHJcDThPoy">关联产品线</th><th data-page-node-id="N6qSK4GcsHeWpuvJwoMmTq">进度</th><th data-page-node-id="ZlE6q52S4AGpxObvDrplCi">节点</th></tr>
+            <tr data-page-node-id="gldGKYvnz1tT4YBqbmKPoM"><td data-page-node-id="R8KgrffZwnztLSNJJ9AmMN">526 母婴冰箱上市内容包</td><td data-page-node-id="lqT5qSaOj9RwrWmZTqIL4s">母婴健康储鲜</td><td data-page-node-id="B8MTixxWG2CCbrkAVs3u1A"><div class="pbar" style="width:110px" data-page-node-id="ak2VqwTYksKD9ZwOfHQrw0"><i style="width:65%" data-page-node-id="rNhowDy0gMOwamyEOcn9a2"></i></div><span style="font-size:11px;color:var(--sub)" data-page-node-id="nQrRu8cQ16BGFHduDn41DR">13/20 张</span></td><td data-page-node-id="CZwvi4F7Z6pUqA8W3jx9D5"><span class="tag r" data-page-node-id="dhcLzrEZMF2VReoPFNzsYK">距上市 5 天</span></td></tr>
+            <tr data-page-node-id="3FsrGpP2HqSrbScvdXXEpa"><td data-page-node-id="0ZkQGxntjVjLtWNSF9CXc8">抖音大家电榜单冲刺</td><td data-page-node-id="DiDR49zcfKDOlMjkX8qGe0">嵌入式美学厨居</td><td data-page-node-id="Aw4nQJ12b4nViPND9k1nOl"><div class="pbar" style="width:110px" data-page-node-id="6EYvD8Y0HxRdf5fncG08pi"><i style="width:30%" data-page-node-id="Vh2WQgFOYW23jWbLivoTlg"></i></div><span style="font-size:11px;color:var(--sub)" data-page-node-id="77f1YbxAputCKzpW4SbKdm">6/20 张</span></td><td data-page-node-id="uK3sBP5mfTDkdPMXnWCi2q"><span class="tag n" data-page-node-id="ZAWYqacagDEyiT21sIm91w">常规节奏</span></td></tr>
+            <tr data-page-node-id="X5AUg1dQnyKLlRTihMNZiX"><td data-page-node-id="H3BRh27UPECDh9NS7OFDe9">小红书母婴场景种草</td><td data-page-node-id="Il1L5xvdlSk8B5WaD9o8Ea">母婴健康储鲜</td><td data-page-node-id="mq1A4i7HCJXK15TgtpYkDq"><div class="pbar" style="width:110px" data-page-node-id="I8RBxB5lvDT2RjSVktX5qG"><i style="width:100%" data-page-node-id="U5h21CiYvUTsnJLhwdp1fM"></i></div><span style="font-size:11px;color:var(--sub)" data-page-node-id="9SxRMJyQEpAjddJErD7y6C">已完成</span></td><td data-page-node-id="Pksr0AbIpCGThAVnxTBepU"><span class="tag g" data-page-node-id="722LNoqHpLAHWeNJ5ODbSu">已交付</span></td></tr>
+          </table>
+        </div>
+        <div class="card" data-page-node-id="6pHh7jYdLblwd3FX58L7mA">
+          <b style="font-size:14px;display:block;margin-bottom:10px" data-page-node-id="F2lrRp8Hqa4tk4IXrxco1B">最近生成</b>
+          <div class="grid g2" style="gap:10px" data-page-node-id="S9zOMnn8DCcGMUIJEJbJDN">
+            <div class="lib-card" data-page-node-id="ewjPhphHPY2qMJl2qhH8KA"><div class="img" style="background:linear-gradient(135deg,#F6A96B,#F07D1A)" data-page-node-id="Mc23vbre2AoA7aU1HtOtO8">小红书首图 · 3:4</div><div class="b" data-page-node-id="RXAqES0q1cJurwFCcbY8ks"><div class="t" data-page-node-id="Ysxw2hQ0PfuGwjhTMQk2hN">母婴 4℃ 场景变体 A</div><span class="tag" data-page-node-id="kdUWp82D47vFpSg5Ebzncg">母乳 4℃ 专舱</span></div></div>
+            <div class="lib-card" data-page-node-id="AOC1CNfvoXrYFmWH4aaLQv"><div class="img" style="background:linear-gradient(135deg,#8FB8E8,#2563EB)" data-page-node-id="O2qsCiYkhrrm0WPh5FFqbt">抖音封面 · 9:16</div><div class="b" data-page-node-id="eMgAf67WPintnO51GAOLUS"><div class="t" data-page-node-id="4gt7nmGVqW7w4q1B4ZS2bH">零嵌厨房一镜变体 B</div><span class="tag" data-page-node-id="4UkkRrnJwoj3Io8K9IiefJ">零嵌 594mm</span></div></div>
+          </div>
+          <p class="crumb" style="margin-top:10px" data-page-node-id="R0ajG2cS985H2RD58BbZzN">当前所用品牌主色：<b style="color:var(--oma-d)" data-page-node-id="q9NPTgkoMzxXwYd4xBF3DF">奥马橙 #F07D1A</b>（模板已锁定配色，不可覆盖）</p>
+        </div>
+      </div>
+
+      <div class="card" data-page-node-id="yEJqjjyhlNuvIRkImEd5zq">
+        <b style="font-size:14px;display:block;margin-bottom:10px" data-page-node-id="XACuiJqzGKAHcEbiFdLpgA">今日推荐：可直接复用的高表现模板</b>
+        <table class="tb" data-page-node-id="wmokijxEKSN2YlXHgSifyU">
+          <tr data-page-node-id="VgAEP54u4Qfo68fLspznlV"><th style="width:30%" data-page-node-id="L2S0OTvMCizqvGdG4v1oy2">模板</th><th data-page-node-id="cAVLAwdJAsYcqanYbx90qQ">关联卖点</th><th data-page-node-id="zI4GyUreowqpb6Gp6yi5qY">近 30 天使用</th><th data-page-node-id="o2goYANb9LR6AHFUpkzWEN">采用率</th><th style="width:16%" data-page-node-id="x3bYgcdHqyedmLpZUzLKaT">操作</th></tr>
+          <tr data-page-node-id="tGX6NOZdyPdqIQzLDYAxbb"><td data-page-node-id="MOgA5ZrBhpURD4NTTC3FZI">母乳专舱 · 暖光母婴房</td><td data-page-node-id="qtCIV6kXFyfsVp6icmr7QS"><span class="tag" data-page-node-id="EEZ1l26GSfXEGeSPBWC2l6">母乳 4℃ 专舱</span></td><td data-page-node-id="3vQ8O3MZ8UwmLG9Tb7KFnc">28 次</td><td data-page-node-id="saEkvq5j8pvjuxXfssaCgu"><span class="up" data-page-node-id="2P6r9zcwfDOY2WvWfT6PlZ">74.1%</span></td><td data-page-node-id="i9qRsOWyr5bRaUMzFORwBx"><button class="btn sm" data-page-node-id="Z0zACakCasTPv1hyUvSD4k">套用</button></td></tr>
+          <tr data-page-node-id="BtNynocZmgC98ko915ebIj"><td data-page-node-id="0ARsAeJ6qcdw5ng1xtZa0e">严丝合缝 · 奶油风厨房</td><td data-page-node-id="DSGnJXnTQxYpGNtQ5RjjCJ"><span class="tag" data-page-node-id="nDyudQiVpczkAkhyoEmrps">零嵌 594mm</span></td><td data-page-node-id="ccuXhi50QHNFMHWnfGBMyj">19 次</td><td data-page-node-id="njrJcmFRop8EkpAlm7NB4b"><span class="up" data-page-node-id="VO3Q7uzKE9OpXjDFBCKabr">68.3%</span></td><td data-page-node-id="6ahVhJk1GyRBtB6jnLrQcr"><button class="btn sm" data-page-node-id="oAkf5W0IuleAyf79gRDY3G">套用</button></td></tr>
+          <tr data-page-node-id="SZoYVPJGb4j8ZtlYjk07C2"><td data-page-node-id="dAGxJ85rIaxMYGCHK6giHt">静音陪伴 · 夜间育儿房</td><td data-page-node-id="UgoWjr0lKpYGLGkP97cOSa"><span class="tag" data-page-node-id="zhdEBjIFuNMyzk5NijZLT4">34dB 静音</span></td><td data-page-node-id="KwKSCcRyCv9YUaoiT8aML2">11 次</td><td data-page-node-id="Urmk0vW1kpqumMTmhKWXLW">52.0%</td><td data-page-node-id="L8pUVYILd1KLyztx52GKeq"><button class="btn sm" data-page-node-id="IT9UD3xNZOkICNxkGnHhof">套用</button></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="footbar" data-page-node-id="cFECmzyTtRDsCy9byw511Z"><span data-page-node-id="FbG0oViDLQU4Tis12CMCt7"><i class="dot" data-page-node-id="FMiJiu19Da2NoEhhhbQF8B"></i>本地导出服务已连接</span><span data-page-node-id="wKifAQPW23LMkGYndcSaAU">素材版本：v1.0</span><span data-page-node-id="gOMELQFs8FAZCVKBCha4e6">数据口径：内部统计</span><span style="margin-left:auto" data-page-node-id="y8K8ZJNAWQdR6SJSAKqdOP">原型演示：鼠标点击可切换页面</span></div>
+</section>
+
+<!-- ============ P2 新建任务 ============ -->
+<section class="screen" id="p-create" data-page-node-id="D71bGmnJw2HwiwSfrBvGl1">
+  <div class="topbar" data-page-node-id="D9547MrYPybyVrVGZH6d0D">
+    <div class="logo" data-page-node-id="WDgZYVGAMTLx0xXwy5jGZK">H</div><div class="logo-t" data-page-node-id="AdxtTvMRG9VZch9rT0W0N8">AI 营销素材工厂</div><div class="logo-s" data-page-node-id="tKYS5ai4MsSVfYSmeXDOST">Homa 国内营销中心 · 内部版 v1.0</div>
+    <div class="nav" data-page-node-id="GcBvzZ7ouaLpHZcDrfdMnV">
+      <a href="#p-workbench" data-page-node-id="cCMDKuM5zGokeHyl7Cl2LW">工作台</a><a href="#p-create" class="on" data-page-node-id="1fpS5M8OeiSaGUhTGkzqta">新建任务</a><a href="#p-library" data-page-node-id="8BkFkcNebd0aOJpyktRC5H">素材库</a><a href="#p-data" data-page-node-id="cn9OdTzDaE4wsUnG5lcI4r">数据看板</a><a href="#p-template" data-page-node-id="gF6bEHAJOh6vDLBnY52ky2">模板库</a>
+    </div>
+    <div class="spacer" data-page-node-id="ewMeUfI011WQW9bYotAsDE"></div><div class="user" data-page-node-id="UE4VdW9H12faAyt2GRSD8n"><div class="avatar" data-page-node-id="w1PQiiH8Hl15tg3v7EvMdp">设</div>视觉设计组 · 内部账号</div>
+  </div>
+  <div class="main" data-page-node-id="iiO0J65rLE507wg1bOzVaV">
+    <div class="side" data-page-node-id="OaHZHAbJVoPTTntc1XeRCe">
+      <div class="side-t" data-page-node-id="VnUwBtqR3PNHUHScZXYt3R">内容生产</div>
+      <a href="#p-workbench" data-page-node-id="frBJR0UbcgEV5pFHd4C2sY">工作台</a><a href="#p-create" class="on" data-page-node-id="4hUdN5zD80BwiS0UBk5csW">新建生成任务</a><a href="#p-progress" data-page-node-id="18tT3FzxoTJqkpej3xtScG">任务队列</a><a href="#p-result" data-page-node-id="5MMOstujFsJgFfyRS5W75S">最近结果</a>
+      <div class="side-t" data-page-node-id="8NilrSqRG8EFlXHABo8ltG">资产管理</div>
+      <a href="#p-library" data-page-node-id="XevoiniHbLx7GatSRdeZoL">素材库</a><a href="#p-refine" data-page-node-id="G4KSkjYrLNjQw7zby6X1cE">精修与入库</a><a href="#p-template" data-page-node-id="2w6D5TUzcxikkfXkv4gpMj">模板库</a>
+      <div class="side-t" data-page-node-id="bIMY5SykDDvZ39tBaTOZXe">效果追踪</div><a href="#p-data" data-page-node-id="2AWRFFPm23kWfh67fLRB3s">数据看板</a>
+    </div>
+    <div class="content" data-page-node-id="ZEh76ZZQnra3vt6u236Ole">
+      <div class="crumb" data-page-node-id="ldYV30iAEksmOD5rle8WFD">首页 / 新建生成任务</div>
+      <div class="page-h" data-page-node-id="HoHlWzPcXrWDAzsZMySmYv"><h2 data-page-node-id="J4x2b6sF280Jemv8tspDkI">新建生成任务</h2><div data-page-node-id="lUto5NphbFIzSp29Qvq0hr"><button class="btn ghost" data-page-node-id="V9iQ9YsFvFzm3MauLNPyDQ">保存为草稿</button> <button class="btn pri" onclick="location.href='#p-progress'" data-page-node-id="1RU4pVo0Xpj4Qugz2SXXxA">开始生成</button></div></div>
+      <div class="grid g2" style="grid-template-columns:1.5fr 1fr" data-page-node-id="aEjy143QG2QTgp5gK2XEFV">
+        <div data-page-node-id="6gYsmcY1FHn6HS44RbWrhf">
+          <div class="card form-row" data-page-node-id="N3zTQQkzh4sYsZevgA6YsR">
+            <label data-page-node-id="pow5K6YG5YSnzhxHqaP97d">1 · 选择产品线</label>
+            <select class="sel" data-page-node-id="G4bQLHIpm5vUqp8nJoPB6Z"><option data-page-node-id="szDoeZuWGdtst1TDfit5YX">526 法式平嵌母婴冰箱（母婴健康储鲜）</option><option data-page-node-id="qBKYblqCmxml9jGAHQTNxJ">鸿蒙智联系列（智能）</option><option data-page-node-id="B6IrSiXV2jCUXGGwvVGG48">平嵌系列（嵌入式美学厨居）</option></select>
+            <p class="crumb" style="margin-top:6px" data-page-node-id="wntDHKpNfEHUNC6FzMOD6F">产品线决定可用模板与品牌视觉约束（主色 / Logo 位置 / 禁用词）。</p>
+          </div>
+          <div class="card form-row" data-page-node-id="TzU8Q6Uv1wcjHb75nJQOf0">
+            <label data-page-node-id="fYFaVkf48ByeTdtcPLFETD">2 · 选择卖点标签（多选，最多 2 个，串联生成构图）</label>
+            <div class="chips" data-page-node-id="iXcLeBv63GAqXg2ibuGY4w">
+              <div class="chip on" onclick="this.classList.toggle('on')" data-page-node-id="1WFIxtHX8bvpOF7W1UPXLh">母乳 4℃ 专舱</div>
+              <div class="chip on" onclick="this.classList.toggle('on')" data-page-node-id="GAVGd5x9ijDySjF23aSUya">零嵌 594mm</div>
+              <div class="chip" onclick="this.classList.toggle('on')" data-page-node-id="q1O1xxROzB2jl217ivXRVi">AI 全域超净</div>
+              <div class="chip" onclick="this.classList.toggle('on')" data-page-node-id="6MumpPSfHfSKCbKjt1atqU">双系统四变频</div>
+              <div class="chip" onclick="this.classList.toggle('on')" data-page-node-id="GkNpeU8O0dahjNMdNHfFHS">34dB 静音</div>
+              <div class="chip" onclick="this.classList.toggle('on')" data-page-node-id="FZ2p8zItDXREhDEooLJXAt">新一级能效</div>
+            </div>
+            <p class="crumb" style="margin-top:6px" data-page-node-id="iiPA25LNZBb4mABvkO2EQ1">已选 2 个：<b data-page-node-id="IT9pQAKvYcxYHSAb6FQqaC">母乳 4℃ 专舱</b> + <b data-page-node-id="yveFwDd5DHyySD3vlam8kG">零嵌 594mm</b>；对应 3 个可用场景模板。</p>
+          </div>
+          <div class="card form-row" data-page-node-id="xAmgyFtvknDRbkuYv7ojtw">
+            <label data-page-node-id="YDRXDYREFkxTQ3llwIXKFp">3 · 选择平台与规格（多选）</label>
+            <div class="spec-grid" data-page-node-id="xQBFMD3Kila7KH3QmsOO39">
+              <div class="spec on" onclick="this.classList.toggle('on')" data-page-node-id="dFVvvop1qhQcUoa6kZ7oUT"><div class="n" data-page-node-id="8ioOUlewHyRZlNPtMUCiyU">小红书首图</div><div class="s" data-page-node-id="cbKWmFvd6lkmV1g9v7riUV">3:4 · 1080×1440</div></div>
+              <div class="spec on" onclick="this.classList.toggle('on')" data-page-node-id="cRpEpTfwhHPcmBoEOzOID3"><div class="n" data-page-node-id="iuBkPS5BHljPMQuGUgDMJE">抖音封面</div><div class="s" data-page-node-id="So8AamO0tVDnzwlO57EWMF">9:16 · 1080×1920</div></div>
+              <div class="spec on" onclick="this.classList.toggle('on')" data-page-node-id="5R03SnaJ6zGgsHdlIEt5gz"><div class="n" data-page-node-id="gsMzM3gDZAbbI1NIpH7IaP">电商主图</div><div class="s" data-page-node-id="harDNqc38ogcvy8rNakTsV">1:1 · 1200×1200</div></div>
+              <div class="spec" onclick="this.classList.toggle('on')" data-page-node-id="AAaNpCQgJ4M71uhPE14AlT"><div class="n" data-page-node-id="HVUHseLyGTXBupjTQZo1BQ">视频号封面</div><div class="s" data-page-node-id="747GShkZyOqQVsK8IGRp6i">16:9 · 1920×1080</div></div>
+            </div>
+          </div>
+          <div class="card form-row" style="margin-bottom:0" data-page-node-id="c1YR4DdBYYmdoo4h7NPCxQ">
+            <label data-page-node-id="3v9hPAyhTMpIPb2S6CiRzS">4 · 场景风格与数量</label>
+            <div class="grid g2" data-page-node-id="dktjdTVuB265dvs8i65d2N">
+              <div data-page-node-id="hevObR69GMma8G0FhGHsLy"><select class="sel" data-page-node-id="9jjS7J8wLWMNeZ8S8C2Vl8"><option data-page-node-id="CYAAh7bB0hgVbXr3y75AzS">奶油风厨房</option><option data-page-node-id="5kIrXRXShM2gD1WSKSympx">北欧极简</option><option data-page-node-id="36hl4sWrYSNJqRL3vq3oW5">母婴温馨暖光</option><option data-page-node-id="YxCdUCqJfEiTB8nasUUbbC">轻奢石纹</option></select></div>
+              <div data-page-node-id="ObUjP9GK8hDVeuXFD2LiHI"><select class="sel" data-page-node-id="70NtW69CtEpqGEKfQ5Jcz8"><option data-page-node-id="CP2YLB4ZnF5WLGZs4cDqbo">每个平台生成 4 张候选</option><option data-page-node-id="rgcXQjtMA5TOVme8HYiAWo">每个平台生成 2 张候选</option><option data-page-node-id="2oWcR4KZLaAU5Lt0bb44gy">每个平台生成 8 张候选</option></select></div>
+            </div>
+          </div>
+        </div>
+        <div data-page-node-id="11Da9p5QZT1e2urU6CinI5">
+          <div class="card" style="margin-bottom:14px" data-page-node-id="6AdPlDUXFscR5HYznd644Z">
+            <b style="font-size:14px;display:block;margin-bottom:10px" data-page-node-id="uC5K1BzvTasjlkt2qrPD1s">生成配置预览</b>
+            <table class="tb" style="font-size:12px" data-page-node-id="A2KjzLD0YqLXYaZVeIHqK0">
+              <tr data-page-node-id="mZ2ul8eKEvtwqbr8QcWnEU"><td style="color:var(--sub)" data-page-node-id="Or8lEYaC6KQbmAUyJne2vj">内容包归属</td><td data-page-node-id="N9CoBoQntdjJN2hcCPHFEu">母婴健康储鲜 · 526 上市</td></tr>
+              <tr data-page-node-id="5rltZibYcDeprU6Y17WK2G"><td style="color:var(--sub)" data-page-node-id="LoGZukcJ6R5Owt9P56KSCm">场景模板</td><td data-page-node-id="8NOXXXwNq7BIe0XXuK2Bfj">母乳专舱 · 暖光母婴房 v1.2</td></tr>
+              <tr data-page-node-id="7e5YzXLG22vNv5vzNUjNCe"><td style="color:var(--sub)" data-page-node-id="7YzRdE0XDJsBo6qfsovcnI">平台数</td><td data-page-node-id="9t7vU6ctdYlBBjyNUIagLt">3</td></tr>
+              <tr data-page-node-id="NOHsDDP1xcmbmrG0zgsmNX"><td style="color:var(--sub)" data-page-node-id="4rIDAAUTHqUfq20yTfsNXq">预计产出</td><td data-page-node-id="OwE52lgiDY7EVSKeHZaikQ"><b data-page-node-id="WRHqXe4aZmfPeErmHyg3Gr">12 张</b></td></tr>
+              <tr data-page-node-id="Gy4955pLDNncj47oBIBsYp"><td style="color:var(--sub)" data-page-node-id="DeUcfk3PdS8JLrW0MjdG3k">预计耗时</td><td data-page-node-id="My3pbdawXiDDEG3Q2OXA9e">约 3 分 40 秒</td></tr>
+              <tr data-page-node-id="X9uRYGVxUvgu1zTpjHSpkT"><td style="color:var(--sub)" data-page-node-id="D5XUxfkOowdpJYkpmE7rwo">本次消耗算力</td><td data-page-node-id="K8ZkwxxH9EmTCqCxCCB3hq"><b style="color:var(--oma-d)" data-page-node-id="NEwADXOGQGqOWhLfyOGAKA">8 点</b>（剩余 160 点）</td></tr>
+            </table>
+            <p class="crumb" style="margin-top:10px" data-page-node-id="nnH0k4t4biWlphbSJq9CoN">所有产出遵循品牌 DNA 约束：主色奥马橙、Logo 固定右下、禁用"第一/最"类绝对化用语。</p>
+          </div>
+          <div class="card" data-page-node-id="yTsvTCuIMjDVqFGU9W8idN">
+            <b style="font-size:14px;display:block;margin-bottom:10px" data-page-node-id="4btX7PNzrDeWk3f7WNNHg6">合规前置校验</b>
+            <p style="font-size:12.5px;color:var(--sub);margin-bottom:8px" data-page-node-id="EPqRbfFutrpqRalalcNPPu">生成前自动校验，未通过将阻断：</p>
+            <div data-page-node-id="mN5ZThAEej6UuLaYJxDGVi"><span class="tag g" data-page-node-id="8xQ11SZYjUCdm1Ww63rfzr">✓ 品牌主色已锁定</span><span class="tag g" data-page-node-id="xf2DfjHwl8cDltZlQC4l9D">✓ 卖点文案已过审</span></div>
+            <div data-page-node-id="TTROk6J5waYUT58Ft6ExUs"><span class="tag g" data-page-node-id="qvc0XrjwVHKmXPxsrnGnGo">✓ 无绝对化用语</span><span class="tag o" data-page-node-id="rRDMD3Q0Lk75JawNk0GMXb">! 待补：产品实拍参考图</span></div>
+            <p class="crumb" style="margin-top:10px" data-page-node-id="BNRwwVgzj8rbEnfn5zY8AI">提示：未上传实拍参考图时，生成的冰箱外观可能与实物存在差异，精修阶段须人工校正。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footbar" data-page-node-id="N0PypNfNmk1BE5hJC3BQAl"><span data-page-node-id="gluMCGkjBLbgWd5zT5AuhT"><i class="dot" data-page-node-id="m4LZAQK52VXlSsiG5Og5Ju"></i>本地导出服务已连接</span><span data-page-node-id="HWcRNtJhD1klNy3KRceSRF">步骤 2 / 4</span><span style="margin-left:auto" data-page-node-id="wRfI1xfvQpJCIA6C4Gc4R1">原型演示：可点选卖点与平台</span></div>
+</section>
+
+<!-- ============ P3 生成中 ============ -->
+<section class="screen" id="p-progress" data-page-node-id="FSPRoJX82dhU5Nr8B42RJQ">
+  <div class="topbar" data-page-node-id="KZkWDlQdox5hHpXQGoxLwX">
+    <div class="logo" data-page-node-id="lRJwil6Qz6oCjaKr0JsWzV">H</div><div class="logo-t" data-page-node-id="3BB2Gp8x2C56rXUMcBkVMp">AI 营销素材工厂</div><div class="logo-s" data-page-node-id="ml1MKBXwI6tBIysOxtsleG">Homa 国内营销中心 · 内部版 v1.0</div>
+    <div class="nav" data-page-node-id="u3TfXSyFRB0sANKm9dAEBh"><a href="#p-workbench" data-page-node-id="vAzW8r0Nx1FT8y9kC822lg">工作台</a><a href="#p-create" class="on" data-page-node-id="Hjs3HzS4OR0qyX6LuX5V28">新建任务</a><a href="#p-library" data-page-node-id="7b5HcvU3EAsHE1Dv8foDQN">素材库</a><a href="#p-data" data-page-node-id="eebjKo910HVon8x8cutcdr">数据看板</a><a href="#p-template" data-page-node-id="v6qyFEmPiOEbH4lvEOlRdJ">模板库</a></div>
+    <div class="spacer" data-page-node-id="zachJLDu2CIYmWOLDMr3K8"></div><div class="user" data-page-node-id="87PXq1EQKXkz6fTpGEzC02"><div class="avatar" data-page-node-id="Fj116yNTcFWDLJ1PBoMuFQ">设</div>视觉设计组 · 内部账号</div>
+  </div>
+  <div class="main" data-page-node-id="ZDcwFFMFE26ZkxoaDXFvU6">
+    <div class="side" data-page-node-id="1xJhSHHj5LPnEyrwTfn03t">
+      <div class="side-t" data-page-node-id="FLkjaeHoHLjQSjZf5ZE5Ck">内容生产</div><a href="#p-workbench" data-page-node-id="FecKQi8LIXOnUauixsAoIK">工作台</a><a href="#p-create" data-page-node-id="v3cmOafaIQXRIb6F07fRHF">新建生成任务</a><a href="#p-progress" class="on" data-page-node-id="CYdGrf2IHMsV60NjHbYZrI">任务队列</a><a href="#p-result" data-page-node-id="tonb8sDis2HCf0DXVDsOwM">最近结果</a>
+      <div class="side-t" data-page-node-id="sHMUjCY99SRd8j9uorvtGE">资产管理</div><a href="#p-library" data-page-node-id="gCZ69MraNNxW7V0xJG5biW">素材库</a><a href="#p-refine" data-page-node-id="Bsv7NpC80nlR8zDkZF4G9a">精修与入库</a><a href="#p-template" data-page-node-id="GrEJT9kRxi2dMBJjLhdAE6">模板库</a>
+      <div class="side-t" data-page-node-id="VbyuTm42SCLXv5gWdAFdtc">效果追踪</div><a href="#p-data" data-page-node-id="XCqAjCCL4pKT9KqN40aAry">数据看板</a>
+    </div>
+    <div class="content" data-page-node-id="JQtJm3pM7ltUnTuAlkQkQl">
+      <div class="crumb" data-page-node-id="gRqOzWrTnxONfPPseEslBt">首页 / 任务队列</div>
+      <div class="page-h" data-page-node-id="pJELJorozFIlPHzQCtprEg"><h2 data-page-node-id="PQIdZQ51pogamJlqiiY8oV">正在生成：526 母婴冰箱上市内容包</h2><div data-page-node-id="om6vO6qySc6ibCuQTmNFhe"><button class="btn" data-page-node-id="7koDmr6VWUX95mmDdZHkbZ">暂停队列</button> <button class="btn pri" onclick="location.href='#p-result'" data-page-node-id="aYQWCN478HNjiHr6P5tGVG">查看已产出</button></div></div>
+      <div class="grid g2" style="grid-template-columns:1.5fr 1fr" data-page-node-id="59wmfuOh1hv95eYoV3qAkM">
+        <div data-page-node-id="ADKsWBuCk8b50IwsDZVNNH">
+          <div class="taskcard" data-page-node-id="dUI6J0DzkQwp7WtL1c9wky">
+            <div style="display:flex;justify-content:space-between" data-page-node-id="z2yCLhgMXI3leI0U9hGxU7"><b data-page-node-id="LVwJoHvFf7LV6FM1WSNswW">小红书首图 · 3:4</b><span class="tag o" data-page-node-id="fb9njSMKaZ3MgdFg4FArpK">生成中 3/4</span></div>
+            <div class="pbar" data-page-node-id="HTiAK8f0ALPdVCqEXI7rtr"><i style="width:75%" data-page-node-id="QTlHYEFm9qJS4HCyz9jtAe"></i></div>
+            <p class="crumb" style="margin-top:6px" data-page-node-id="D1qPNfc7RrGJm8BFq1Puu1">已产出 3 张，预计剩余 35 秒</p>
+          </div>
+          <div class="taskcard" data-page-node-id="zMCEzlzwDhe1HkhWlJW7uS">
+            <div style="display:flex;justify-content:space-between" data-page-node-id="zrjpy3rfZ4nXazsWZcWzSO"><b data-page-node-id="Xpjyedx0EUzrq9ceNVge6G">抖音封面 · 9:16</b><span class="tag o" data-page-node-id="bl4LpH1V1FI8DvzJxgxoZT">排队中</span></div>
+            <div class="pbar" data-page-node-id="JNuciT6SZ9L4AXMcCjtQRB"><i style="width:0%" data-page-node-id="g3gZuU9zxYm1vH5ziXfyYB"></i></div>
+            <p class="crumb" style="margin-top:6px" data-page-node-id="mP0KCkUp3AoP6zpINqG96I">等待前序批次释放算力</p>
+          </div>
+          <div class="taskcard" style="margin-bottom:0" data-page-node-id="ffYgUXyDvIbBIPl2ixhXFf">
+            <div style="display:flex;justify-content:space-between" data-page-node-id="a8kfPYaaSR8jH1atEXMgt5"><b data-page-node-id="BfQbXtmGZIVpCnAijmCdo4">电商主图 · 1:1</b><span class="tag n" data-page-node-id="Mx7OLKajjoKHTVF01e9V3Z">未开始</span></div>
+            <div class="pbar" data-page-node-id="yZjcevstwkouQAKpnfXAp0"><i style="width:0%" data-page-node-id="iXRmxRsFbQItOm5Ups7S3Q"></i></div>
+            <p class="crumb" style="margin-top:6px" data-page-node-id="x27nNDKcCr8ydPaxDXu1ub">排在第 3 位</p>
+          </div>
+          <div class="card" style="margin-top:14px" data-page-node-id="rVr4pma82s2UFuv3d81l6r">
+            <b style="font-size:13px;display:block;margin-bottom:8px" data-page-node-id="exAN3u6SZG3MzNsbMXBYWb">执行日志</b>
+            <div class="log" data-page-node-id="OAqAJcblU4l9mkoD52jtCl">
+              [10:24:11] 加载场景模板：母乳专舱·暖光母婴房 v1.2<br data-page-node-id="oS0UaQwNlGO2eXPfaXEZ9Y">
+              [10:24:12] 注入品牌约束：主色 #F07D1A / Logo 右下 / 禁用绝对化词<br data-page-node-id="Du2lBSuvxNcnh2ymtSYeDG">
+              [10:24:13] 生成候选 1/4 — 构图：母婴房中景，主体冰箱占画面 42%<br data-page-node-id="PHpqnmWE6BlvTfkn4AfpgL">
+              [10:24:41] 候选 1 完成 — 合规自检通过（无绝对化用语、无第三方 Logo）<br data-page-node-id="brVKy4qnGoa9Hwg7n111eE">
+              [10:24:41] 生成候选 2/4 — 变体：暖光偏移 +8%，道具替换为辅食罐<br data-page-node-id="x8eSYONk04xquYy1kzsl2K">
+              <span style="color:#5EEAD4" data-page-node-id="zZeykLAd4gNYLUShWsuTBT">[10:25:03] 生成候选 3/4 — 变体：视角切换为 35° 侧视…</span>
+            </div>
+          </div>
+        </div>
+        <div data-page-node-id="Q5O87Q1VOyWAmr4tDoD5Sm">
+          <div class="card" style="margin-bottom:14px" data-page-node-id="E19wQ6AZcH1eGilk939RxL">
+            <b style="font-size:14px;display:block;margin-bottom:10px" data-page-node-id="1T88HTCDqwioumLlUCYwRk">实时进度</b>
+            <div style="text-align:center;padding:14px 0" data-page-node-id="eh5mFSoRkDOxBNCvZX9oL9">
+              <div style="font-size:40px;font-weight:700;color:var(--oma)" data-page-node-id="gJbdWFxIGvfhQK8AbGkfGb">3<span style="font-size:20px;color:var(--faint)" data-page-node-id="OEuctlDxLjIs7yOhQOl5Lq">/12</span></div>
+              <p class="crumb" data-page-node-id="cI0b6d74rhr3f3kFyCq2S2">已产出 / 计划产出</p>
+            </div>
+            <div class="pbar" style="height:8px" data-page-node-id="zkDeeQjttjtk3o1cBFYxx6"><i style="width:25%" data-page-node-id="3VBFJH98SvpQqihzj8oVlo"></i></div>
+            <p class="crumb" style="margin-top:8px" data-page-node-id="N3uCRHJsCf5xraTbIptvxB">总进度 25% · 预计剩余 4 分 10 秒</p>
+          </div>
+          <div class="card" data-page-node-id="vySWIQqzyJGTBZMG5BoZ4x">
+            <b style="font-size:14px;display:block;margin-bottom:10px" data-page-node-id="4b7dJZic0twEYIvPySArMl">算力与队列</b>
+            <table class="tb" style="font-size:12px" data-page-node-id="80FocTXIi91kTfCScBNK3f">
+              <tr data-page-node-id="WQqBd7vp0CrNDYQKofdEgt"><td style="color:var(--sub)" data-page-node-id="KFCVajEnCrr8Fb9ai1oSU9">当前占用</td><td data-page-node-id="dNtDGc9yUhxwZaIMVqg0kl">2 / 4 并发通道</td></tr>
+              <tr data-page-node-id="WjOasG3U7B20PZYNxqu8Kw"><td style="color:var(--sub)" data-page-node-id="rNCAbc6MXkper2175c3qUn">本次消耗</td><td data-page-node-id="xmLbi4raQJE5yl7RbNmFFD">已用 3 点 / 预计 8 点</td></tr>
+              <tr data-page-node-id="op0Hb0z9FVJuaazGpvM6gW"><td style="color:var(--sub)" data-page-node-id="W3YzVMtvLzHYk4xhPfFf6R">队列等待</td><td data-page-node-id="IXyck2nQ8i8BFIrnPAFrQ6">2 个批次</td></tr>
+            </table>
+            <p class="crumb" style="margin-top:10px" data-page-node-id="UelIRm5WeOElWHRao9khhE">并发通道上限为 4，超出自动排队，不抢占他人任务。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footbar" data-page-node-id="e450yGqR4B161BpXBVczGu"><span data-page-node-id="9M0sdONarPHqHUshEPQRnl"><i class="dot" data-page-node-id="XfZMmA1hH6MeBafvf0XdIZ"></i>本地导出服务已连接</span><span data-page-node-id="2ba56l4BA7ar7kLBCTyJAZ">任务 ID：T20260923-014</span><span style="margin-left:auto" data-page-node-id="EomWrAM78MoA6iQNos77tG">原型演示：静态状态</span></div>
+</section>
+
+<!-- ============ P4 生成结果 ============ -->
+<section class="screen" id="p-result" data-page-node-id="LAXA6wurIdiW3E8UGvw1EG">
+  <div class="topbar" data-page-node-id="iR7Byjaxmm9f9N3jl4ZTnP">
+    <div class="logo" data-page-node-id="soKzjxaTkS2CPLfeWBRA3T">H</div><div class="logo-t" data-page-node-id="H5QF80Ji23Kl5IdYszxTRf">AI 营销素材工厂</div><div class="logo-s" data-page-node-id="dnNEdXOpn6Sds9qoPznzqQ">Homa 国内营销中心 · 内部版 v1.0</div>
+    <div class="nav" data-page-node-id="0lJuvsADMF6enWjUHcHyou"><a href="#p-workbench" data-page-node-id="yx8ZALd0Xv1L7AJqtdUNe6">工作台</a><a href="#p-create" data-page-node-id="0ICsaqBVvShkWHPCmaqGxs">新建任务</a><a href="#p-library" data-page-node-id="fNvmDbWJNfxWexChU52Qdh">素材库</a><a href="#p-data" data-page-node-id="OrGx9Jyv6G2EhksSFHV3Wv">数据看板</a><a href="#p-template" data-page-node-id="ZAPN7JAc4NXCpsCMvVMXyg">模板库</a></div>
+    <div class="spacer" data-page-node-id="nNq8QQCguGh7rGnPVZoZ4v"></div><div class="user" data-page-node-id="xDdJ3ORCFckJ0fhY9OuSON"><div class="avatar" data-page-node-id="1y8vyqW86Ct4myY3YUrlg8">设</div>视觉设计组 · 内部账号</div>
+  </div>
+  <div class="main" data-page-node-id="Q8grrKA6R7JAM3SoOKhaVZ">
+    <div class="side" data-page-node-id="xNQiMnd74ZD2gHRlkqQMSC">
+      <div class="side-t" data-page-node-id="rPhWXvcoKcOTdV8bEHi0wA">内容生产</div><a href="#p-workbench" data-page-node-id="KuIZFujbxzwJsj8CmM0Wfq">工作台</a><a href="#p-create" data-page-node-id="AAtRwfxggqCHQlUtqbnf88">新建生成任务</a><a href="#p-progress" data-page-node-id="oWVmDlAbkBey6qMGIIpXBJ">任务队列</a><a href="#p-result" class="on" data-page-node-id="sBvPyob2HYvFkdVUUWdIuE">最近结果</a>
+      <div class="side-t" data-page-node-id="OUx8qgGoneArGXdKRtoB2D">资产管理</div><a href="#p-library" data-page-node-id="DOa5IbP5hKX6zI91hQ8uWF">素材库</a><a href="#p-refine" data-page-node-id="EBF8XuD5IpImgJtUPVeZ5T">精修与入库</a><a href="#p-template" data-page-node-id="diJ9FMzVEzToHo3Tuhli6m">模板库</a>
+      <div class="side-t" data-page-node-id="FpjwaLmfCbtJOHAn5ZxRA7">效果追踪</div><a href="#p-data" data-page-node-id="5l0RXwy56XCGbO95Kb6AW2">数据看板</a>
+    </div>
+    <div class="content" data-page-node-id="zNiy84Q4pSYok9qHbba6Nj">
+      <div class="crumb" data-page-node-id="jnuHqxCtx4vdnm2J0cgg5e">首页 / 任务 T20260923-014 / 生成结果</div>
+      <div class="page-h" data-page-node-id="EgCKCq2GO6V5731Mhoz5PD"><h2 data-page-node-id="hnA9KKldeGC8hgahZLUohO">生成结果（12 张）</h2><div data-page-node-id="q72iwey52xfro2CKqcVsTo"><button class="btn" data-page-node-id="EXvGo6MQNTT1EcKrdmfQRw">批量下载</button> <button class="btn" data-page-node-id="BgvP3KETNBsZw1LqTzru8n">重新生成选中</button> <button class="btn pri" onclick="location.href='#p-refine'" data-page-node-id="hBDOZ4u3d2SFS96hgBRX4V">精修并入库</button></div></div>
+      <div class="grid g2" style="grid-template-columns:1fr 260px" data-page-node-id="Ne9Ns946AmehcwIuMGKJ5V">
+        <div data-page-node-id="XNOLGFVLijmSUQPV4fF1L4">
+          <div class="card" style="margin-bottom:12px" data-page-node-id="FI3DxCE8jHFAVoGwfzKGkJ">
+            <b style="font-size:13px" data-page-node-id="FYN0oS2cNxw0MWofV0HTp0">小红书首图 · 3:4（4 张候选）</b>
+            <div class="grid g4" style="margin-top:10px" data-page-node-id="CmPld5Z3DxYmCcijxpgs4B">
+              <div class="shot on" data-page-node-id="WH5720BLAdCN2OplWq4JgY"><div class="img" style="background:linear-gradient(140deg,#F9C08A,#F07D1A)" data-page-node-id="XUwflxxkySjw8LlOBpXJa9">母婴房中景<br data-page-node-id="1yibmMJeHZeNU8iPjh8Z55">45°视角</div><div class="meta" data-page-node-id="gFSAEW6HIFh2FuNLdrm5DH"><div class="t" data-page-node-id="hnPeG7CJpz4BjwTSWWXtDK">候选 A1</div><span class="tag g" data-page-node-id="lDV2vkj2bErdF6O57GYkAu">合规通过</span></div></div>
+              <div class="shot" data-page-node-id="o0IzCnqnuGEB8usRqCgtGw"><div class="img" style="background:linear-gradient(140deg,#FBD9A8,#E8820F)" data-page-node-id="CleUNg2JXuH8NeQkClUIyW">暖光偏移<br data-page-node-id="pqQSLZLBf5DQEAKqkAFOst">辅食罐道具</div><div class="meta" data-page-node-id="AMxCknlUGAhHmRbeoskPph"><div class="t" data-page-node-id="iQ2hFTrAhrDl2r9hThzE5p">候选 A2</div><span class="tag g" data-page-node-id="U9PHnaphKX77tYEqMD9aPA">合规通过</span></div></div>
+              <div class="shot" data-page-node-id="MSJ2UV6kQjaowCJq01wxJY"><div class="img" style="background:linear-gradient(140deg,#F3B27A,#D96C08)" data-page-node-id="dkRQDOYa2hA25AgvGy9Ity">35° 侧视<br data-page-node-id="OzyXVsu3703SkYfB24NdiS">母乳专舱特写</div><div class="meta" data-page-node-id="1h8Hq1TCbVDsX4vV4xYvD6"><div class="t" data-page-node-id="6BbsAXtkQgMLKfoeBX2jty">候选 A3</div><span class="tag o" data-page-node-id="mmA6CtUs5kIyfGorWv0i3H">待人工确认</span></div></div>
+              <div class="shot" data-page-node-id="iHcv1vEHAJmXrmcbHVBATu"><div class="img" style="background:linear-gradient(140deg,#EFA963,#C9610A)" data-page-node-id="7E6FCSdDAwkwGBFwGdDJG9">俯拍构图<br data-page-node-id="jkB8PEjwXrm8LLz3pHmA5N">母婴台布景</div><div class="meta" data-page-node-id="DoMkJ8ZVyp3Ug6VJEYaqg0"><div class="t" data-page-node-id="Z9STDbicMApb1JHAcdhjah">候选 A4</div><span class="tag g" data-page-node-id="FughBI7oLIBjFAIGt56N0U">合规通过</span></div></div>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom:12px" data-page-node-id="3WZJdLER8QD53D3wxMjYzO">
+            <b style="font-size:13px" data-page-node-id="GYiZFb6B4NpDr4tin4F6HY">抖音封面 · 9:16（4 张候选）</b>
+            <div class="grid g4" style="margin-top:10px" data-page-node-id="hb09cNkwm4ovEXXdiBLIa0">
+              <div class="shot" data-page-node-id="IJc6emZoBAVgAABa5xsOSr"><div class="img" style="height:170px;background:linear-gradient(160deg,#9CC4F0,#2563EB)" data-page-node-id="5DWCI54GJggIUYn1HnDeQn">竖版构图<br data-page-node-id="5vHD9tVJphRUenFgqSn44A">开门瞬间</div><div class="meta" data-page-node-id="JcYf1sO6lDhkr3C95vMcS4"><div class="t" data-page-node-id="KiuyWETMGzOeOT64kMiZMY">候选 B1</div><span class="tag g" data-page-node-id="GFSrAOgu9UHYkEXNJ2iwKe">合规通过</span></div></div>
+              <div class="shot" data-page-node-id="MZKIHwm004tYXpD1AVpb8H"><div class="img" style="height:170px;background:linear-gradient(160deg,#7FB0E6,#1B4DB1)" data-page-node-id="uAzpgBDpjWhouG7kWLAYt9">对比构图<br data-page-node-id="NQlXVA9HeQDTvWy28MHMiv">嵌入前后</div><div class="meta" data-page-node-id="NHov8h2rHIqTyauyKGCSn1"><div class="t" data-page-node-id="6vtwI3BlINs0VlREgrBGmC">候选 B2</div><span class="tag g" data-page-node-id="j5fz1C9bBLftuYfjpzWpBX">合规通过</span></div></div>
+              <div class="shot" data-page-node-id="BzNh92SSgvdVDYWJXGKRPn"><div class="img" style="height:170px;background:linear-gradient(160deg,#B9D6F5,#3B6FD4)" data-page-node-id="vENssWQcJXGdUMaGCuklXF">特写构图<br data-page-node-id="HiCJhPiZwVYSyEPBLMBzgI">4℃ 舱门</div><div class="meta" data-page-node-id="J3cKCzwFSuXtH84GNT7Rnq"><div class="t" data-page-node-id="36xYh8IG1AGCnJer1JlA60">候选 B3</div><span class="tag o" data-page-node-id="4fgWZakHDnYbSimwmGysWC">待人工确认</span></div></div>
+              <div class="shot" data-page-node-id="o3VKJWiLmV20cjxhxKFKlT"><div class="img" style="height:170px;background:linear-gradient(160deg,#8FBEEC,#17419B)" data-page-node-id="Q2rW0MyEQIGW0KqQGcgbqK">人物构图<br data-page-node-id="Fz92iVNtlDnbdvFfeKYYW0">妈妈取奶</div><div class="meta" data-page-node-id="2vPTh9ZCC05czGeBvPsWSd"><div class="t" data-page-node-id="kWZPUIpZdzKsAn28bAty7y">候选 B4</div><span class="tag r" data-page-node-id="dctCE8HxW7iRmXHB4IjzAd">含人脸待处理</span></div></div>
+            </div>
+          </div>
+          <div class="card" style="margin-bottom:0" data-page-node-id="qskrSEbJpRsD3WpBIWJfU1">
+            <b style="font-size:13px" data-page-node-id="9cdThWlzEb6jIaiVN1xASC">电商主图 · 1:1（4 张候选）</b>
+            <div class="grid g4" style="margin-top:10px" data-page-node-id="PAVwfZDc9EYjwzb4B0gWyt">
+              <div class="shot" data-page-node-id="F2cjVr1W8xqIii9ImyMKzp"><div class="img" style="height:130px;background:linear-gradient(135deg,#EEEEF2,#B9C0CC)" data-page-node-id="jEOCEF0FX29lZID3HMkdbO">白底主图<br data-page-node-id="k7gMBgVqIdUFVMdsglPhO0">正面正视</div><div class="meta" data-page-node-id="X5zKVQxJYoOukz8s4NGqE8"><div class="t" data-page-node-id="BjKBbidEGTja5596odGCfD">候选 C1</div><span class="tag g" data-page-node-id="Zd3EvLNJH2asGF5DJ7yl6X">合规通过</span></div></div>
+              <div class="shot" data-page-node-id="GAZo1lWvxGo44R8WEczUkf"><div class="img" style="height:130px;background:linear-gradient(135deg,#F5F6F8,#C3C9D4)" data-page-node-id="EpUb6bWDBwg6xXBd4uSrcJ">卖点叠加<br data-page-node-id="9eNruDtje1KKGB8KsvoFt4">三卖点版</div><div class="meta" data-page-node-id="BC83vuK26fstAFKHhl1asX"><div class="t" data-page-node-id="Md9cGz542zhyo5t2rTA5dK">候选 C2</div><span class="tag g" data-page-node-id="C68BYU7eQwqzFvUwbk1VOg">合规通过</span></div></div>
+              <div class="shot" data-page-node-id="ncmbyENF7wzNLFYI2mPqO3"><div class="img" style="height:130px;background:linear-gradient(135deg,#EAECEF,#AEB5C2)" data-page-node-id="WYyXQ7I0S5mfZkVyZmx8F0">场景主图<br data-page-node-id="DbDMeo8LKuKpEOf6XQSlxK">厨房嵌入</div><div class="meta" data-page-node-id="njyHvjxZu9Lh3lcc67B7At"><div class="t" data-page-node-id="tJWpDt9f0FliBhfnrd5YkR">候选 C3</div><span class="tag g" data-page-node-id="WmdXGuObMYEIEN7ZGSTFOo">合规通过</span></div></div>
+              <div class="shot" data-page-node-id="c46XHeHTCHa9BeBcbZoZ9U"><div class="img" style="height:130px;background:linear-gradient(135deg,#E4E7EB,#9AA2B1)" data-page-node-id="LizY7EeHoCGPxxvHhoxOAU">参数主图<br data-page-node-id="M0B05UtrEVg7lzGnrP4Gcb">信息图版</div><div class="meta" data-page-node-id="cnSDVSNBsrDO0J0R0Mcb1N"><div class="t" data-page-node-id="SjMgE1wB2gTHcVyBbro6Q1">候选 C4</div><span class="tag o" data-page-node-id="7ST4jYQ6Zr8s9FmcGwI2Iu">待人工确认</span></div></div>
+            </div>
+          </div>
+        </div>
+        <div data-page-node-id="aoynNR0ENE7iDrHEz8eOPU">
+          <div class="card" style="margin-bottom:12px" data-page-node-id="Qpmk4jv9uqAxs0fmTYKeFw">
+            <b style="font-size:13px;display:block;margin-bottom:8px" data-page-node-id="C84ZvqjbnUsNhH5jdI4OkP">已选（3 张）</b>
+            <p class="crumb" data-page-node-id="EDZ0DvaB7kB0qh0AafwuMZ">候选 A1 / A2 / C1</p>
+            <p class="crumb" style="margin-top:8px" data-page-node-id="QcHeMpFoRFwPaJ2LbJ1gQS">选择后将进入精修流程，未选中的候选保留 7 天后自动清理。</p>
+          </div>
+          <div class="card" style="margin-bottom:12px" data-page-node-id="m2ulU7339Un2WJReXMVO3M">
+            <b style="font-size:13px;display:block;margin-bottom:8px" data-page-node-id="ONkO7tDTVj33JZw9CBLH46">本次生成参数</b>
+            <table class="tb" style="font-size:11.5px" data-page-node-id="A135dVGaHIsa4JFkpQmeZ4">
+              <tr data-page-node-id="8WQFgNPtpHHkspr5E0NnDJ"><td style="color:var(--sub)" data-page-node-id="4QbGNkFJHJKFyRe9505lg5">模板版本</td><td data-page-node-id="i4jTDHZEszX8WThQuxuJHT">v1.2</td></tr>
+              <tr data-page-node-id="J43V2ju6ztRDjJWCix4s26"><td style="color:var(--sub)" data-page-node-id="OWMpioubdwSMwxRsb0RfEJ">卖点</td><td data-page-node-id="QtmU3O3i92bLh5HXCrSHTO">母乳 4℃ 专舱<br data-page-node-id="vLcTHgagWeGEHSx7liYtd3">零嵌 594mm</td></tr>
+              <tr data-page-node-id="WBwjQymKLYBG4yjhK0NRM0"><td style="color:var(--sub)" data-page-node-id="ITX2YmTwTGr1wQ1I2tC534">风格</td><td data-page-node-id="KCnl0S0lSKwrfz2fnEUtYB">奶油风厨房</td></tr>
+              <tr data-page-node-id="4ZqreE7x0O4kb30BE52pR2"><td style="color:var(--sub)" data-page-node-id="lkdO48CWq0chElPREdrfhp">算力消耗</td><td data-page-node-id="vRDkTw0Ys07tRxqLgyVvz7">8 点</td></tr>
+            </table>
+          </div>
+          <div class="card" data-page-node-id="QbGSw1TzGSTjAGF5dwLWXY">
+            <b style="font-size:13px;display:block;margin-bottom:8px" data-page-node-id="eGEQjPuDXeP68JQrA0G7DS">合规自检结果</b>
+            <div data-page-node-id="NpNnk7v4V8dDxabtCGo01V"><span class="tag g" data-page-node-id="no9wAnHD5cOI7ataL78qUQ">通过 9 张</span></div>
+            <div data-page-node-id="ziOyaFUlL9Ij9ibCasVi30"><span class="tag o" data-page-node-id="mLiHiXvIoxLBfRbwOUb4K9">待人工确认 2 张</span></div>
+            <div data-page-node-id="ulUj1X3NwAplweivyivLpy"><span class="tag r" data-page-node-id="GZRRC1w4PQTseD75DGp7dw">含人脸/需处理 1 张</span></div>
+            <p class="crumb" style="margin-top:10px" data-page-node-id="B0jqtta1LqMYYvJnpA7WPt">含人脸素材需走肖像授权流程，未授权不得用于外投渠道。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footbar" data-page-node-id="FQBON93DXRAgkC9nK1zM9c"><span data-page-node-id="eRsSH1ZnmqaTEzqYV45Ci2"><i class="dot" data-page-node-id="a6J33EQRovncO2B003Cwg8"></i>本地导出服务已连接</span><span data-page-node-id="gJGbwduUhvqCv8Kv9NjTzP">选中 3 张</span><span style="margin-left:auto" data-page-node-id="6Douv57fKR7yTuZuJ3TEbV">原型演示：点击卡片可选中</span></div>
+</section>
+
+<!-- ============ P5 精修入库 ============ -->
+<section class="screen" id="p-refine" data-page-node-id="OT20Y8Wu82uu61fEe7ZlL6">
+  <div class="topbar" data-page-node-id="yKuGyRyrwgTa0NELTuNGym">
+    <div class="logo" data-page-node-id="rDO0H5PtG4QHruEDXoBHLo">H</div><div class="logo-t" data-page-node-id="lfJOVAWXjgqVTQSLOI1NcI">AI 营销素材工厂</div><div class="logo-s" data-page-node-id="oygoa76ZWB5nZ3g3HkE0Ix">Homa 国内营销中心 · 内部版 v1.0</div>
+    <div class="nav" data-page-node-id="rY6RaSXEpzrcFu04km4v7y"><a href="#p-workbench" data-page-node-id="4ZYPxQimfihEW3dMltfJWJ">工作台</a><a href="#p-create" data-page-node-id="HerNG0UCbfAQzJoqC3qKze">新建任务</a><a href="#p-library" data-page-node-id="vOEo2jgs7glk6mwrHYPQs1">素材库</a><a href="#p-data" data-page-node-id="S0dRXN5bYkM3v2RfX0PH2F">数据看板</a><a href="#p-template" data-page-node-id="do9i7h6Io3XX2NUhcC8slt">模板库</a></div>
+    <div class="spacer" data-page-node-id="365OpCXMeF83OUk8REyjG2"></div><div class="user" data-page-node-id="a0QOhjMbaHkC5Z5LiicHEO"><div class="avatar" data-page-node-id="V1VLJK0Zq3YHwhxRHN8XBY">设</div>视觉设计组 · 内部账号</div>
+  </div>
+  <div class="main" data-page-node-id="0Tt5EXpJ9ECuNExx2wCFUc">
+    <div class="side" data-page-node-id="fPt3vlfLKXn7Q2Q5eJ2lm8">
+      <div class="side-t" data-page-node-id="6gkqi44xl9PGIRSJ96yAdz">内容生产</div><a href="#p-workbench" data-page-node-id="DdazBrMRTeXFlC9RJJz73A">工作台</a><a href="#p-create" data-page-node-id="6QCwtbbzKxeP8g4rzLIGu0">新建生成任务</a><a href="#p-progress" data-page-node-id="3sV9OiF7pV1kAyzVs9BYJY">任务队列</a><a href="#p-result" data-page-node-id="H1hMCU44srABfO9L28RDYh">最近结果</a>
+      <div class="side-t" data-page-node-id="akcR8jTMocFKaMa6BIFOrm">资产管理</div><a href="#p-library" data-page-node-id="YD9k8AjnHHCZi9G65ri2BH">素材库</a><a href="#p-refine" class="on" data-page-node-id="ClAqjgxCdEnTQyD0byUzEl">精修与入库</a><a href="#p-template" data-page-node-id="nzPSRGfoGBYV83Lz6HqSf9">模板库</a>
+      <div class="side-t" data-page-node-id="i50BQPzBKKjhhVL97doWWp">效果追踪</div><a href="#p-data" data-page-node-id="Bd5fpgxJAQG9ynPNB65f1P">数据看板</a>
+    </div>
+    <div class="content" data-page-node-id="ewFW06bjl42SkIYkkkgJ9l">
+      <div class="crumb" data-page-node-id="KtF3r0ZcYNPOdLJ8ivfZhl">首页 / 精修与入库</div>
+      <div class="page-h" data-page-node-id="Qkfhexq1J89kRgEHmKsj6X"><h2 data-page-node-id="aZNxdcH02E74nhdSADSK3V">精修并入库</h2><div data-page-node-id="FpLVHzRLWQFmGtHYA9hhMB"><button class="btn" data-page-node-id="buhrMRtlbBPuBcpZfDGtgU">存为草稿</button> <button class="btn pri" onclick="location.href='#p-library'" data-page-node-id="6muP8PGcwDw7uXjscr1KDX">确认入库</button></div></div>
+      <div class="grid g2" style="grid-template-columns:1fr 300px" data-page-node-id="il67UMc6Q8VUtIHmFMCmhv">
+        <div class="card" data-page-node-id="pFA4GGtFLfPIx2uqpI0BiE">
+          <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px" data-page-node-id="F1lYJyK03FLoYIPxF1Dsbo">
+            <b style="font-size:13px" data-page-node-id="P9buDIAV3McykLnyK5KRqg">候选 A1 · 小红书首图 3:4</b>
+            <span class="tag" data-page-node-id="meNVTM7irMdF1OZStNc0Ps">母乳 4℃ 专舱</span><span class="tag" data-page-node-id="8NsA9GQToZTVINLhTOAEGR">零嵌 594mm</span>
+          </div>
+          <div style="height:380px;border-radius:8px;background:linear-gradient(140deg,#F9C08A,#F07D1A);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600" data-page-node-id="BMAGLVfdANgTsXL4TSJtnM">母婴房中景 · 45° 视角预览</div>
+          <div style="display:flex;gap:8px;margin-top:12px;align-items:center" data-page-node-id="7WRyHhQsjmvVhxsgWASscD">
+            <span class="crumb" data-page-node-id="9dTAtxdRyt7OuvzAqu6gGv">精修操作：</span>
+            <button class="btn sm" data-page-node-id="gjZwxoIlpDbgpkfaQBvyIN">裁剪换尺寸</button><button class="btn sm" data-page-node-id="reZt8GMesiBWVLVvBsaaya">替换文案层</button><button class="btn sm" data-page-node-id="9207rB81bQYvm6VRGu4V2K">调色</button><button class="btn sm" data-page-node-id="GBlqPZ6kl2O4vx6HfpMjSn">去瑕疵</button>
+            <span class="crumb" style="margin-left:auto" data-page-node-id="OQdH6rOWrPQolRyBfU4J7C">缩放 60%</span>
+          </div>
+        </div>
+        <div data-page-node-id="CVCFphEqVk4uxifgx8JkNO">
+          <div class="card" style="margin-bottom:12px" data-page-node-id="kFANfxhPqr055hVO4jhP38">
+            <b style="font-size:13px;display:block;margin-bottom:8px" data-page-node-id="6gp6cGoqmNxpyryvIjJWw3">入库信息</b>
+            <div class="form-row" style="margin-bottom:10px" data-page-node-id="XOb7NOuTqy1ndjQIU4tNfM"><label style="font-size:12px" data-page-node-id="gBqIPT8xlIZiXqXvrHm3XF">素材标题</label><input class="inp" value="526母婴-母乳4℃专舱-小红书首图-v1" data-page-node-id="7PUb06gA7yuxdIN6PT4i9Z"></div>
+            <div class="form-row" style="margin-bottom:10px" data-page-node-id="aUSAw9LbEKWCtg6OBGQoyR"><label style="font-size:12px" data-page-node-id="95Qh1esPiHgUiMnuErJjMe">适用平台</label><select class="sel" data-page-node-id="l99hIjFfi2zHg3EdvcpnEQ"><option data-page-node-id="Cnuod00BQZJqagLoK3YQGN">小红书</option><option data-page-node-id="WcGKR780aDf0pELqH1lvkB">抖音</option><option data-page-node-id="FV8ipKcQaeJS3iBjKKh2iE">天猫 / 京东详情页</option><option data-page-node-id="63EnbgAxpdGvtx7HVcSBpf">视频号</option></select></div>
+            <div class="form-row" style="margin-bottom:0" data-page-node-id="y96VKBYQljNh394blNgbku"><label style="font-size:12px" data-page-node-id="AHrNFgQieEMDXlEgrWiPVf">关联卖点</label><div class="chips" data-page-node-id="jBPdons6RAYyvnh5uSr6mE"><div class="chip on" data-page-node-id="Q3SS82TK5beGpN7LDoFiPq">母乳 4℃ 专舱</div><div class="chip on" data-page-node-id="hyNmIUFKOolNhxGxf2NW4s">零嵌 594mm</div><div class="chip" data-page-node-id="ZAfRDKfCFOofu4Ww9MFfLK">AI 全域超净</div></div></div>
+          </div>
+          <div class="card" style="margin-bottom:12px" data-page-node-id="r4Kcs3vcA85EeCMplrnbhO">
+            <b style="font-size:13px;display:block;margin-bottom:8px" data-page-node-id="zZdvAN9GV9RD8KyD2HhSZA">发布前检查项</b>
+            <label style="display:block;font-size:12.5px;margin-bottom:6px" data-page-node-id="RBrVfODwdWLuPegB9P6Xzb"><input type="checkbox" checked data-page-node-id="eI2iIjRS9jLGrnOMaKuzlt"> 冰箱外观与实拍一致</label>
+            <label style="display:block;font-size:12.5px;margin-bottom:6px" data-page-node-id="REni5Gx5nKzfajma0NgEfC"><input type="checkbox" checked data-page-node-id="HZPxGGLBWCd4vmAk5iBBAa"> 无绝对化用语</label>
+            <label style="display:block;font-size:12.5px;margin-bottom:6px" data-page-node-id="N66Dr0Uj7VRXIP8VezetlO"><input type="checkbox" checked data-page-node-id="dp5zYPVFUUBgBUFb2knuCb"> Logo 位置与尺寸规范</label>
+            <label style="display:block;font-size:12.5px;margin-bottom:6px" data-page-node-id="Jzn6z0fIHclzUUAs68Jqj5"><input type="checkbox" data-page-node-id="Rr7N4tDWzg2jQTgO97Woa6"> 已确认肖像/物权授权</label>
+            <label style="display:block;font-size:12.5px" data-page-node-id="jomzLNA20l5mlxZWKchEWT"><input type="checkbox" checked data-page-node-id="9qCBlLKZXYUYB0jKpePzI3"> 参数文案与产品手册一致</label>
+            <p class="crumb" style="margin-top:10px" data-page-node-id="8iFvW1GfEMk79XcasR3Kyb">未勾选项需在备注说明原因，否则不可提交。</p>
+          </div>
+          <div class="card" data-page-node-id="O0dCIfEAeUrOEgyptrIYap">
+            <b style="font-size:13px;display:block;margin-bottom:8px" data-page-node-id="mIxSL6kSXdiHHNpHGuYZWz">版本与来源</b>
+            <table class="tb" style="font-size:11.5px" data-page-node-id="17Nyovq0DopionYxO3cu4Q">
+              <tr data-page-node-id="TxyUysbOi2F4DEN7H9HGdy"><td style="color:var(--sub)" data-page-node-id="qeFBI5YPqSTG4g5FhEudxo">版本号</td><td data-page-node-id="aFhXJArHNMXbROFXn6OEUH">v1.0</td></tr>
+              <tr data-page-node-id="MnxYPEqS2r3jcEfG6iELPl"><td style="color:var(--sub)" data-page-node-id="mg8Alf0nVS5ByhTMcxQU1i">来源模板</td><td data-page-node-id="cWOOlt0F0rGPKyzwjU7bSH">母乳专舱·暖光 v1.2</td></tr>
+              <tr data-page-node-id="MCppVQQ1Y2k21AVjS7CxBB"><td style="color:var(--sub)" data-page-node-id="60AIps2F4Hg1AfkxQaERWA">生成任务</td><td data-page-node-id="07anIdWorjg8j2ZKovAefm">T20260923-014</td></tr>
+              <tr data-page-node-id="IBMV2p1V0ndz29G0LsyCOZ"><td style="color:var(--sub)" data-page-node-id="XVoY00vwKB8CAs66BIS8gQ">责任人</td><td data-page-node-id="Xkie971IzFjfQJhqWu4C04">视觉设计组</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footbar" data-page-node-id="FAdBuaCKxJF2Sasl0h9128"><span data-page-node-id="6XJ49R8TfyDRAd7Q1rQijU"><i class="dot" data-page-node-id="QMyEUDVK4tEYYhwbiOGEe1"></i>本地导出服务已连接</span><span data-page-node-id="9Z6UZDch335CnS7F6KzAqf">检查项 4/5 已确认</span><span style="margin-left:auto" data-page-node-id="UPxGnJfs339KRuk8amHhKg">原型演示：静态状态</span></div>
+</section>
+
+<!-- ============ P6 素材库 ============ -->
+<section class="screen" id="p-library" data-page-node-id="5p9zxyJZlsyLWQLJ2BovXM">
+  <div class="topbar" data-page-node-id="D2uOLMvyLWVKZ1ypokxpva">
+    <div class="logo" data-page-node-id="XIBHmdKMROljCvHs6RrZGP">H</div><div class="logo-t" data-page-node-id="MKpm2a5LMfR4wOnDwBlntW">AI 营销素材工厂</div><div class="logo-s" data-page-node-id="9hWw0LkZst4aZzWdCQuVnj">Homa 国内营销中心 · 内部版 v1.0</div>
+    <div class="nav" data-page-node-id="SGf3ukaEnluBr5ytiHbib4"><a href="#p-workbench" data-page-node-id="jhdmfNnI9QbcqASkyOtll2">工作台</a><a href="#p-create" data-page-node-id="A7tRnDISxOAF6hOg5LohNl">新建任务</a><a href="#p-library" class="on" data-page-node-id="Ta0EpAw2LpfFKoyAnvaQhS">素材库</a><a href="#p-data" data-page-node-id="kjKXA9adHjHiGg6WlHuYEU">数据看板</a><a href="#p-template" data-page-node-id="dtaTjk2uhXMV06mDGFPUwQ">模板库</a></div>
+    <div class="spacer" data-page-node-id="GeoWthH1b1g75w1m4nFNfp"></div><div class="user" data-page-node-id="6HyddhTOye0yze5PSqPVFO"><div class="avatar" data-page-node-id="6VJV9kFrOGLutodTV4An01">设</div>视觉设计组 · 内部账号</div>
+  </div>
+  <div class="main" data-page-node-id="jmXSLxnVNSIa2vR6qTzfZV">
+    <div class="side" data-page-node-id="5JJV87afc3g8AB1GauDYLO">
+      <div class="side-t" data-page-node-id="tuknZE6XCsTYH8jjdMlIGt">内容生产</div><a href="#p-workbench" data-page-node-id="ELh6K464gXpQVrR3tDGQZ4">工作台</a><a href="#p-create" data-page-node-id="OmQIk1fc02Gw76m9JEOuqM">新建生成任务</a><a href="#p-progress" data-page-node-id="BgyyF5xyjfP6KLLTK78Em8">任务队列</a><a href="#p-result" data-page-node-id="OTgeCLb8Tu1MAPFqwcXyCd">最近结果</a>
+      <div class="side-t" data-page-node-id="rUleoJSA2fPUhImIBra5ge">资产管理</div><a href="#p-library" class="on" data-page-node-id="fVW0lBmZHEms8wIpWuHjAG">素材库</a><a href="#p-refine" data-page-node-id="mwiwX1kBO09khFQIosTkyv">精修与入库</a><a href="#p-template" data-page-node-id="Rg2F9aCTsJK4LDeRTTVPEJ">模板库</a>
+      <div class="side-t" data-page-node-id="6gWNNRfC0DcLv2onELDjdv">效果追踪</div><a href="#p-data" data-page-node-id="Akv0YYzhAZ7Fc90aph2TTD">数据看板</a>
+    </div>
+    <div class="content" data-page-node-id="b0AY0vkjfO7WyHbjZGwTfY">
+      <div class="crumb" data-page-node-id="17gxNnMBLNa2mqAUePzPqt">首页 / 素材库</div>
+      <div class="page-h" data-page-node-id="gQcCNkOEKEYhAjVjoW0lFj"><h2 data-page-node-id="4xYOvbxxUiFOX4JxOd887F">素材库（共 486 条）</h2><div data-page-node-id="yVlk5PMQJoPHSbxK5dtMJ1"><select class="sel" style="width:auto" data-page-node-id="vmLPEWMSrRfSaFG6g8yHeA"><option data-page-node-id="4PD4vtSZgJZwqlLjdI8OCA">按更新时间排序</option><option data-page-node-id="gfYzFMTUBEqFX3neZkC7mp">按使用次数排序</option><option data-page-node-id="XueJNCFLBtlEIv9wJk2xo6">按采用率排序</option></select> <button class="btn pri" onclick="location.href='#p-create'" data-page-node-id="vaYLIHsDHE9H9picFVQyD9">＋ 新建</button></div></div>
+      <div class="card" style="margin-bottom:14px" data-page-node-id="EWRrb1qjTuubaYpyAArNqA">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center" data-page-node-id="bGtW5hdCVzBFLJtPq27vuB">
+          <span class="crumb" style="margin:0" data-page-node-id="g2AP0CcZ0KrKGmjPvEiOsl">筛选：</span>
+          <select class="sel" style="width:auto" data-page-node-id="rJLY2eZY143aySu6PfD3Zg"><option data-page-node-id="L4RIRFBuhhYUEc0TLJruiB">全部产品线</option><option data-page-node-id="ATVsQvGyVQXBUTlnJerrLI">母婴健康储鲜</option><option data-page-node-id="gzhEiiq2XF2qmpTyCjm1YC">鸿蒙智联</option><option data-page-node-id="8opUlgOKxcivM36tu3pgKE">嵌入式厨居</option></select>
+          <select class="sel" style="width:auto" data-page-node-id="wrem4xCqGUC5ywydCHzr5Q"><option data-page-node-id="lAasktUuw5acazpGWqYg2G">全部平台</option><option data-page-node-id="fHYHBYXpYyEdXzZBeHxBBX">小红书</option><option data-page-node-id="7IhR5Sbgv4w4GIwxoOh9yL">抖音</option><option data-page-node-id="ZodlgZ26XTlB5lbGjCoPR9">电商主图</option></select>
+          <select class="sel" style="width:auto" data-page-node-id="YZhMGfNOSzb4NQCZc51ke7"><option data-page-node-id="1ULP5Zdrh4nBFBINif5PVk">全部卖点</option><option data-page-node-id="4NGqZNAwA8wZx6o48McHEm">母乳 4℃ 专舱</option><option data-page-node-id="j4JYxBF4KThZVO1TEMDBQh">零嵌 594mm</option><option data-page-node-id="cMKJVM6ac7SnPice33F9oc">AI 全域超净</option></select>
+          <select class="sel" style="width:auto" data-page-node-id="RfDzbMUhwf13kwOgvU67AC"><option data-page-node-id="IgZw1gHbbIntIVGL3E4dkm">全部状态</option><option data-page-node-id="jyXuGSJGartciTZX8NkzLW">已入库</option><option data-page-node-id="qxlmzwwzL70iE0baGhnnHC">待精修</option><option data-page-node-id="U3aBXa3kNSKSEhzx4OsYm4">已归档</option></select>
+          <input class="inp" style="width:180px" placeholder="搜索标题或标签" data-page-node-id="9xfLK86r4uoY84lOhLdKI2">
+          <span class="crumb" style="margin-left:auto" data-page-node-id="EA2EcAmtmsQepD4nKBRHVI">已命中 <b data-page-node-id="QquoWAqR35R0BO7aFVueV5">128</b> 条</span>
+        </div>
+      </div>
+      <div class="grid g4" data-page-node-id="tjcBkcASvUn7Wsi5saS37c">
+        <div class="lib-card" data-page-node-id="xGH5ann7Z93NyARAGWj3jR"><div class="img" style="background:linear-gradient(135deg,#F9C08A,#F07D1A)" data-page-node-id="HnXfSREgeKqau3DFkSo5W2">小红书首图</div><div class="b" data-page-node-id="QoQiPiKoyRFV5kVos0uSDy"><div class="t" data-page-node-id="bZpPoAziCZ6kJKz6vmVJOU">526母婴-母乳4℃-首图</div><span class="tag" data-page-node-id="gL3PlQumJxIcwR1qgozMlS">母乳 4℃ 专舱</span><p class="crumb" data-page-node-id="Bp5pEHnkI6b00lmbY9pRwp">v1.0 · 使用 12 次 · 2 小时前</p></div></div>
+        <div class="lib-card" data-page-node-id="HmNb91aCzYcJJVCRdcdWuB"><div class="img" style="background:linear-gradient(135deg,#9CC4F0,#2563EB)" data-page-node-id="1EFGEIc7H5fEAmBaxScuxx">抖音封面</div><div class="b" data-page-node-id="rb9KhGGYPTKFFW6Hv8tH22"><div class="t" data-page-node-id="hmhn8JypP8xOqN5paro7Id">526母婴-零嵌厨房-封面</div><span class="tag" data-page-node-id="hGRNCiMADHazRld9PzCFWL">零嵌 594mm</span><p class="crumb" data-page-node-id="tnQtGu1h9IAHkCEePsaStd">v2.1 · 使用 8 次 · 昨天</p></div></div>
+        <div class="lib-card" data-page-node-id="Qkg5aBOHAEDiTPNdZdvKhn"><div class="img" style="background:linear-gradient(135deg,#EEEFF2,#B4BAC6)" data-page-node-id="lDcRWdYbMxOY6V0Rn8BT24">电商主图</div><div class="b" data-page-node-id="981fJGxanc0Ra2X2lJ8FUV"><div class="t" data-page-node-id="8o2Soc1AyIpffAKXFGJHqp">平嵌系列-白底主图</div><span class="tag" data-page-node-id="DjDJ0SMrCa9Q3YLt7rxfHJ">嵌入式美学</span><p class="crumb" data-page-node-id="GZEq3eTFaj5eY8GfL9PX2k">v1.3 · 使用 21 次 · 3 天前</p></div></div>
+        <div class="lib-card" data-page-node-id="NbR6pFSiVWY5TEE0patZTX"><div class="img" style="background:linear-gradient(135deg,#CFE3F5,#5B8FD6)" data-page-node-id="Hg8SNZRyP4knzoU39Dqkn3">视频号封面</div><div class="b" data-page-node-id="1LAvy4Os9n3h0c1HxK1vuS"><div class="t" data-page-node-id="tycrmE3rlpe9RCDgSlULyO">鸿蒙智联-远程调温</div><span class="tag" data-page-node-id="q1JzjiHpacLd8CybeVPs5v">鸿蒙智联</span><p class="crumb" data-page-node-id="vcGT7ldtKhnDnNT9MTF6Zi">v1.0 · 使用 5 次 · 4 天前</p></div></div>
+        <div class="lib-card" data-page-node-id="VNVbmVJwsNDDxNVBrLOkbB"><div class="img" style="background:linear-gradient(135deg,#FBD9A8,#E8820F)" data-page-node-id="T3VGlqjkXtop0UhWYDg85e">小红书首图</div><div class="b" data-page-node-id="AfZ192UOhbcFfFWHgd5PtJ"><div class="t" data-page-node-id="ugjC35l05gZIOHHyMRj8Gx">母婴房-暖光场景-竖版</div><span class="tag" data-page-node-id="ifGcFAYv9tbmwiF14OgTw7">母乳 4℃ 专舱</span><p class="crumb" data-page-node-id="5wZNTsrEKnCHiDDd4RENdV">v1.2 · 使用 15 次 · 上周</p></div></div>
+        <div class="lib-card" data-page-node-id="l1PYYKV7HllBWS9mxMERLC"><div class="img" style="background:linear-gradient(135deg,#F3B27A,#D96C08)" data-page-node-id="1K0EShWNEyI1jYwaVqVpUP">抖音封面</div><div class="b" data-page-node-id="f6U2y4th5GjZEGj5DxD4SA"><div class="t" data-page-node-id="twkyVE3ebEmn18DREGvsp9">母乳舱特写-35°侧视</div><span class="tag" data-page-node-id="HlnCNHtqvuPL0A9qbkPLqP">母乳 4℃ 专舱</span><p class="crumb" data-page-node-id="4nBm9NPAcmRJhED4nPaaoH">v1.0 · 使用 3 次 · 上周</p></div></div>
+        <div class="lib-card" data-page-node-id="dhaIxUr82EU0GW9XsOGuKE"><div class="img" style="background:linear-gradient(135deg,#B9D6F5,#3B6FD4)" data-page-node-id="lWC7TdgUTt2mKMEoIbvD7l">小红书首图</div><div class="b" data-page-node-id="DjzyQa6wcgMx8JakVOazjl"><div class="t" data-page-node-id="NDlz4QaG5XbuFDxy5XKuz9">辅食备餐-场景图</div><span class="tag" data-page-node-id="FMwyKGCX1vhZK8Pj93QTJ5">AI 全域超净</span><p class="crumb" data-page-node-id="hDxdOtCVCxifACVk0eh5Z9">v2.0 · 使用 9 次 · 上周</p></div></div>
+        <div class="lib-card" data-page-node-id="isaS7ptgczOYu7EOei2YP3"><div class="img" style="background:linear-gradient(135deg,#DDE1E8,#A3AABB)" data-page-node-id="Jm9Tf7mF32BGPUwmmsC2Cd">电商主图</div><div class="b" data-page-node-id="ipsrG471otdsQbhmJLWQ8q"><div class="t" data-page-node-id="ktv31EyAF6TimWvEPZKc5j">526-参数信息图</div><span class="tag" data-page-node-id="IO8xufViZEEPMEkUmyRDVc">双系统四变频</span><p class="crumb" data-page-node-id="814UnDzewBCBUJlpTskRiy">v1.1 · 使用 6 次 · 2 周前</p></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="footbar" data-page-node-id="qoCB9AEZ14JuBoqRTrXyHD"><span data-page-node-id="p16ayiYSmTjG0tAbYtvlGg"><i class="dot" data-page-node-id="3lj2e1LAEC38lHb4Kt09IX"></i>本地导出服务已连接</span><span data-page-node-id="FbgCbki5S5wFDeRU5zIsrw">128 / 486 条已展示</span><span style="margin-left:auto" data-page-node-id="z1P77HmxO12HWN9z0VQCFM">原型演示：静态列表</span></div>
+</section>
+
+<!-- ============ P7 数据看板 ============ -->
+<section class="screen" id="p-data" data-page-node-id="lE6vfR94qW6XqPXnguelgR">
+  <div class="topbar" data-page-node-id="cGpBlKmPXq33DkB3V3Tw6m">
+    <div class="logo" data-page-node-id="ba6ZfWQDfii5iiSljyl4MF">H</div><div class="logo-t" data-page-node-id="15xuq5jSaY6Ct3IG2PoEsl">AI 营销素材工厂</div><div class="logo-s" data-page-node-id="UC96jLb4LMWYyVY4VtGIZY">Homa 国内营销中心 · 内部版 v1.0</div>
+    <div class="nav" data-page-node-id="d8nMPNpASQaM3CPy14mVlw"><a href="#p-workbench" data-page-node-id="THHueca8FBNJjksLGXtRNx">工作台</a><a href="#p-create" data-page-node-id="MAW5OCHw1hq7qWDNJRcb3N">新建任务</a><a href="#p-library" data-page-node-id="I5EHNuEhbw6vjk3DWGuxp3">素材库</a><a href="#p-data" class="on" data-page-node-id="WwbqBrOdThCj80lDOGbF1g">数据看板</a><a href="#p-template" data-page-node-id="F4OP1ws6XXV9Q6Bwd1WK2x">模板库</a></div>
+    <div class="spacer" data-page-node-id="4J3UOzxPU4nKUHi56GbVjy"></div><div class="user" data-page-node-id="VgYpmMP5xOYvwA5tmPTUII"><div class="avatar" data-page-node-id="ewTmytPsjIRveXNQzqHjwB">设</div>视觉设计组 · 内部账号</div>
+  </div>
+  <div class="main" data-page-node-id="ucgBrRRAjEqqZjmoDAX6eE">
+    <div class="side" data-page-node-id="xEklq7l9SFPcqKUk73hcjV">
+      <div class="side-t" data-page-node-id="9v9jPXRGb0ZrAJb6wZsHJw">内容生产</div><a href="#p-workbench" data-page-node-id="ZyNf4HBmpRbBdSDWWB2sti">工作台</a><a href="#p-create" data-page-node-id="8Ja8ZTTFiETynwNsTEOS6j">新建生成任务</a><a href="#p-progress" data-page-node-id="EobydKykZIFZfdDgL2hlOF">任务队列</a><a href="#p-result" data-page-node-id="X8YKyhE489QNTKuouZCNbh">最近结果</a>
+      <div class="side-t" data-page-node-id="oW9yK8rcwzrilyzwnT2N6R">资产管理</div><a href="#p-library" data-page-node-id="Zniqi4UpvSdZAZzJlHUQdW">素材库</a><a href="#p-refine" data-page-node-id="rCQwv86JAAsvvYIkagUKpJ">精修与入库</a><a href="#p-template" data-page-node-id="8Xnh87SEDCorb6uWiYkTsn">模板库</a>
+      <div class="side-t" data-page-node-id="zVdpXKPjd4NMXDer7XsZzX">效果追踪</div><a href="#p-data" class="on" data-page-node-id="zuYBGDzoN9UKIuieJue4AI">数据看板</a>
+    </div>
+    <div class="content" data-page-node-id="MPoMGrT7cKbXGuRoijKSuK">
+      <div class="crumb" data-page-node-id="8VYQqrnUfpnD7X9wnB2R4t">首页 / 数据看板</div>
+      <div class="page-h" data-page-node-id="iGHDfsBIlAMAYHH2SSVFV6"><h2 data-page-node-id="q2xWfGzMtaXqn66Qqp6nJR">内容表现与素材效率</h2><div data-page-node-id="LIX9d5Z0eHQG472C4DykFa"><select class="sel" style="width:auto" data-page-node-id="qNLOBBBy0vKp2FN4waHVOX"><option data-page-node-id="GMSHP62uNXXOcZOABchW69">近 30 天</option><option data-page-node-id="OCZ4xzTVtRmGh5PP2I2SWM">近 7 天</option><option data-page-node-id="qNICXKhWUnMQA56mbLEZNS">本季度</option></select> <button class="btn" data-page-node-id="ig4fPVEIZgrKTvRT1uxVTd">导出报表</button></div></div>
+      <div class="card" style="margin-bottom:14px;background:var(--oma-xl);border-color:#F6D9B0" data-page-node-id="MdEzfPNWp9rUAhXvSeuf6H">
+        <b style="font-size:12.5px;color:var(--oma-d)" data-page-node-id="6tuSs9ynAWmFUWlFMGmVid">数据口径说明</b>
+        <p class="crumb" style="color:var(--oma-d);margin-top:4px" data-page-node-id="4HvWmqEX9Ggj3U4HsKSnn6">平台侧表现数据（曝光 / 点击 / 互动）需对接各平台开放平台后回填，当前为<b data-page-node-id="1CBFsKsLd4MAxL9GfJ34ni">手动录入 + 内部统计</b>阶段的演示数据。</p>
+      </div>
+      <div class="grid g4" style="margin-bottom:14px" data-page-node-id="eEMNImHPg40MsmwOkjDPbl">
+        <div class="card stat" data-page-node-id="2WeU9sxuftDHRo3SDnaXQG"><div class="k" data-page-node-id="f3J3oFKGGZJUK72dYlDbIm">素材产出量</div><div class="v" data-page-node-id="8bSfp2VgtJ3XsxrlqaEIuG">486 <span style="font-size:13px;color:var(--faint)" data-page-node-id="xzFi9RK4iA2er7Spsqgrsg">张</span></div><div class="d" data-page-node-id="DbnnfikaPktsfwgDEM8FyF">其中 AI 生成 372 张（占比 76.5%）</div></div>
+        <div class="card stat" data-page-node-id="WK866syLP424GqNjefvO2L"><div class="k" data-page-node-id="boYjwESDg6ZLGnLKkpRPES">单张平均耗时</div><div class="v" data-page-node-id="iRgsGK0lE2vjuAC0Rkrt7Y">18 <span style="font-size:13px;color:var(--faint)" data-page-node-id="QOk9axcaVsmgpKwQyJi6x1">分钟</span></div><div class="d" data-page-node-id="s9UbmSZdUdobCyQWtV7dMw"><span class="up" data-page-node-id="m3socgV9uCMPLn1ECr7U44">↓ 42%</span> 对比 AI 工具使用前（口径待基线确认）</div></div>
+        <div class="card stat" data-page-node-id="fQvSz2pqyymFBYanSpLsqt"><div class="k" data-page-node-id="i2bgmpyQaaIQUMRrYKiADt">素材采用率</div><div class="v" data-page-node-id="mfBegNOFsCwXnw6C0liJqT">61.2%</div><div class="d" data-page-node-id="1k7NOEd4yV1HIDsLDBP6YL">入库素材中被实际投放使用的比例</div></div>
+        <div class="card stat" data-page-node-id="XFm2JBhoffCViLOdFe5Mec"><div class="k" data-page-node-id="OyVcF1j903gKVxln3vb3Qe">平台平均点击率</div><div class="v" data-page-node-id="qyv9UpGdFFHZdOYHqNTRQn">待连 <span style="font-size:13px;color:var(--faint)" data-page-node-id="Vd1b1uKJluTKOV6DPAFuVo">API</span></div><div class="d" data-page-node-id="AvZwxra3MmkfwniPTuOQSI">依赖小红书 / 抖音开放平台对接</div></div>
+      </div>
+      <div class="grid g2" style="margin-bottom:14px" data-page-node-id="yKvY4Hg4rooNCz1bizj0Wy">
+        <div class="card" data-page-node-id="rZO0yTOJTQZCpCQymJxPQA">
+          <b style="font-size:13px;display:block;margin-bottom:6px" data-page-node-id="wpPtCytG9zWmjvYndHDj4S">各平台素材采用率（%）</b>
+          <div class="bar-chart" data-page-node-id="ZXCML6HE42eIjovDVkowZr">
+            <div class="bar" style="height:72%" data-page-node-id="d90yXGcI9yIRGbWTyOLmMa"><span data-page-node-id="AALpLmtHYPhAIG0poqUvKq">72.1</span><em data-page-node-id="sjFREsLZa3LZFEYiGDzE7d">小红书</em></div>
+            <div class="bar" style="height:58%" data-page-node-id="E9GcPs7oggU78yxfVzQZnr"><span data-page-node-id="yiO8GiDQgy8PPPCDAWGmPv">58.4</span><em data-page-node-id="E5TRqDCzcpX7CAtTseZqlU">抖音</em></div>
+            <div class="bar" style="height:81%" data-page-node-id="Xv42tCspNBON6EmmkvSc8S"><span data-page-node-id="CA66zGH32cG9LiFRqBJpNj">81.0</span><em data-page-node-id="STy7JuvvFq8bVDegamnDpf">电商主图</em></div>
+            <div class="bar" style="height:44%" data-page-node-id="71RKsCQYoyho0Mp9c0Osxa"><span data-page-node-id="iRjTfF60kZ15o7XG5ezTCf">44.2</span><em data-page-node-id="5yTJ6OSxqUafkTnCTzUVHD">视频号</em></div>
+          </div>
+          <p class="crumb" style="margin-top:26px" data-page-node-id="Agl6Xfe7ZB5PmFi0NolcKh">柱状高度 = 采用率取值，非等比严格渲染，仅示意。</p>
+        </div>
+        <div class="card" data-page-node-id="U1qfwGuGEuCP0fKwUq5GDr">
+          <b style="font-size:13px;display:block;margin-bottom:8px" data-page-node-id="7ojBLXYMB1WGIDmD2tDCq1">近 8 周素材产出趋势</b>
+          <svg viewBox="0 0 400 150" style="width:100%;height:150px" data-page-node-id="UPmWqHOVo0Y6nEhZi0Vlmv">
+            <polyline points="10,120 65,105 120,98 175,80 230,72 285,58 340,45 395,38" fill="none" stroke="#F07D1A" stroke-width="2.5" data-page-node-id="ibnVJq0C2yoMQ2jVECM8SP"/>
+            <polyline points="10,130 65,126 120,128 175,122 230,120 285,118 340,115 395,112" fill="none" stroke="#93C5FD" stroke-width="2" stroke-dasharray="5 4" data-page-node-id="ircYZSGU4AHBP5n8Vi0Z6n"/>
+            <circle cx="10" cy="120" r="3" fill="#F07D1A" data-page-node-id="npjQEWLzhg1xmOJNW4x4vU"/><circle cx="120" cy="98" r="3" fill="#F07D1A" data-page-node-id="xeuXxm5MBrAgOhZiWlodOZ"/><circle cx="230" cy="72" r="3" fill="#F07D1A" data-page-node-id="q5UffjXhh40CyBxpqBhiqO"/><circle cx="395" cy="38" r="3" fill="#F07D1A" data-page-node-id="KyS2UM4t6XEjm0zZaGQ9dB"/>
+          </svg>
+          <div class="legend" data-page-node-id="IpWyN9ZHpqlw0T03TH7BrK"><span data-page-node-id="1x2msyqoD4tnylnyaQwNyp"><i style="background:#F07D1A" data-page-node-id="Ej9tKXKokHdhjyjMpOUaad"></i>AI 生成素材量</span><span data-page-node-id="i0easg2DicJBGShx48iUjK"><i style="background:#93C5FD" data-page-node-id="EG0Pf5QlwH7DW3F7taJ5Qy"></i>纯手工素材量</span></div>
+        </div>
+      </div>
+      <div class="card" data-page-node-id="06Ugnw2UvTMC9fUKgsUT7L">
+        <b style="font-size:13px;display:block;margin-bottom:10px" data-page-node-id="iHettUXgOT32OIyAXtVEbp">Top 5 卖点模板表现</b>
+        <table class="tb" data-page-node-id="wtJQHd4PenR0tC2I7KlDTU">
+          <tr data-page-node-id="630lfw8SxLFIuFXvOlKVt8"><th style="width:26%" data-page-node-id="CKfW2AMOrRrWGelm3MKYpc">模板</th><th data-page-node-id="t0MsSRBnV2u1xTgWnqSRKk">关联卖点</th><th data-page-node-id="J8oBxIUqIKkhIhDHcKRhix">产出素材</th><th data-page-node-id="s6u89yqJ7OkW657B2GglTH">采用率</th><th data-page-node-id="ywo9FCF8xHGQ16UndYMNJ0">平均迭代次数</th><th style="width:20%" data-page-node-id="5SBY0CLfz5YVDZACWQrj4B">行动建议</th></tr>
+          <tr data-page-node-id="OamTLSJbXUhG7rKXCn3BPv"><td data-page-node-id="zdCqD19sxFHSUyaSKzDqOo">母乳专舱 · 暖光母婴房</td><td data-page-node-id="bAZPMlkUNIIFqKmcCLaOfL"><span class="tag" data-page-node-id="sHTmm3XRAAj0KL1rGVFOBt">母乳 4℃ 专舱</span></td><td data-page-node-id="kJwMLF1d9jV7GDgla03kwm">96</td><td data-page-node-id="TuNZoCoYUyd8rwlZj2atDG"><span class="up" data-page-node-id="j5sipyAo9lR4hftlPl7weW">74.1%</span></td><td data-page-node-id="LNCmXqgWwby2Lze4QpSVXC">1.8</td><td data-page-node-id="3J3H9jSKUeZhSwgecd0DCP">提升 Variants 预算</td></tr>
+          <tr data-page-node-id="EDnANEB7wFNkWKpca3vuHx"><td data-page-node-id="VdrFUwFG6ELElXxoXnV4FA">严丝合缝 · 奶油风厨房</td><td data-page-node-id="xMtfkCnQLWwElqKlicDD7U"><span class="tag" data-page-node-id="C78bX602902LD7Eknv6HpD">零嵌 594mm</span></td><td data-page-node-id="V8FkeSIxMW4tgkLOtOj15C">72</td><td data-page-node-id="RoErTGgwkqNdGKAYxHu8az"><span class="up" data-page-node-id="VR2bK5ZmJjucb6pGEkDZNj">68.3%</span></td><td data-page-node-id="EB4BQeC2XnUnXa9J4DgR9p">2.1</td><td data-page-node-id="aHmUQvrDUbkDGTveSKOeCZ">维持</td></tr>
+          <tr data-page-node-id="wBUjrnB8Hf40ovreLCXokv"><td data-page-node-id="UoqXtvfcUuYInKA9rtzdlJ">净味守护 · 辅食备餐</td><td data-page-node-id="T66uZBY6mML0RYhDXAc8UI"><span class="tag" data-page-node-id="OfpFbMH15j7ZSUzsRfXANF">AI 全域超净</span></td><td data-page-node-id="XQmfIXYBCR8pcU7hVZRcbW">54</td><td data-page-node-id="PHAAjEgHPCJVgiTOQQAKyt">59.2%</td><td data-page-node-id="FicM5Ap9gfhKEEKFkZfVOl">2.4</td><td data-page-node-id="K72khMsKhWZyvtmEHlx4Cp">优化道具组合</td></tr>
+          <tr data-page-node-id="TfEa23HFe3ZHwdyLSDRgqS"><td data-page-node-id="VvItlrog4G4a4gVKDnOQs9">静音陪伴 · 夜间育儿房</td><td data-page-node-id="HtSSXfQ4QTVGNcxRLABZrB"><span class="tag" data-page-node-id="6jbgKXJrowkIEZTukGIMOJ">34dB 静音</span></td><td data-page-node-id="mdxD8fwUg44GexzW8Z6jbH">38</td><td data-page-node-id="yx1xym1hsWq39Ft8JpdLRZ">52.0%</td><td data-page-node-id="ITtvMZs8I7qHXo7WTLopgz">2.7</td><td data-page-node-id="NCa6Rjr2HbiOMGc0nLTZzj">补充实拍参考图</td></tr>
+          <tr data-page-node-id="LUFmJVo0vKH1rpxNsQrW1X"><td data-page-node-id="EP6qcm5AgidgM3an9WgVFd">双冷双鲜 · 分区对比</td><td data-page-node-id="8iazWbu955XGuqPZ9crwth"><span class="tag" data-page-node-id="R9s2wZZYu9mhPJoLKvPFWy">双系统四变频</span></td><td data-page-node-id="bukw6xIngFI5FUe6JzoOpp">29</td><td data-page-node-id="WbisXjkARaPtkfQo5Ym8ZG"><span class="down" data-page-node-id="T8r6alLEhYPZL1CaIHUKh8">41.3%</span></td><td data-page-node-id="PsJTf3KlzhagPpQ5YCyIA8">3.2</td><td data-page-node-id="MZ3aDFUGMOHDYgrYO5DVA8">建议重构模板</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="footbar" data-page-node-id="ta51jwKOGvyE8n5Gy8byDp"><span data-page-node-id="oTIF4rtKJ5h4gKJJjo2B7G"><i class="dot" data-page-node-id="AtAG48tModORaSmQVqDlqY"></i>本地导出服务已连接</span><span data-page-node-id="KpGBSjgBpPZiMSlv0rRfHx">数据周期：近 30 天</span><span style="margin-left:auto" data-page-node-id="TaDHQdT8rHknBVYdNtKGNu">原型演示：演示数据</span></div>
+</section>
+
+<!-- ============ P8 模板库 ============ -->
+<section class="screen" id="p-template" data-page-node-id="cWPlBOeWEbCZU1vqj7XdUg">
+  <div class="topbar" data-page-node-id="wjg8rG1WI3HebDqHHXlWn6">
+    <div class="logo" data-page-node-id="PnYJpxhAQx8HCYMfFs8Aw7">H</div><div class="logo-t" data-page-node-id="bD7x5jl17gERSA9xJXdgBU">AI 营销素材工厂</div><div class="logo-s" data-page-node-id="tdQLGwEYD1v77pYdgPuY7X">Homa 国内营销中心 · 内部版 v1.0</div>
+    <div class="nav" data-page-node-id="PRj95RjgEU9mnmT8TnxDGN"><a href="#p-workbench" data-page-node-id="m5awaRjJLwFJkHKtnd1mS7">工作台</a><a href="#p-create" data-page-node-id="RjVA68ZfzBtoNAWrgc8x2E">新建任务</a><a href="#p-library" data-page-node-id="aQcZ81T33UywwHTiUh9cCr">素材库</a><a href="#p-data" data-page-node-id="YuTwGaDJank6KvKIlAXFsi">数据看板</a><a href="#p-template" class="on" data-page-node-id="XoCPdYFxE2Gl0OPtiosQ6l">模板库</a></div>
+    <div class="spacer" data-page-node-id="qyGQUzBoZRettC4wmlPgEh"></div><div class="user" data-page-node-id="fhX8WXmEMmBSoWu6rGVcVA"><div class="avatar" data-page-node-id="GQISUbYw9U1utNC98LmLe9">设</div>视觉设计组 · 内部账号</div>
+  </div>
+  <div class="main" data-page-node-id="n2E7cByHKbd7on7hFTkY9v">
+    <div class="side" data-page-node-id="CO4zVKsT5KryKBJlEw8uKJ">
+      <div class="side-t" data-page-node-id="FvOvMGvsjnaKFRsBwduCUt">内容生产</div><a href="#p-workbench" data-page-node-id="i4il8GpRkDA1dJphNiPg0d">工作台</a><a href="#p-create" data-page-node-id="c4uIjz6UgyIQyBmQJJQA9d">新建生成任务</a><a href="#p-progress" data-page-node-id="vzrHlVOC89ejSBlFfPZ0Y4">任务队列</a><a href="#p-result" data-page-node-id="MKQIUckssWFStiYorHLXEk">最近结果</a>
+      <div class="side-t" data-page-node-id="Ast76M2XWIqoW17qx1OB8Q">资产管理</div><a href="#p-library" data-page-node-id="CdBmsWT67ju8O9G4zfqeWE">素材库</a><a href="#p-refine" data-page-node-id="DeWRNFRUtsLoo0oCkaCBb4">精修与入库</a><a href="#p-template" class="on" data-page-node-id="uSz2NXgLtR6qW5HUIpLs93">模板库</a>
+      <div class="side-t" data-page-node-id="HdT0aNFw5L3f0IBIZek5kJ">效果追踪</div><a href="#p-data" data-page-node-id="J7WhGNVXCJdtUGIcCgUCya">数据看板</a>
+    </div>
+    <div class="content" data-page-node-id="0Z7uldToB6T1yfCrHWsNHp">
+      <div class="crumb" data-page-node-id="pVikX4czCjEJVLtlZaXkFW">首页 / 模板库</div>
+      <div class="page-h" data-page-node-id="OHhqpwN5nWcJPogcH2pIlF"><h2 data-page-node-id="wjHIr7RcZgRPxdyjNFeNxd">卖点 → 场景模板库</h2><div data-page-node-id="tw1GtmOLIJQ4yN1HcKHIJt"><button class="btn" data-page-node-id="zxuw13guq3BivjZ0oVVVpx">导入实拍参考图</button> <button class="btn pri" data-page-node-id="V81SjeHqP5iWcgEQ6CqGH5">＋ 新建模板</button></div></div>
+      <div class="card" style="margin-bottom:14px" data-page-node-id="H1lRmXljee9TJOuCfMv0hU">
+        <b style="font-size:13px;display:block;margin-bottom:10px" data-page-node-id="IfOcFlKGIJYTkjg9n2tKx0">母乳 4℃ 专舱 · 3 个场景模板</b>
+        <table class="tb" data-page-node-id="AyOBdmy7uB2wn1hDF7CwZc">
+          <tr data-page-node-id="8OkpbTYrPh7jWOgn3AJq5E"><th style="width:26%" data-page-node-id="LgKjSQ6AZ7CiIS9H6HUvpb">模板名</th><th data-page-node-id="aHe1AkaifPh3smChUUwiFH">适用平台</th><th data-page-node-id="BRgKFBuEwsfxgW2vBbwONP">版本</th><th data-page-node-id="YB14RbUk0RGHJ293aj31FF">使用次数</th><th data-page-node-id="NAMzcIUQKFwXGEWn2DR7XG">采用率</th><th style="width:18%" data-page-node-id="nQUy4LjSTxg5y6rrIGmLD3">状态</th></tr>
+          <tr data-page-node-id="zkvtgNNyrGgeZ0kW4Ezj6z"><td data-page-node-id="ClT0ptv0YZgF8C7cDbvKHt">暖光母婴房 v1.2</td><td data-page-node-id="dRPKk1bczjG7zgJYOLBjW8"><span class="tag" data-page-node-id="AIssnodTqknPcbFli5XUrI">小红书</span><span class="tag" data-page-node-id="OjAArMN6F3hfrw8pVt5zNc">抖音</span></td><td data-page-node-id="GGKGJpQARoAfrswhg4RR5R">v1.2</td><td data-page-node-id="OIQkT4DO2EvFo6JFeyvarD">28</td><td data-page-node-id="2PO0BQLoAmR5IyhfgSBA1X"><span class="up" data-page-node-id="C1cYcLSEQGtvoLcgvZ0yvA">74.1%</span></td><td data-page-node-id="O1MhPWCYFLPHDuHY7zrCH0"><span class="tag g" data-page-node-id="G9pvhPvBHhF7gU0hsO1QzT">启用中</span></td></tr>
+          <tr data-page-node-id="Pqbt6JIBEZ7tINhhBarE3W"><td data-page-node-id="g63ZpEgcjNDbN9rRqBEbZz">辅食备餐台 v2.0</td><td data-page-node-id="5q4Al7wS1VVL2g5oeekr0x"><span class="tag" data-page-node-id="ibYrUp7qXSBsSacAVXC9Xw">小红书</span><span class="tag" data-page-node-id="V5R5p5BbpYOI9TOf4wz1gH">电商主图</span></td><td data-page-node-id="4Xglhol0sPNaFvviYK6qVa">v2.0</td><td data-page-node-id="IZunr4nzBZTPFqd4CBNUL1">19</td><td data-page-node-id="6bnbUSAayffdj9li8LrGC7">59.2%</td><td data-page-node-id="zduqK9CaN6FZOrhIJjcbHT"><span class="tag g" data-page-node-id="RpfCYWhw9I3l4jABwP2Wy0">启用中</span></td></tr>
+          <tr data-page-node-id="OtOrHvQVJxJAXM7qPmXZDB"><td data-page-node-id="W0jSIzfTqTPEGeONI2C607">夜间育儿夜灯 v0.9</td><td data-page-node-id="c7V1oZxzieiijHou2ZkvWU"><span class="tag" data-page-node-id="7YZiU5jGVe6PzFG9NZ5Vq3">抖音</span></td><td data-page-node-id="ATyFdkY6LxAFLELogkwcni">v0.9</td><td data-page-node-id="BQIeVFS5B3nECTOMeyfxie">4</td><td data-page-node-id="JIXwCyPXFez0rjExhSnB04">待基线确认</td><td data-page-node-id="CeWlHLqO23i6n6oNf2mNKf"><span class="tag o" data-page-node-id="BT8uxpeCjMJgsx19F2zEbt">灰度测试中</span></td></tr>
+        </table>
+      </div>
+      <div class="grid g3" style="margin-bottom:14px" data-page-node-id="THsNABaJQIRLoBTzM65Meo">
+        <div class="card" data-page-node-id="NUwpGcPZkpb4j1LzhWvr7D">
+          <div style="height:120px;border-radius:8px;background:linear-gradient(140deg,#F9C08A,#F07D1A);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;margin-bottom:10px" data-page-node-id="SUbhxD4a4Fjtj7YA94RUSX">暖光母婴房 · 示例</div>
+          <b style="font-size:13px" data-page-node-id="fJNrZer9cr7J1WrhSTcm8S">暖光母婴房 v1.2</b>
+          <p class="crumb" style="margin-top:4px" data-page-node-id="hphg85rsnjiooqMRRL2wln">构图：母婴房中景，冰箱占画面 40-45%，暖光 3200K，道具含辅食罐、妈咪包。</p>
+          <p class="crumb" data-page-node-id="7CakLgnBvBmN0SdJJABCIF"><b style="color:var(--oma-d)" data-page-node-id="IT1jGzVFp2ciQJHW8iptUF">品牌约束：</b>主色锁定奥马橙，Logo 固定右下角，禁用「第一 / 最」等绝对化词。</p>
+        </div>
+        <div class="card" data-page-node-id="YkfUikuC2K61HmajphKZHo">
+          <div style="height:120px;border-radius:8px;background:linear-gradient(140deg,#FBD9A8,#E8820F);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;margin-bottom:10px" data-page-node-id="868UuoCYGsswLhpf7Anmex">辅食备餐台 · 示例</div>
+          <b style="font-size:13px" data-page-node-id="0bHKNxxLY91EgYcCMjOOng">辅食备餐台 v2.0</b>
+          <p class="crumb" style="margin-top:4px" data-page-node-id="rFgHvCbCIju57EbflLElYo">构图：备餐台俯拍 30°，突出母婴变温抽屉开启态，冷白光 5000K。</p>
+          <p class="crumb" data-page-node-id="HVJOo3xDFnz85heMNyuYGx"><b style="color:var(--oma-d)" data-page-node-id="9TUJtFdL3Uk5jgaLEzocff">品牌约束：</b>须露出 4℃ 专区标识，抽屉内部摆件不得超过 3 件。</p>
+        </div>
+        <div class="card" data-page-node-id="NpD8gYbGa5Ihqz7UkE2zwr">
+          <div style="height:120px;border-radius:8px;background:linear-gradient(140deg,#EFA963,#C9610A);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;margin-bottom:10px" data-page-node-id="7Y8a2yYtOo4GR0ZFWVfhha">夜间育儿夜灯 · 示例</div>
+          <b style="font-size:13px" data-page-node-id="Gd465R9cWYxFkhbhCmv2HC">夜间育儿夜灯 v0.9</b>
+          <p class="crumb" style="margin-top:4px" data-page-node-id="DOcBmL2kTnV8zneDCVVWu1">构图：夜间育儿房弱光，强调「34dB 静音不吵醒宝宝」氛围。</p>
+          <p class="crumb" data-page-node-id="8DqWwQH2u5VK3hCPQrSq3o"><b style="color:var(--oma-d)" data-page-node-id="Ee5Nc2uXfAcZO7SzdRB0XT">状态：</b>灰度测试中，样本不足，采用率暂不可判定。</p>
+        </div>
+      </div>
+      <div class="card" data-page-node-id="vzTuDUWhEWWfHNf7iQbaic">
+        <b style="font-size:13px;display:block;margin-bottom:8px" data-page-node-id="jHGQymaNsFAKqF8mj9WNHM">模板迭代机制</b>
+        <p class="crumb" data-page-node-id="uTFBv2NxoimhZLf430ljpm">模板采用率低于 45% 或使用次数不足 10 次时，进入「待复盘」状态；连续两周未改善则下线归档，避免低质模板消耗算力。迭代记录进版本表，旧版本保留供回滚。</p>
+      </div>
+    </div>
+  </div>
+  <div class="footbar" data-page-node-id="h03zVIW4SfqhyARF27UTBa"><span data-page-node-id="SHAelESQLbcPC8huan1iTc"><i class="dot" data-page-node-id="oE79663M65HnQCJWeXlkqF"></i>本地导出服务已连接</span><span data-page-node-id="utH1Ua5LLrghY1tK3LorEF">模板总数：11 个</span><span style="margin-left:auto" data-page-node-id="SSbO18iMyD1hMBgcEQAZrO">原型演示：静态列表</span></div>
+</section>
+
+<div class="exportbar" data-page-node-id="AL8oHNQSPlVB25nIuuVvI6">
+  <button class="btn export-btn" data-target="#p-workbench" data-page-node-id="OHlAIWSBlYlDAIIABnfzOw">导出当前页 PNG</button>
+  <button class="btn pri export-btn" data-target="#p-workbench" data-page-node-id="hn7Vz9tHEyrX3CUscM7gwj">导出全部页面</button>
+</div>
+
+<script src="../scripts/prototype-export-client.js"></script>
+<script>
+(function(){
+  var SEEDS=['p-workbench','p-create','p-progress','p-result','p-refine','p-library','p-data','p-template'];
+  function show(id){
+    var target=SEEDS.indexOf(id)>=0?id:SEEDS[0];
+    document.querySelectorAll('.screen').forEach(function(s){
+      s.classList.toggle('active', s.id===target);
+    });
+  }
+  function flatMode(){ return /[?&]flat=1/.test(location.search); }
+  if(flatMode()){ document.body.classList.add('flat'); }
+  window.addEventListener('hashchange',function(){ show(location.hash.replace('#','')); });
+  show(location.hash.replace('#',''));
+  document.querySelectorAll('.shot').forEach(function(el){
+    el.addEventListener('click',function(){ el.classList.toggle('on'); });
+  });
+})();
+</script>
+</body>
+</html>

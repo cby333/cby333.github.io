@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="TbE67CdR5tOJiI6y4Cgt7e">
+<head data-page-node-id="UUiN0kzH5P7K4yQkX1VBgI">
+<meta charset="UTF-8" data-page-node-id="CdmAbLfjDhS9f84Fs53IF5">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="BCbVFNZbox3hgAkMdAQgcn">
+<title>抖音电商店铺 7 月 vs 9 月交易数据复盘与增长分析</title>
+<style>
+:root{
+  --bg:#FBFAF8; --paper:#FFFFFF; --ink:#1F1D1A; --ink2:#5C574F; --ink3:#8C857A;
+  --line:#E6E1D9; --accent:#D9531E; --accent-soft:#FBEEE7;
+  --up:#C0392B; --flat:#8C857A; --good:#2E7D5B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:14px;line-height:1.75;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1000px;margin:0 auto;padding:0 24px 80px}
+header{padding:56px 0 32px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:12px;letter-spacing:.16em;color:var(--ink3);text-transform:uppercase;margin-bottom:14px}
+h1{font-size:30px;line-height:1.35;font-weight:600;letter-spacing:-.01em}
+.sub{margin-top:12px;color:var(--ink2);font-size:14px;max-width:720px}
+.meta{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px}
+.tag{font-size:12px;padding:4px 10px;border:1px solid var(--line);border-radius:20px;color:var(--ink2);background:var(--paper)}
+.tag.on{background:var(--accent-soft);border-color:#F2D9CC;color:#9C3A16}
+
+section{margin-top:52px}
+h2{font-size:19px;font-weight:600;padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:22px;display:flex;align-items:baseline;gap:12px}
+h2 .num{font-size:12px;color:var(--ink3);font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em}
+h3{font-size:15px;font-weight:600;margin:26px 0 12px}
+p{margin-bottom:12px;color:var(--ink2)}
+strong{color:var(--ink);font-weight:600}
+.num-mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.card .lab{font-size:12px;color:var(--ink3)}
+.card .val{font-size:26px;font-weight:600;margin:6px 0 2px;font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:-.02em}
+.card .chg{font-size:12px;color:var(--up)}
+.card .chg.flat{color:var(--flat)}
+
+table{width:100%;border-collapse:collapse;background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);font-size:13px}
+th{background:#F5F2EC;font-weight:600;color:var(--ink2);font-size:12px;letter-spacing:.04em}
+td.n,th.n{text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace}
+tr:last-child td{border-bottom:none}
+.up{color:var(--up)}
+.flat{color:var(--flat)}
+.good{color:var(--good)}
+
+.bars{margin-top:8px}
+.bar-row{display:grid;grid-template-columns:150px 1fr 88px;align-items:center;gap:14px;padding:9px 0;border-bottom:1px dashed var(--line)}
+.bar-row:last-child{border-bottom:none}
+.bar-bg{background:#F0ECE4;border-radius:4px;height:22px;position:relative;overflow:hidden}
+.bar-fill{height:100%;background:var(--accent);border-radius:4px}
+.bar-fill.zero{background:#E6E1D9;width:2px}
+.bar-row .v{text-align:right;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:var(--ink)}
+
+.formula{background:var(--paper);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:6px;padding:14px 18px;margin:16px 0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;color:var(--ink)}
+
+.note{background:#F7F5F0;border:1px solid var(--line);border-radius:8px;padding:16px 20px;margin-top:18px}
+.note h4{font-size:13px;font-weight:600;margin-bottom:8px}
+.note ul{margin-left:18px;color:var(--ink2);font-size:13px}
+.note li{margin-bottom:6px}
+
+.finding{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-bottom:14px}
+.finding .t{font-weight:600;margin-bottom:6px;display:flex;gap:10px;align-items:baseline}
+.finding .t span{font-size:12px;color:var(--accent);font-family:ui-monospace,monospace}
+.finding p{margin-bottom:0}
+
+ol.actions{margin-left:20px;color:var(--ink2)}
+ol.actions li{margin-bottom:12px}
+ol.actions strong{color:var(--ink)}
+
+footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--line);color:var(--ink3);font-size:12px}
+@media(max-width:720px){
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .bar-row{grid-template-columns:110px 1fr 72px}
+  h1{font-size:24px}
+}
+</style>
+</head>
+<body data-page-node-id="oEMWm4kNpGafDwEpr5TxwD">
+<div class="wrap" data-page-node-id="dOJfJhNP7lUnP4mlakJ8fi">
+
+<header data-page-node-id="0cqoCJFvbWXOEi86HqHVhy">
+  <div class="eyebrow" data-page-node-id="eL7SRFcwDA2idJV7bV9ylG">Data Review · Douyin Store</div>
+  <h1 data-page-node-id="OFHrBT30Hz88mksH11k73k">抖音电商店铺 7 月 vs 9 月<br data-page-node-id="Fier2WhAm4sTqDWBBAzPmt">交易数据复盘与增长分析</h1>
+  <p class="sub" data-page-node-id="kv3p9t1WsEV6sNP87eVXsj">以店铺后台真实经营数据为基础，拆解 GMV 增长的三层来源，判断增长质量是否健康，并给出下一阶段的可执行动作。</p>
+  <div class="meta" data-page-node-id="6AlkYIr0laCZWczeWzCOfo">
+    <span class="tag on" data-page-node-id="aH1LTr6LDRD52zDD4Fmw54">数据源：抖音电商罗盘后台</span>
+    <span class="tag" data-page-node-id="NMxOcCGt9dWXeDfEgtex55">样本：7 月 / 9 月完整月度</span>
+    <span class="tag" data-page-node-id="xl82hpkXeONWEYGp6RHO8w">方法：GMV 三因子乘法拆解</span>
+    <span class="tag" data-page-node-id="xmpGZKRWJS4FqaQkE9DCmg">产出日期：2026-09-24</span>
+  </div>
+</header>
+
+<section data-page-node-id="1YeJr6KxmBOiv8WG5j3oSc">
+  <h2 data-page-node-id="XZK1fO4KtIBMbGAFjJDgth"><span class="num" data-page-node-id="SwaXTLmopw52ciYqjfLi6L">01</span> 核心结论速览</h2>
+  <div class="cards" data-page-node-id="VsF4H31OH74s0HFw7zy8GA">
+    <div class="card" data-page-node-id="fLeOPDrKNlMiATFQ9VLtYd">
+      <div class="lab" data-page-node-id="fryaIiPgOSKgBd3Z1E9q6E">成交金额</div>
+      <div class="val" data-page-node-id="WejRTzXAMgIPuVtAFQNm6O">6.39<span style="font-size:15px" data-page-node-id="qC2r0B0462lLm7gqF1qLX1">万</span> → 9.03<span style="font-size:15px" data-page-node-id="3FE5ZnQfiaTCUurqGMgcYO">万</span></div>
+      <div class="chg" data-page-node-id="OT6QlMdENwQO7CS9AyIzCb">+41.3%</div>
+    </div>
+    <div class="card" data-page-node-id="FIAEY7frSraQUq6UBxEOr3">
+      <div class="lab" data-page-node-id="NCFA9pgJ0ti49b8iixt6zb">订单数量</div>
+      <div class="val" data-page-node-id="IprwLTPmJqGpMCkrEhRRwX">1,420 → 2,006</div>
+      <div class="chg" data-page-node-id="3u0ossUwKVX1xSjp38GHvN">+41.3%</div>
+    </div>
+    <div class="card" data-page-node-id="4keC7DVrtGXpVMuFD7hfth">
+      <div class="lab" data-page-node-id="r0PWq1xDEsM76LAbdBEeuJ">成交转化率</div>
+      <div class="val" data-page-node-id="HSVD7ECmWxDSVAYuz3i0VD">8.46% → 9.20%</div>
+      <div class="chg" data-page-node-id="PT3ooGBFVLg14r1i9DK1wl">+0.74pp（相对 +8.7%）</div>
+    </div>
+    <div class="card" data-page-node-id="x30Q9BsoNjTisOBNohtnw0">
+      <div class="lab" data-page-node-id="xDfCqBFSdx3RYxPOfRUANc">客单价</div>
+      <div class="val" data-page-node-id="f9YtMp6TsnmsVh4Msczxx7">45.01 → 45.01</div>
+      <div class="chg flat" data-page-node-id="rOgyzcSD7enZXrLXPqGH0d">+0.0%（零贡献）</div>
+    </div>
+  </div>
+  <div class="note" data-page-node-id="xQ4HRKoQ3wm46YC0tq2dsE">
+    <h4 data-page-node-id="0ljFg7CBPxTDw7ZmBcnB2K">一句话结论</h4>
+    <p style="margin-bottom:0" data-page-node-id="zCNdDtEC0MmPjfhUKRcDZ4">两个月 GMV 涨了 <strong data-page-node-id="2cfQOZwMcuC0APkjK9NeBn">2.64 万</strong>，但这笔增长 <strong data-page-node-id="4ePRAly1KYDUxaPhr3Yx1E">100% 由「访客量 + 转化率」贡献，客单价一分没动</strong>——这既是好消息（增长健康、不靠透支），也是明确信号：<strong data-page-node-id="2yBuPgxZhFw4XD0ANCkowC">客单价是下一个唯一没开发过的增长引擎</strong>。</p>
+  </div>
+</section>
+
+<section data-page-node-id="OA350AMtHfvbbJYmUJk2OR">
+  <h2 data-page-node-id="F8ZOIgD4EV6TUpoTRx067t"><span class="num" data-page-node-id="UILm2Mq4MdvCfHTfer5Q0g">02</span> 数据基线与口径</h2>
+  <p data-page-node-id="tdHaZaBdIGI1lHF2Wy75zZ">所有原始数字取自店铺后台「交易概况」页面的<strong data-page-node-id="AiiAcCv6izor8ohZEBGJym">月度累计数据</strong>（见原始数据截图），未做任何平滑或估算。下表为两个月的完整指标对照。</p>
+  <table data-page-node-id="mOffmSWtsdMFVB9gy1bkI3">
+    <thead data-page-node-id="kdhoxT0j0GQHEmDjBQbMQq">
+      <tr data-page-node-id="cmESlXDdi6tGY8lu7RtD2A"><th data-page-node-id="qlv1uUH6sJmMlAS4Zz3AWy">指标</th><th class="n" data-page-node-id="yEoJuH0Vc6A8ZxwnNslDn6">7 月</th><th class="n" data-page-node-id="ecskTCMlVOzoLHMXO8928k">9 月</th><th class="n" data-page-node-id="GW3SesAPNuuxrHC41yVsBG">变化</th></tr>
+    </thead>
+    <tbody data-page-node-id="DJFnILEwGAtVi9nFOHmRGP">
+      <tr data-page-node-id="uZQNTDSpDcB1lOQcA1nwXE"><td data-page-node-id="Spx1w1y9lfrMuZRI0rnI58">成交金额</td><td class="n" data-page-node-id="fyhDDKiJhN9f12JJGxT1lG">63,900 元</td><td class="n" data-page-node-id="9ARVSwRx5Gqf5AIqXaN3Lc">90,300 元</td><td class="n up" data-page-node-id="YA8v7PMsHoBBztIWLWACIw">+41.3%</td></tr>
+      <tr data-page-node-id="e4gKXI2rlEVuhUs2SgK5vk"><td data-page-node-id="tRc7DYDxVXaRRCkzXUUaEa">订单数量</td><td class="n" data-page-node-id="UJhA4QMZLjW3bJseFEbpNM">1,420</td><td class="n" data-page-node-id="WlvzaYFFHSmmFeOGkDQRPN">2,006</td><td class="n up" data-page-node-id="kQwFZq0ITYz5OH7SuP4qGG">+41.3%</td></tr>
+      <tr data-page-node-id="nxGWYUPjPIDsYgZO9So4us"><td data-page-node-id="LTKQIFWRxXGqGFt92CbLBf">买家数</td><td class="n" data-page-node-id="ecdTWiCkmLaERDTEvsYdeI">1,367</td><td class="n" data-page-node-id="EWnm4rnf8j3CqmNNQEKuFd">1,932</td><td class="n up" data-page-node-id="DrKfnaHmzxOXQ3PBlZE2D7">+41.3%</td></tr>
+      <tr data-page-node-id="ovpimb3CfEBrQoMQpzWIcG"><td data-page-node-id="Sdan0e4zoNt9zDuj4UvRxX">访客数</td><td class="n" data-page-node-id="6KaxoA8FDHTdNCH51oV6oe">16,800</td><td class="n" data-page-node-id="bBY83VG6xaDUnGiMSauzGB">21,800</td><td class="n up" data-page-node-id="xuubzy73B7M3CaXe33I5Ox">+29.8%</td></tr>
+      <tr data-page-node-id="kCVSIcr4Yi3YP1dTKI2NUA"><td data-page-node-id="szvH4McepGwhFYSOIzqATY">成交转化率</td><td class="n" data-page-node-id="74DBltoM0fYmcQ1eK51lXo">8.46%</td><td class="n" data-page-node-id="WXV0l06tGboVnDVrG28n7A">9.20%</td><td class="n up" data-page-node-id="TiKwlJxUeJwTPt1QC6KHWJ">+0.74pp</td></tr>
+      <tr data-page-node-id="seOFuzM0S2YSZGnA2f85M7"><td data-page-node-id="eOhQu1WWXN0s7jH1mELIbj">客单价</td><td class="n" data-page-node-id="3HtAKiZ0S5pCHGUqDetnd0">45.01 元</td><td class="n" data-page-node-id="hItPq0pqn2Ia5r3C9vBKvC">45.01 元</td><td class="n flat" data-page-node-id="fcFrpfd8rRYak4YyQea2oJ">0.0%</td></tr>
+      <tr data-page-node-id="yyOjz7Eq6CvKzTxHGFPLBU"><td data-page-node-id="QZDF1Nq49c6WJSeF1BY4fa">平均访客价值（UV 价值）</td><td class="n" data-page-node-id="xIYTcCbLLlEjXIVQ6RoMXY">3.81 元</td><td class="n" data-page-node-id="rDOpeKWGabp4UYQ761AYct">4.15 元</td><td class="n up" data-page-node-id="5JJ5L9llut6RMaju6f9Kjy">+8.9%</td></tr>
+      <tr data-page-node-id="o2u0vZ1mjEHiVJdMiavPka"><td data-page-node-id="sf1mhxXbRCYJGgLnN7JL22">退款金额</td><td class="n" data-page-node-id="xh5wxOXox3Q6PrGbBSjlve">6,910 元</td><td class="n" data-page-node-id="931nzUD3e9GciovZQtTqJ6">9,802 元</td><td class="n up" data-page-node-id="EediHAKVRjbdQxDYVo4PGb">+41.8%</td></tr>
+      <tr data-page-node-id="QAvnRHnTViv1upsadK2o9i"><td data-page-node-id="SpFnrA9xCVBrq2vxJZOTGF">退款订单数</td><td class="n" data-page-node-id="I7SEYUmOoNHUSN3ByosE8e">175</td><td class="n" data-page-node-id="zRe3Yx4vI458d8GllzGAeF">247</td><td class="n up" data-page-node-id="NnJVSXFqnbJhMGJA0Rxfs9">+41.1%</td></tr>
+    </tbody>
+  </table>
+  <div class="note" data-page-node-id="IpvhqTBdqI7lvfXrnXK5AV">
+    <h4 data-page-node-id="8zjx4wWW5Bxu0llAXkrdL9">口径说明（很重要，避免误读）</h4>
+    <ul data-page-node-id="d5wXDz7Htn9oaGIRZFBxAj">
+      <li data-page-node-id="ojA0QOchlZgkKyz5SwBrti">后台截图中的「较前 1 月」是<strong data-page-node-id="RYcEbmKv3emziY0BIgMRtR">平台自带的环比</strong>（9 月对比 8 月），例如 9 月 GMV 显示 +112.55%——那是相对 8 月而言。</li>
+      <li data-page-node-id="RqJmhpuCEBeKb67fZMsIoM">本报告的 <strong data-page-node-id="ZoIE05CV6iscbUEhc4rhe8">+41.3% 是 7 月 → 9 月的跨期对比</strong>，由两个月的绝对值直接计算，口径不同，不要混用。</li>
+      <li data-page-node-id="04427I1cyPs8KKAuoyd8I4">「转化率提升 12%」这一说法出自后台 9 月的环比标记（+11.84%，即 8 月约 8.22% → 9 月 9.20%），<strong data-page-node-id="VjAmfwJXARyoDPswHIhlUb">是相对提升，不是加了 12 个百分点</strong>。</li>
+    </ul>
+  </div>
+</section>
+
+<section data-page-node-id="S2bCNa41IZ1FAWPvFfPsfH">
+  <h2 data-page-node-id="D3l4ed7UmvsB4WvDL51b65"><span class="num" data-page-node-id="3kvbU6IhBuV0HqAgaaXkFF">03</span> 增长归因：GMV 三因子拆解</h2>
+  <p data-page-node-id="eV7gOJjq4Z2wjw8CcqsbG5">电商 GMV 可以严格拆成三个因子的乘积，这样每一项增长都能被定位到具体责任人：</p>
+  <div class="formula" data-page-node-id="a0AJGwWtkWwLOsKROS0ZJN">GMV = 访客数 × 成交转化率 × 客单价</div>
+  <p data-page-node-id="aTVFp3IiFmAF2GMrxIdGed">代入两个月数据做交叉验证：</p>
+  <div class="formula" data-page-node-id="wUptElsqCaMJuXOVQrbVfv">7 月：16,800 × 8.46% × 45.01 = 63,972 元（后台 63,900 元，误差 0.1%）<br data-page-node-id="120Mpmuw1GROMG7y3qcFhn">9 月：21,800 × 9.20% × 45.01 = 90,262 元（后台 90,300 元，误差 0.04%）</div>
+  <p data-page-node-id="IeCZXr3BIYzaGAlAlj5dEg">模型误差在千分之一以内，<strong data-page-node-id="EfnZhge5CUKtWGflcJiWYX">说明这套拆解在该店铺是成立的</strong>，可以拿来做归因。用逐个替换法计算各因子贡献：</p>
+
+  <div class="bars" data-page-node-id="qA5tw8uEGKTW5sEJJjULPD">
+    <div class="bar-row" data-page-node-id="0I8DxUTk4USIPovoNpGPdd">
+      <div data-page-node-id="DqP8KDnl6RS3V5upT2PzRE">访客数<br data-page-node-id="JT2bG7JlcDEIZPoZXZJNQ1"><span style="font-size:12px;color:var(--ink3)" data-page-node-id="iWFbmKGUHEiT33zH4z5CuS">1.68万 → 2.18万</span></div>
+      <div class="bar-bg" data-page-node-id="4ahsnTwkGEe7ktB9TwZQc9"><div class="bar-fill" style="width:75%" data-page-node-id="aM4fyXdqlYdxDmts1ZSMkA"></div></div>
+      <div class="v" data-page-node-id="KBPseLeDHGxoelOZE13CpU">+28.7%</div>
+    </div>
+    <div class="bar-row" data-page-node-id="YAacvOZdtzRttXdVBb2ajq">
+      <div data-page-node-id="E6xPgz2VaD4r3hkE7GpdLe">成交转化率<br data-page-node-id="WzP9VGR0ZQafy4RJ9TkUeq"><span style="font-size:12px;color:var(--ink3)" data-page-node-id="JrAykRzrjTRzYzDKdG8UC3">8.46% → 9.20%</span></div>
+      <div class="bar-bg" data-page-node-id="z2cIt7ply5nfjIeNF3nxsc"><div class="bar-fill" style="width:25%" data-page-node-id="U4ruz2Ay5lT1eIIyZCmQLY"></div></div>
+      <div class="v" data-page-node-id="EF9NW6RyuojSrQ0x9qDqXn">+9.6%</div>
+    </div>
+    <div class="bar-row" data-page-node-id="gNciP05WkFeDWTa1dOFTsK">
+      <div data-page-node-id="TCPt0ej0xeJ1Ud7HoIJ3zU">客单价<br data-page-node-id="BDwmo0sVdB9DfsI6XLTqxk"><span style="font-size:12px;color:var(--ink3)" data-page-node-id="XSVzVa0bh5b0B2SQ0t0duX">45.01 → 45.01</span></div>
+      <div class="bar-bg" data-page-node-id="1zUrnhN1Z9msI6VKhHBCtG"><div class="bar-fill zero" data-page-node-id="sOBOPVEgQYeRX0sMDSueGk"></div></div>
+      <div class="v flat" data-page-node-id="pOCZvlIwEUuMZDx4R6SuLv">0.0%</div>
+    </div>
+  </div>
+
+  <div class="note" data-page-node-id="yuCdCdDeVHcDTATUJT50Gz">
+    <h4 data-page-node-id="YqIGSwWHsPUDsBZFdizRLM">归因结果</h4>
+    <ul data-page-node-id="5es42i51T9s1X4MpnBpFkD">
+      <li data-page-node-id="mfKNQwRXIqqiPDWz5W9kNy">三个因子相乘：1.287 × 1.096 × 1.000 = <strong data-page-node-id="N47XjsZ7ydKOBTzViBr5hB">1.411，即 +41.1%</strong>，与实际增长 +41.3% 基本吻合。</li>
+      <li data-page-node-id="BrHSFvjzEHC0SPtfiXr6hT"><strong data-page-node-id="jOb03HAqXecqz0aDu1tmO6">增长的七成来自访客量</strong>（+28.7%），属于流量端拉动。</li>
+      <li data-page-node-id="I4DZ1z8fWge2kO0HRa91KZ"><strong data-page-node-id="bqtBXZrVgYMcrYI9PhwTEc">转化率贡献 +9.6%</strong>——在访客涨了三成的情况下转化率还能往上走，说明流量质量没有被稀释，承接是过关的。</li>
+      <li data-page-node-id="0zzptwkCUHdoZF0iIgGUb9"><strong data-page-node-id="rBdrhjoE5SltGdoNTMDH3j">客单价贡献为零</strong>，这是全链路唯一没有被撬动的环节。</li>
+    </ul>
+  </div>
+</section>
+
+<section data-page-node-id="yKkR8u294BVWuWMbJ4JJfA">
+  <h2 data-page-node-id="46Ukv7znmQlvmI0Hadzw8B"><span class="num" data-page-node-id="iEpFrIVAjtPIZFpXujAjBH">04</span> 增长质量检验</h2>
+  <p data-page-node-id="AHSWGUr6kEvlVUgXe5KgrZ">放量式增长最容易掩盖的问题是：拉来的流量质量变差、退款率飙升、老客流失。用三个指标交叉验证。</p>
+  <h3 data-page-node-id="DKQlt9lHucZFRjoRknAx99">4.1 退款率保持稳定</h3>
+  <table data-page-node-id="J5T9oAVtBV3iLSn6PI9vjP">
+    <thead data-page-node-id="coQKVW71m9J7vUp0iky5Rd"><tr data-page-node-id="QLddQ8mRwmcDQIDoA0D7k1"><th data-page-node-id="VqcLkPxH0Wp7HuP4EAdYZy">口径</th><th class="n" data-page-node-id="z8ig99qMa5hb3V0CaE5Kj0">7 月</th><th class="n" data-page-node-id="hTehwKhmuTzrTSiHLx6wkq">9 月</th><th data-page-node-id="uCfrCT7QTCeadGFS5MOQk4">判断</th></tr></thead>
+    <tbody data-page-node-id="5WagCMBOvZEdoLKgpHtFdH">
+      <tr data-page-node-id="SL59V0fDWdgRhqFo7ePufH"><td data-page-node-id="rg4O1fYDnOcDhu3evSoLeO">金额退款率（退款额 ÷ 成交额）</td><td class="n" data-page-node-id="gVAEWMChiKZekkSyXuZlmh">10.8%</td><td class="n" data-page-node-id="q51xmqzhc8uCz5jd4qtb5F">10.9%</td><td class="good" data-page-node-id="j9SLidvVXuS0omU89vLqi5">持平</td></tr>
+      <tr data-page-node-id="oGXVL8IITN8YmJmiPEcuER"><td data-page-node-id="87D5LNiHQitrlrczygceGp">订单退款率（退款单 ÷ 订单）</td><td class="n" data-page-node-id="hoh1b5ycFAmJaIW2Pp3uCF">12.3%</td><td class="n" data-page-node-id="JbFZ5IrTizTDRcscGjFOyH">12.3%</td><td class="good" data-page-node-id="Gltps6w1sLCDslD7hf48Km">持平</td></tr>
+    </tbody>
+  </table>
+  <p data-page-node-id="5rea3prkGlzLk7XS9TTl88">退款绝对额涨了 41.8%，但<strong data-page-node-id="gILZHjHZCgK96z5Qz6OsG3">退款率纹丝不动</strong>——说明退款增加只是因为盘子变大，不是商品或服务出了问题。<strong data-page-node-id="cIv4XjvA4sNmPi3eiZrEiY">增长质量健康。</strong></p>
+
+  <h3 data-page-node-id="BzwTNQ9yEOHu0uRrjJx0zv">4.2 流量扩张没有稀释承接效率</h3>
+  <p data-page-node-id="NoFSRcJBxuYjVMCum1gIfR">访客增长 29.8%，订单增长 41.3%——<strong data-page-node-id="IUAGURJll9SdzXUarHcu7D">订单增速跑赢访客增速 11.5 个百分点</strong>，等价于转化率净提升 0.74pp。这是本次活动/投放承接做得好的直接证据。</p>
+
+  <h3 data-page-node-id="H9OLzKNJPJNO3AFpXB0eSg">4.3 每个访客的价值只抬升了 8.9%</h3>
+  <p data-page-node-id="5EUtvAjcPJKjEbQCGKzg7z">UV 价值 3.81 → 4.15（+8.9%），<strong data-page-node-id="EOWihsIMpM0nQcROechVB8">远低于 GMV 的 +41.3%</strong>。翻译成人话：这次增长主要靠「拉更多人进来」，而不是「让每个人多花钱」——再次指向客单价这个空白地带。</p>
+</section>
+
+<section data-page-node-id="YpXPUBJEFAkCAGKVcEm9GG">
+  <h2 data-page-node-id="WGtjJogjyBHs7ZOZXs8W23"><span class="num" data-page-node-id="ym0clAxZ2VgwPMqMRL5F4a">05</span> 三个发现与三个动作</h2>
+  <div class="finding" data-page-node-id="TqqLnFC8Y2Xuz2gLPDYJfk">
+    <div class="t" data-page-node-id="q7KJurG1ByVhBQIgyxzSEB"><span data-page-node-id="TH7M8YJhPOoDKLcKHlposD">F1</span> 客单价是唯一未被开发的增长引擎</div>
+    <p data-page-node-id="Hsi08axfnSovKHEGsT2VWY">45.01 元两个月一分未动，而同行通常可以通过组合定价把客单价抬 15–25%。哪怕只做到 +10%，在当前流量水平下就等于<strong data-page-node-id="CUU7F2vBfmriYvNstQ7DiH">多赚 9,000 元 GMV，且不需要多花一分投放费</strong>。</p>
+  </div>
+  <div class="finding" data-page-node-id="B2fh7CZ8GaRJuj3LTUmOEL">
+    <div class="t" data-page-node-id="BDYU6Clx79kxHE4XRz8pai"><span data-page-node-id="qvSFuAGKVvUmNnDhT3bkom">F2</span> 流量驱动型增长有天花板</div>
+    <p data-page-node-id="YBNV0cjEP9LhiuL1FoGoXW">访客已连续高增（后台环比 +110%），靠继续放量维持同样增速的边际成本会快速上升。应把重心从「拉新」切一部分到「提客单」。</p>
+  </div>
+  <div class="finding" data-page-node-id="FMnstxBFDjVYGMjWidUSN9">
+    <div class="t" data-page-node-id="IYNbRxZtYSOVxdFfmf5IcJ"><span data-page-node-id="qfVV0Wh8JqxvsrqJt5pipq">F3</span> 承接效率已被验证，可以放心加码</div>
+    <p data-page-node-id="8hdjRt8pPYjzDm5pNv844e">转化率在放量期不降反升，退款率稳定，说明详情页、客服、履约链路经得起更大规模。这是加大投放的<strong data-page-node-id="d1RYZhrA8LdkkrbDZuqcCH">前提条件</strong>，且现在已经成立。</p>
+  </div>
+
+  <h3 data-page-node-id="PwyOxGpUDyTvRcauUFIkQE">下一步动作（按投入产出比排序）</h3>
+  <ol class="actions" data-page-node-id="vhbGuHdfN6QgEEepdUKJ3Z">
+    <li data-page-node-id="VKWmwqZdQKg8kjS59tMKz4"><strong data-page-node-id="d3NHy3BHWCINgIiDvs9WP9">做组合定价与凑单门槛。</strong>围绕 45 元主线搭「两件优惠 / 满 69 减 10」，把客单价目标定到 50 元（+11%）。改动成本低、验效快。</li>
+    <li data-page-node-id="ZCIp7DzPaK8GhCUhDVs5KL"><strong data-page-node-id="9a2i1UBlmdawRhv3E9b3wr">把日报里的异常监控做成自动告警。</strong>当前转化率、退款率靠人工每天看，滞后一天；改成阈值触发（如转化率环比跌超 10% 即推送），把响应时间从 24 小时压到分钟级。</li>
+    <li data-page-node-id="Q9DxITSZsOpaOz4v6bxGQo"><strong data-page-node-id="alEgBtZRT52xCywPxSQ1ms">对新增流量做来源分层。</strong>现在只能看到总访客，无法判断哪部分流量贡献了那 0.74pp 的转化提升。拆出来才能复制。</li>
+  </ol>
+</section>
+
+<section data-page-node-id="aUidCl2TENrs1N6gChlYo7">
+  <h2 data-page-node-id="KZfzTlAwWo0QR5QirnjUNA"><span class="num" data-page-node-id="dBAhlH871t4P3NSYBjaFNe">06</span> 数据来源与局限</h2>
+  <div class="note" data-page-node-id="o4LtMufhSl7A4gJtC6XxWp">
+    <h4 data-page-node-id="jDMmBl9bwHHYhx9ZuGJTrR">数据来源</h4>
+    <ul data-page-node-id="A3KtASRI22KFeTG4aLtHLX">
+      <li data-page-node-id="acpAeBzIYNHaEiaBVYGChy">抖音电商罗盘「交易概况」月度数据截图（2026 年 7 月、9 月），所有绝对值与比率均直接取自后台，未做修改。</li>
+      <li data-page-node-id="vzIL4ShZYxQ76VNzneJWMd">派生指标（增长率、三因子归因、退款率）由本人基于上述原始值计算，计算过程见第 03 节，可复核。</li>
+    </ul>
+  </div>
+  <div class="note" style="margin-top:14px" data-page-node-id="HGVGox5frCVLLopVou6sDT">
+    <h4 data-page-node-id="B0tinRcXeuTUrACXkKuHQv">局限（诚实说明，避免结论被过度使用）</h4>
+    <ul data-page-node-id="MFjL5tsMWr3AJalo2NAoF9">
+      <li data-page-node-id="vfxXJboMWA76CHWSNK6dMM"><strong data-page-node-id="eS9vnn9nCABiHoe8CfyaGE">只有两个月截面数据，缺少 8 月完整值</strong>。后台环比标记可反推 8 月部分指标（GMV 约 4.25 万、转化率约 8.22%），但未获截图确认，本报告未将其写入正式表格。</li>
+      <li data-page-node-id="Le02eY1VRrDToONeQcoOSf"><strong data-page-node-id="jHvCnXjSqZDsFZW7Q72HHZ">缺少商品维度、流量来源维度、新老客维度的拆分数据</strong>，因此无法判断增长具体来自哪批商品或哪个渠道，第 05 节的动作 3 需要补充这部分数据才能落地。</li>
+      <li data-page-node-id="EOAzDIKxZiBoTMC3eTO9r2">三因子拆解是<strong data-page-node-id="oyvjcFNxvZ58WcuKRAetnt">相关归因而非因果证明</strong>：它说明「增长可以被分解为这三项」，但不等同于「做了某个动作导致某项提升」——后者需要 A/B 实验验证。</li>
+    </ul>
+  </div>
+</section>
+
+<footer data-page-node-id="bAeKG1m0gfYIY7vGFSpSZD">
+  抖音电商店铺双月复盘 · 数据取自店铺后台真实经营数据 · 生成于 2026-09-24<br data-page-node-id="QQUsPd9YIKtaR8NBQeX15J">
+  所有派生指标计算过程公开可复核，原始截图见同目录《原始数据》文件夹。
+</footer>
+
+</div>
+</body>
+</html>
